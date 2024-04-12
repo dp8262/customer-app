@@ -432,55 +432,6 @@ class _RedirectCategoryScreenState extends State<RedirectCategoryScreen> {
                       return SingleChildScrollView(
                           padding: const EdgeInsets.all(16),
                           child:
-                              // widget.categoryId.isNotEmpty
-                              //     ? GridView.builder(
-                              //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              //     crossAxisCount: 2,
-                              //     mainAxisSpacing: 16,
-                              //     crossAxisSpacing: 16,
-                              //   ),
-                              //   itemCount: 5,
-                              //   shrinkWrap: true,
-                              //   physics: const NeverScrollableScrollPhysics(),
-                              //   itemBuilder: (context, i) {
-                              //     return GestureDetector(
-                              //       onTap: () {},
-                              //       child: Container(
-                              //         width: 155,
-                              //         decoration: BoxDecoration(
-                              //           color: AppColor.whiteColor,
-                              //           borderRadius: BorderRadius.circular(12),
-                              //           boxShadow: [
-                              //             BoxShadow(
-                              //               color: Colors.black.withOpacity(0.05),
-                              //               offset: const Offset(0, 0),
-                              //               blurRadius: 7,
-                              //               spreadRadius: 0,
-                              //             )
-                              //           ],
-                              //         ),
-                              //         child: Padding(
-                              //           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                              //           child: Column(
-                              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //             crossAxisAlignment: CrossAxisAlignment.start,
-                              //             children: [
-                              //               // Add your grid item content here
-                              //               TextWidget(
-                              //                 text: "dev",
-                              //                 color: AppColor.textColor,
-                              //                 fontSize: 16,
-                              //                 fontWeight: FontWeight.w600,
-                              //                 maxLines: 2,
-                              //                 overflow: TextOverflow.fade,
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     );
-                              //   },
-                              // ) :
                               ListView.builder(
                                   itemCount: categoryControllers.categoryList.length,
                                   shrinkWrap: true,
