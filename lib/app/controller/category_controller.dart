@@ -36,7 +36,7 @@ class CategoryControllers extends GetxController {
 
   categoryListDetails({required BuildContext context
     , String? categoryId
-  }) async {
+  }) async { isLoading(true);
     isError(false);
     error("");
     categoryList.clear();
@@ -55,7 +55,7 @@ class CategoryControllers extends GetxController {
       dbFuture.then((database) async {
         categoryList.value = await contactDatabaseHelper.getAllCategory();
         if (categoryList.isEmpty) {
-          isLoading(true);
+
           getAPI(
               methodName: ApiList.categoryList,
               param: {},
@@ -101,7 +101,7 @@ class CategoryControllers extends GetxController {
   productListDetails({required BuildContext context
     , required String categoryId,
   }) async {
-
+    isLoading(true);
     isError(false);
     error("");
     productList.clear();
@@ -112,7 +112,7 @@ class CategoryControllers extends GetxController {
       dbFuture.then((database) async {
         productList.value = await contactDatabaseHelper.getAllProduct(categoryId);
         if (productList.isEmpty) {
-          isLoading(true);
+
           getAPI(
           methodName: ApiList.productList,
           param: { "id": categoryId,
@@ -136,6 +136,8 @@ class CategoryControllers extends GetxController {
             }
           }
       );
+        } else {
+          isLoading(false);
         }
       });
     } catch (ex) {
