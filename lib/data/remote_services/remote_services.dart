@@ -141,7 +141,7 @@ class RemoteServices {
 
   Future<Either<String, PromotionModel>> fetchPromotion() async {
     final response = await server.getRequest(
-        endPoint: ApiList.promotion, headers: AppServer.getAuthHeaders());
+        endPoint: ApiList.promotionCategoryBanner, headers: AppServer.getAuthHeaders());
     if (response.statusCode == 200) {
       final data = response.data;
       return Right(PromotionModel.fromJson(data));
@@ -375,7 +375,8 @@ class RemoteServices {
 
   Future<Either<String, BrandModel>> fetchBrands() async {
     final response = await server.getRequest(
-        endPoint: "${ApiList.brands}?status=5",
+        endPoint: "",
+        // "${ApiList.brands}?status=5",
         headers: box.read('isLogedIn') == false
             ? AppServer.getAuthHeaders()
             : AppServer.getHttpHeadersWithToken());

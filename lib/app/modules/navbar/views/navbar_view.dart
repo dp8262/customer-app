@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shopperz/app/controller/category_controller.dart';
+import 'package:shopperz/app/controller/home_controller.dart';
 import 'package:shopperz/app/modules/auth/views/sign_in.dart';
 import 'package:shopperz/app/modules/cart/controller/cart_controller.dart';
 import 'package:shopperz/app/modules/cart/views/cart_screen.dart';
@@ -22,6 +24,7 @@ import 'package:shopperz/utils/svg_icon.dart';
 import '../../../../config/theme/app_color.dart';
 
 class NavBarView extends StatelessWidget {
+
   const NavBarView({super.key});
 
   @override
@@ -41,8 +44,8 @@ class NavBarView extends StatelessWidget {
     final CartController cartController = Get.put(CartController());
 
     List<Widget> screens = [
-      const HomeScreen(),
-      const CategoryScreen(),
+    const HomeScreen(),
+      const CategoryScreen(categoryId: "0"),
       CartScreen(),
       const WishlistScreen(),
       const ProfileScreen()
@@ -52,6 +55,7 @@ class NavBarView extends StatelessWidget {
       onWillPop: () async {
         if (navController.selectedIndex.value != 0) {
           navController.selectPage(0);
+
           return false;
         } else {
           if (navController.canExit.value) {
@@ -61,7 +65,7 @@ class NavBarView extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Press back again to exit.'.tr,
-                    style: TextStyle(color: Colors.white)),
+                    style: const TextStyle(color: Colors.white)),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: AppColor.primaryColor,
                 duration: Duration(seconds: 2),
@@ -205,8 +209,12 @@ class NavBarView extends StatelessWidget {
               ]),
             );
           }),
-          body: Obx(() {
-            return screens[navController.selectedIndex.value];
+          body:
+          Obx(() {
+            Get.delete<HomeControllers>();
+            // Get.delete<CategoryControllers>();
+            return
+              screens[navController.selectedIndex.value];
           }),
         ),
       ),

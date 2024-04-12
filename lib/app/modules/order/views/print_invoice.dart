@@ -38,18 +38,18 @@ class _PrintInvoiceState extends State<PrintInvoice> {
     Printing.layoutPdf(onLayout: (PdfPageFormat format) async {
       final doc = pw.Document();
 
-      final image = await WidgetWraper.fromKey(
-        key: keys,
-        pixelRatio: 2.0,
-      );
+      // final image = await WidgetWraper.fromKey(
+      //   key: keys,
+      //   pixelRatio: 2.0,
+      // );
 
       doc.addPage(pw.Page(
           pageFormat: format,
           build: (pw.Context context) {
             return pw.Center(
-              child: pw.Expanded(
-                child: pw.Image(image),
-              ),
+              // child: pw.Expanded(
+              //   child: pw.Image(image),
+              // ),
             );
           }));
 

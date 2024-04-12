@@ -1,9 +1,18 @@
 class ApiList {
   // static const baseUrl = "";
   static const baseUrl = "http://tools.lca.solutions";
-  static const licenseCode = "";
   static const login = "/api/login.aspx?";
   // static const login = "$baseUrl/api/login.aspx?emailId="+ emailid + "&password=" + password + "&DeviceID=" + DeviceID + "&DeviceType=" + DeviceType + "";
+  static const promotionCategoryBanner =
+      "/api/CategoryBanner.aspx";
+  static const slider = "/api/banner.aspx";
+  static const associateBrands = "/api/manufacturer.aspx";
+  static const categorySelectById = "/api/categorySelectById.aspx?";
+  static const categoryList = "/api/category.aspx";
+  static const productList = "/api/product.aspx?";
+
+  //old code
+  static const licenseCode = "";
   static const forgotPassword = "$baseUrl/api/auth/forgot-password";
   static const resendForgotOTPPhone =
       "$baseUrl/api/auth/forgot-password/otp-phone";
@@ -25,14 +34,16 @@ class ApiList {
   static const loginVerify = "$baseUrl/api/auth/signup/login-verify";
   static const logout = "$baseUrl/api/auth/logout";
   static const productCategory = "$baseUrl/api/frontend/product-category";
-  static const promotion =
-      "$baseUrl/api/frontend/promotion?status=5&type=5&order_type=asc";
+  // static const promotion =
+  //     "$baseUrl/api/frontend/promotion?status=5&type=5&order_type=asc";
+
   static const multiPromotion =
       "$baseUrl/api/frontend/promotion?status=5&type=10&order_type=asc";
   static const productSection = "$baseUrl/api/frontend/product-section";
-  static const slider = "$baseUrl/api/frontend/slider";
+  // static const slider = "$baseUrl/api/frontend/slider";
   static const setting = "$baseUrl/api/frontend/setting";
-  static const countryCode = "$baseUrl/api/frontend/country-code";
+  static const countryCode = "";
+  // static const countryCode = "$baseUrl/api/frontend/country-code";
   static const language = "$baseUrl/api/frontend/language";
   static const categoryTree = "$baseUrl/api/frontend/product-category/tree";
   static const categoryWiseProduct =
@@ -85,7 +96,7 @@ class ApiList {
   static const allProducts = "$baseUrl/api/frontend/product";
   static const wishList = "$baseUrl/api/frontend/wishlist/toggle";
   static const showWishlist = "$baseUrl/api/frontend/product/wishlist-products";
-  static const brands = "$baseUrl/api/frontend/product-brand";
+  // static const brands = "$baseUrl/api/frontend/product-brand";
   static const showCartProduct = "$baseUrl/api/frontend/product/show";
   static const paymentGateway =
       "$baseUrl/api/frontend/payment-gateway?status=5";

@@ -12,6 +12,8 @@ class SvgIcon {
   static const heart = "assets/icons/heart.svg";
   static const filledHeart = "assets/icons/filled_heart.svg";
   static const moreCircle = "assets/icons/more_circle.svg";
+  static const String  forward = 'assets/icons/forward.svg';
+
   static String get appLogo => 'assets/images/logo_icon.svg';
   static String get logo => 'assets/images/logo.svg';
   // static String get logo => 'assets/images/logo2.svg';
@@ -24,7 +26,6 @@ class SvgIcon {
   static String get wishlistActive => 'assets/icons/wishlist_active.svg';
   static String get profileActive => 'assets/icons/profile_active.svg';
   static String get menuBag => 'assets/icons/menu_bag.svg';
-  static String get forward => 'assets/icons/forward.svg';
   static String get menuKey => 'assets/icons/menu_key.svg';
   static String get menuLocation => 'assets/icons/menu_location.svg';
   static String get menuProfile => 'assets/icons/menu_profile.svg';

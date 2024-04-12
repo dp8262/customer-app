@@ -2,61 +2,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/modules/home/controller/promotion_controller.dart';
+import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/widgets/shimmer/promotion_banner_shimmer.dart';
 
-class PromotionBanner extends StatelessWidget {
+class PromotionBanner extends StatefulWidget {
   const PromotionBanner({
     super.key,
-    this.image,
-    this.width,
-    this.pIndex,
+    // this.image,
+    // this.width,
+    // this.pIndex,
+    required this.promotionCategoryBannerList,
   });
+ final List<CategoryBanner> promotionCategoryBannerList;
 
-  final String? image;
-  final double? width;
-  final int? pIndex;
+  @override
+  State<PromotionBanner> createState() => _PromotionBannerState();
+}
+
+class _PromotionBannerState extends State<PromotionBanner> {
+  // final String? image;
   @override
   Widget build(BuildContext context) {
-    final promotionController = Get.put(PromotionalController());
+    // final promotionController = Get.put(PromotionalController());
 
-    return Obx(() {
-      return promotionController.isLoading.value
-          ? Padding(
-              padding: EdgeInsets.only(top: 24.h),
-              child: SizedBox(
-                  height: 142.h,
-                  child: PromotionBannerShimmer(
-                    width: 280.w,
-                  )),
-            )
-          : promotionController.promotionModel.value.data?.isNotEmpty ?? false
+    return
+        // promotionController.isLoading.value
+        //   ? Padding(
+        //       padding: EdgeInsets.only(top: 24.h),
+        //       child: SizedBox(
+        //           height: 142.h,
+        //           child: PromotionBannerShimmer(
+        //             width: 280.w,
+        //           )),
+        //     )
+        //   :
+        widget.promotionCategoryBannerList.isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(top: 16.h),
                   child: SizedBox(
-                    height: 142.h,
+                    height: 160,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: Axis.horizontal, // Set scroll direction to vertical
                       itemCount:
-                          promotionController.promotionModel.value.data!.length,
+                          widget.promotionCategoryBannerList.length,
                       itemBuilder: (context, index) {
-                        final promotion =
-                            promotionController.promotionModel.value.data;
+                        // final promotion =
+                        //     promotionController.promotionModel.value.data;
                         return Padding(
                           padding: EdgeInsets.only(right: 16.w),
                           child: Container(
                             width:
-                                promotion![index].status == 10 ? 280.w : 240.w,
+                                // promotion![index].status == 10 ?
+                                // 280.w :
+                                250,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
-                                promotion[index].cover.toString(),
-                                fit: BoxFit.cover,
-                              ),
+                              borderRadius: BorderRadius.circular(8),
+                              child:
+                              cachedNetWorkImageForCircle(widget.promotionCategoryBannerList[index].categoryBanner,5)
+                              // Image.network(
+                              //   widget.promotionCategoryBannerList[index].categoryBanner,
+                              //   fit: BoxFit.fill,
+                              // ),
                             ),
                           ),
                         );
@@ -65,6 +77,5 @@ class PromotionBanner extends StatelessWidget {
                   ),
                 )
               : const SizedBox();
-    });
   }
 }

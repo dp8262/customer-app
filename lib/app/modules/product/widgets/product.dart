@@ -26,6 +26,7 @@ class ProductWidget extends StatelessWidget {
     this.wishlist,
     this.reviews,
   });
+
   final String? productImage;
   final String? title;
   final int? textRating;
@@ -40,6 +41,7 @@ class ProductWidget extends StatelessWidget {
   final bool? isOffer;
   final String? favColor;
   final bool? wishlist;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -50,11 +52,7 @@ class ProductWidget extends StatelessWidget {
           color: AppColor.whiteColor,
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.04),
-                offset: const Offset(0, 0),
-                blurRadius: 7.r,
-                spreadRadius: 0),
+            BoxShadow(color: Colors.black.withOpacity(0.04), offset: const Offset(0, 0), blurRadius: 7.r, spreadRadius: 0),
           ],
         ),
         child: Padding(
@@ -73,8 +71,7 @@ class ProductWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColor.whiteColor,
                         borderRadius: BorderRadius.circular(8.r),
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
+                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                       ),
                     ),
                   ),
@@ -162,18 +159,14 @@ class ProductWidget extends StatelessWidget {
                 height: 4.h,
               ),
               RatingBarIndicator(
-                rating: double.parse(rating.toString() == 'null'
-                    ? '0'
-                    : (double.parse(rating.toString()) / textRating!.toInt())
-                        .toString()),
+                rating: double.parse(rating.toString() == 'null' ? '0' : (double.parse(rating.toString()) / textRating!.toInt()).toString()),
                 itemSize: 10.h,
                 unratedColor: AppColor.inactiveColor,
                 itemBuilder: (context, index) => Container(
                   margin: EdgeInsets.symmetric(horizontal: 1.w),
                   child: SvgPicture.asset(
                     SvgIcon.star,
-                    colorFilter: const ColorFilter.mode(
-                        AppColor.yellowColor, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(AppColor.yellowColor, BlendMode.srcIn),
                   ),
                 ),
               ),
@@ -217,5 +210,88 @@ class ProductWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ProductWidget2 extends StatelessWidget {
+  const ProductWidget2(
+      {super.key,
+      this.title,
+      // this.textRating,
+      // this.discountPrice,
+      this.price,
+      // this.rating,
+      this.productImage,
+      this.onTap,
+      this.titleDesc
+      // this.favTap,
+      // this.flashSale,
+      // this.isOffer,
+      // this.favColor,
+      // this.wishlist,
+      // this.reviews,
+      });
+
+  final String? productImage;
+  final String? title;
+  final String? titleDesc;
+
+  // final int? textRating;
+  // final String? reviews;
+  final String? price;
+
+  // final String? currentPrice;
+  // final String? rating;
+  final void Function()? onTap;
+
+  // final void Function()? favTap;
+
+  // final bool? flashSale;
+  // final bool? isOffer;
+  // final String? favColor;
+  // final bool? wishlist;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
+            width: 155,
+            decoration: BoxDecoration(
+                color: AppColor.whiteColor,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), offset: const Offset(0, 0), blurRadius: 7, spreadRadius: 0)]),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+                child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Stack(children: [
+                    CachedNetworkImage(
+                        imageUrl: productImage.toString(),
+                        imageBuilder: (context, imageProvider) => Container(
+                            height: 140,
+                            width: 140,
+                            decoration: BoxDecoration(
+                                color: AppColor.whiteColor,
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                  ]),
+                  const SizedBox(height: 10),
+                  TextWidget(
+                      text: title ?? '',
+                      color: AppColor.textColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      maxLines: 2,
+                      overflow: TextOverflow.fade),
+                  const SizedBox(height: 8),
+                  TextWidget(
+                      text: titleDesc ?? '',
+                      color: AppColor.textColor1,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 2,
+                      overflow: TextOverflow.fade),
+                  const SizedBox(height: 10),
+                  TextWidget(text: price ?? '0', color: AppColor.textColor, fontSize: 20, fontWeight: FontWeight.w800)
+                ]))));
   }
 }

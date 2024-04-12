@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shopperz/app/apiServices/extension_widget.dart';
 import 'package:shopperz/config/theme/app_color.dart';
+import 'package:shopperz/utils/images.dart';
 
 getScreenHeight(context) {
   return MediaQuery.of(context).size.height;
@@ -64,4 +67,32 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(child: SpinKitCircle(color: AppColor.primaryColor, size: 40));
   }
+}
+Widget cachedNetWorkImageForCircle(
+    String? url,
+    double radius, {
+      double? height,
+      double? width,
+    }) {
+  return url == "" || url == null
+      ? Image.asset(
+    AppImages.banner,
+    scale: 2,
+  )
+      : CachedNetworkImage(
+      imageUrl: url,
+      fit: BoxFit.fill,
+      height: height,
+      width: width,
+      imageBuilder: (context, imageProvider) => Container(
+          decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(radius), image: DecorationImage(image: imageProvider, fit: BoxFit.fill))),
+      placeholder: (context, url) => const CupertinoActivityIndicator(radius: 10.0, animating: true, color: AppColor.primaryColor),
+      errorWidget: (context, url, error) =>
+          const Text("Please check this image"),
+      //     Image.asset(
+      //   ImageAssets.profilePlaceholder,
+      //   scale: 2,
+      // )
+  );
 }

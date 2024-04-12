@@ -4,16 +4,26 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shopperz/app/controller/home_controller.dart';
+import 'package:shopperz/model/home_banner_model.dart';
 
 import '../../../../config/theme/app_color.dart';
 import '../controller/slider_controller.dart';
 
-class SliderWidget extends StatelessWidget {
-  const SliderWidget({super.key});
+class SliderWidget extends StatefulWidget {
+ final List<BannerList> bannerList;
+  const SliderWidget({super.key, required this.bannerList});
+
+  @override
+  State<SliderWidget> createState() => _SliderWidgetState();
+}
+
+class _SliderWidgetState extends State<SliderWidget> {
+  int dotIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final sliderController = Get.find<SliderController>();
+    // final homeControllers = Get.find<HomeControllers>();
 
     return Container(
       height: 142.h,
@@ -22,13 +32,12 @@ class SliderWidget extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Obx(() {
-            return CarouselSlider.builder(
-              itemCount: sliderController.sliderData.value.data!.length,
+          CarouselSlider.builder(
+              itemCount:widget.bannerList.length,
               itemBuilder: (context, index, _) {
-                final data = sliderController.sliderData.value.data!;
+                // final data = homeControllers.bannerList;
                 return CachedNetworkImage(
-                  imageUrl: data[index].image.toString(),
+                  imageUrl: widget.bannerList[index].image.toString(),
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.r),
@@ -44,18 +53,18 @@ class SliderWidget extends StatelessWidget {
                 autoPlay: true,
                 enlargeCenterPage: true,
                 disableCenter: true,
-                onPageChanged: (index, reason) {
-                  sliderController.handleSliderDots(index);
-                },
+                onPageChanged: (int index, _) {
+                  setState(() {
+                    dotIndex = index;
+                  });
+                  },
               ),
-            );
-          }),
+            ),
           Positioned(
             bottom: 10,
-            child: Obx(() {
-              return DotsIndicator(
-                dotsCount: sliderController.sliderData.value.data!.length,
-                position: sliderController.dotIndex.value,
+            child: DotsIndicator(
+                dotsCount: widget.bannerList.length,
+                position: dotIndex,
                 decorator: DotsDecorator(
                   spacing: EdgeInsets.only(left: 5.w),
                   shape: const CircleBorder(
@@ -64,8 +73,7 @@ class SliderWidget extends StatelessWidget {
                   color: Colors.transparent,
                   activeColor: AppColor.primaryColor,
                 ),
-              );
-            }),
+              ),
           )
         ],
       ),
