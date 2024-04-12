@@ -7,9 +7,9 @@ import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 import '../../model/product_sub_list_model.dart';
+import '../modules/category/views/sqlite_helper.dart';
 
 class CategoryControllers extends GetxController {
   RxBool isLoading = false.obs;
@@ -32,11 +32,11 @@ class CategoryControllers extends GetxController {
   // }
 
   RxList<Category> categoryList = <Category>[].obs;
+  ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
 
   categoryListDetails({required BuildContext context
     , String? categoryId
   }) async {
-    isLoading(true);
     isError(false);
     error("");
     categoryList.clear();
@@ -51,32 +51,46 @@ class CategoryControllers extends GetxController {
       //   return;
       // }
 
-
-      Map<String, dynamic> param = {};
-        if ( categoryId !="0") {
-          // If categoryId is provided, include it in the API call
-          param['catgoryId'] = categoryId;
-      }
-      getAPI(
-          methodName: ApiList.categoryList,
-          param: {},
-          callback: (value) {
-            try {
-              Map<String, dynamic> valueMap = json.decode(value.response);
-              // if (valueMap["statusCode"] == 200) {
-              CategoryListModel categoryListModel = CategoryListModel.fromJson(valueMap);
-              categoryList.addAll(categoryListModel.category);
-              isLoading(false);
-              // categoryList.forEach((category) async {
-              //   await DatabaseHelper.insertCategory(category.toJson());
-              // });
-              // }
-            } catch (e) {
-              handleError("Error response: $e", context);
-              isLoading(false);
-            }
-          }
-      );
+      final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      dbFuture.then((database) async {
+        categoryList.value = await contactDatabaseHelper.getAllCategory();
+        if (categoryList.isEmpty) {
+          isLoading(true);
+          getAPI(
+              methodName: ApiList.categoryList,
+              param: {},
+              callback: (value) {
+                try {
+                  Map<String, dynamic> valueMap = json.decode(value.response);
+                  // if (valueMap["statusCode"] == 200) {
+                  CategoryListModel categoryListModel = CategoryListModel.fromJson(valueMap);
+                  categoryList.addAll(categoryListModel.category);
+                  if (categoryList.isNotEmpty) {
+                    for (int i = 0; i < categoryList.length; i++) {
+                      contactDatabaseHelper.insertCategory(categoryList[i]);
+                    }
+                    // categoryList.add(Category(
+                    //     id: contacts[i].id,
+                    //     displayName: contacts[i].displayName,
+                    //     photo: "",
+                    //     number: contacts[i].phones[0].number.removeAllWhitespace,
+                    //     blessUserId: "",
+                    //     blessUserName: ""));
+                  }
+                  isLoading(false);
+                  // categoryList.forEach((category) async {
+                  //   await DatabaseHelper.insertCategory(category.toJson());
+                  // });
+                  // }
+                } catch (e) {
+                  handleError("Error response: $e", context);
+                  isLoading(false);
+                }
+              });
+        } else {
+          isLoading(false);
+        }
+      });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
@@ -87,13 +101,19 @@ class CategoryControllers extends GetxController {
   productListDetails({required BuildContext context
     , required String categoryId,
   }) async {
-    isLoading(true);
+
     isError(false);
     error("");
     productList.clear();
 
     try {
-      getAPI(
+      final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+
+      dbFuture.then((database) async {
+        productList.value = await contactDatabaseHelper.getAllProduct(categoryId);
+        if (productList.isEmpty) {
+          isLoading(true);
+          getAPI(
           methodName: ApiList.productList,
           param: { "id": categoryId,
             "sort": "5"},
@@ -103,7 +123,12 @@ class CategoryControllers extends GetxController {
               // if (valueMap["statusCode"] == 200) {
               ProductListModel productListModel = ProductListModel.fromJson(valueMap);
               productList.addAll(productListModel.product);
-              isLoading(false);
+                  if (productList.isNotEmpty) {
+                    for (int i = 0; i < productList.length; i++) {
+                      contactDatabaseHelper.insertProduct(productList[i]);
+                    }
+                  }
+                  isLoading(false);
               // }
             } catch (e) {
               handleError("Error response: $e", context);
@@ -111,6 +136,8 @@ class CategoryControllers extends GetxController {
             }
           }
       );
+        }
+      });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
