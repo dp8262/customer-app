@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:path/path.dart' as p;
+import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../model/category_list_model.dart';
@@ -94,23 +95,32 @@ class ContactDatabaseHelper {
     for (int i = 0; i < result.length; i++) {
       categoryList.add(Category.fromJson(result[i]));
     }
-    print(categoryList);
+
     return categoryList;
   }
 
   Future<List<Product>> getAllProduct(String categoryId2) async {
-    print("categoryId2=="+categoryId2);
     Database db = await database;
     var result = await db.query(
       productTable,where: '$categoryId = ?', whereArgs: [categoryId2]
     );
     List<Product> productList = [];
-    print("result=="+result.toString());
+
     for (int i = 0; i < result.length; i++) {
       productList.add(Product.fromJson(result[i]));
     }
-    print(productList);
+
     return productList;
   }
 
+  deleteAllTable() async {
+    Database db = await database;
+    var a= await db.delete(
+      categoryTable,
+    );
+    var a1=await db.delete(
+      productTable,
+    );
+    toast("All record deleted.$a,$a1");
+  }
 }

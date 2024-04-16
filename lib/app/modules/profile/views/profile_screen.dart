@@ -19,6 +19,7 @@ import 'package:shopperz/widgets/primary_button.dart';
 import 'package:shopperz/widgets/textwidget.dart';
 
 import '../../../../config/theme/app_color.dart';
+import '../../category/views/sqlite_helper.dart';
 import '../../order/views/order_history_screen.dart';
 import '../../order/views/return_orders_screen.dart';
 import 'my_account_screen.dart';
@@ -361,6 +362,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ? InkWell(
                             onTap: () async {
                               // await auth.logout();
+                              ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+                              contactDatabaseHelper.deleteAllTable();
                             },
                             child: MenuWidget(text: 'LOGOUT'.tr, icon: SvgIcon.menuLogout))
                         : SizedBox(),

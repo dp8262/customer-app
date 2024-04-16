@@ -19,13 +19,15 @@ import 'package:shopperz/data/model/body/notification_body.dart';
 import 'package:shopperz/firebase_options.dart';
 import 'package:shopperz/utils/api_list.dart';
 
+import 'app/modules/category/views/sqlite_helper.dart';
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 final box = GetStorage();
 
 dynamic langValue = const Locale('en', null);
-
+ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -66,7 +68,7 @@ void main() async {
   } catch (e) {
     debugPrint(e.toString());
   }
-
+  contactDatabaseHelper.deleteAllTable();
   runApp(const MyApp());
 }
 
