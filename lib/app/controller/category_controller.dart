@@ -15,6 +15,7 @@ class CategoryControllers extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isError = false.obs;
   RxString error = "".obs;
+
   // List<dynamic> getAll(String categoryId) {
   //   List<dynamic> items = [];
   //
@@ -34,9 +35,8 @@ class CategoryControllers extends GetxController {
   RxList<Category> categoryList = <Category>[].obs;
   ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
 
-  categoryListDetails({required BuildContext context
-    , String? categoryId
-  }) async { isLoading(true);
+  categoryListDetails({required BuildContext context, String? categoryId}) async {
+    isLoading(true);
     isError(false);
     error("");
     categoryList.clear();
@@ -55,7 +55,6 @@ class CategoryControllers extends GetxController {
       dbFuture.then((database) async {
         categoryList.value = await contactDatabaseHelper.getAllCategory();
         if (categoryList.isEmpty) {
-
           getAPI(
               methodName: ApiList.categoryList,
               param: {},
@@ -98,8 +97,12 @@ class CategoryControllers extends GetxController {
   }
 
   RxList<Product> productList = <Product>[].obs;
-  productListDetails({required BuildContext context
-    , required String categoryId,
+  String sortByID = "5";
+
+  productListDetails({
+    required BuildContext context,
+    required String categoryId,
+    // required String sortBy,
   }) async {
     isLoading(true);
     isError(false);
@@ -112,30 +115,27 @@ class CategoryControllers extends GetxController {
       dbFuture.then((database) async {
         productList.value = await contactDatabaseHelper.getAllProduct(categoryId);
         if (productList.isEmpty) {
-
           getAPI(
-          methodName: ApiList.productList,
-          param: { "id": categoryId,
-            "sort": "5"},
-          callback: (value) {
-            try {
-              Map<String, dynamic> valueMap = json.decode(value.response);
-              // if (valueMap["statusCode"] == 200) {
-              ProductListModel productListModel = ProductListModel.fromJson(valueMap);
-              productList.addAll(productListModel.product);
+              methodName: ApiList.productList,
+              param: {"id": categoryId, "sort": "5"},
+              callback: (value) {
+                try {
+                  Map<String, dynamic> valueMap = json.decode(value.response);
+                  // if (valueMap["statusCode"] == 200) {
+                  ProductListModel productListModel = ProductListModel.fromJson(valueMap);
+                  productList.addAll(productListModel.product);
                   if (productList.isNotEmpty) {
                     for (int i = 0; i < productList.length; i++) {
                       contactDatabaseHelper.insertProduct(productList[i]);
                     }
                   }
                   isLoading(false);
-              // }
-            } catch (e) {
-              handleError("Error response: $e", context);
-              isLoading(false);
-            }
-          }
-      );
+                  // }
+                } catch (e) {
+                  handleError("Error response: $e", context);
+                  isLoading(false);
+                }
+              });
         } else {
           isLoading(false);
         }
@@ -146,6 +146,53 @@ class CategoryControllers extends GetxController {
     }
   }
 
+  filterProductListDetails({
+    required BuildContext context,
+    required String categoryId,
+    required String sortBy,
+  }) async {
+    isLoading(true);
+    isError(false);
+    error("");
+    productList.clear();
+
+    try {
+      if (productList.isEmpty) {
+        if (sortBy == "Name A to Z") {
+          sortByID = "5";
+        }
+        if (sortBy == "Name Z to A") {
+          sortByID = "6";
+        }
+        if (sortBy == "Created on") {
+          sortByID = "15";
+        }
+        print("sort list ${sortByID}");
+        getAPI(
+            methodName: ApiList.productList,
+            param: {"id": categoryId, "sort": sortByID},
+            callback: (value) {
+              try {
+                Map<String, dynamic> valueMap = json.decode(value.response);
+                // if (valueMap["statusCode"] == 200) {
+                ProductListModel productListModel = ProductListModel.fromJson(valueMap);
+                productList.addAll(productListModel.product);
+
+                isLoading(false);
+                // }
+              } catch (e) {
+                handleError("Error response: $e", context);
+                isLoading(false);
+              }
+            });
+      } else {
+        isLoading(false);
+      }
+    } catch (ex) {
+      handleError("Failed to fetch data: $ex", context);
+      isLoading(false);
+    }
+  }
 }
 // class DatabaseHelper {
 //   static Database? _database;
