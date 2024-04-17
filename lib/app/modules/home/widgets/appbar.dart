@@ -41,7 +41,7 @@ class AppBarWidget extends StatelessWidget {
         ),
       ),
       actions: [
-        GestureDetector(
+        svgIcon!=null? GestureDetector(
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.only(right: 16.w, left: 16.w),
@@ -51,7 +51,7 @@ class AppBarWidget extends StatelessWidget {
               width: 24.w,
             ),
           ),
-        ),
+        ):const SizedBox(),
       ],
     );
   }

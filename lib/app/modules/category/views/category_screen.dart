@@ -199,8 +199,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         Expanded(
                                             flex: 8,
                                             child: Row(children: [
+                                              // cachedNetWorkImageForCircle(80,80 ,categoryControllers.categoryList.image,5),
                                               CachedNetworkImage(
-                                                  imageUrl: categoryControllers.categoryList[index].image,
+                                                  imageUrl: categoryControllers.categoryList[index].image ?? '',
+                                                  placeholder: (context, url) => const CircularProgressIndicator(), // Placeholder widget
+                                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                                   imageBuilder: (context, imageProvider) => Container(
                                                       height: 80,
                                                       width: 80,
@@ -221,8 +224,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             child: InkWell(
                                                 onTap: () {},
                                                 child: SvgPicture.asset(
-                                                  SvgIcon.forward.isNotEmpty ? SvgIcon.forward : 'assets/placeholder.svg',
-                                                )))
+                                                    SvgIcon.forward)))
                                       ]))),
                                 );
                               } else {

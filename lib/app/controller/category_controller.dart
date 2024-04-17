@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/model/category_list_model.dart';
+import 'package:shopperz/model/product_details_view_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -188,6 +189,42 @@ class CategoryControllers extends GetxController {
       } else {
         isLoading(false);
       }
+    } catch (ex) {
+      handleError("Failed to fetch data: $ex", context);
+      isLoading(false);
+    }
+  }
+
+  RxList<ProductDetails> productDetails = <ProductDetails>[].obs;
+
+  productViewDetails({required BuildContext context, required String itemId}) async {
+    isLoading(true);
+    isError(false);
+    error("");
+    productDetails.clear();
+
+    try {
+      // if (productList.isEmpty) {
+
+      getAPI(
+          methodName: ApiList.productViewDetails,
+          param: {"id": itemId},
+          callback: (value) {
+            try {
+              Map<String, dynamic> valueMap = json.decode(value.response);
+              // if (valueMap["statusCode"] == 200) {
+              ProductDetailsModel productDetailsModel = ProductDetailsModel.fromJson(valueMap);
+              productDetails.addAll(productDetailsModel.productDetails);
+              isLoading(false);
+              // }
+            } catch (e) {
+              handleError("Error response: $e", context);
+              isLoading(false);
+            }
+          });
+      // } else {
+      //   isLoading(false);
+      // }
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);

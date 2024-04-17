@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/controller/category_controller.dart';
+import 'package:shopperz/app/modules/category/views/product_view_details_screen.dart';
 import 'package:shopperz/app/modules/home/widgets/appbar.dart';
 import 'package:shopperz/app/modules/product_details/views/product_details.dart';
 import 'package:shopperz/config/theme/app_color.dart';
@@ -116,11 +117,15 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                       // if (selectedFilter==controller.productList) {
                                         return InkWell(
                                           onTap: ()  {
+                                            Get.delete<CategoryControllers>();
                                             Get.to(
-                                                  () => ProductDetailsScreen(
+                                                  () => ProductViewDetailsScreen(itemId: categoryControllers.productList[index].productId,
                                                 // product: categoryControllers.productList[index].i,
                                               ),
                                             );
+                                            print("category id${categoryControllers.productList[index].categoryId}");
+                                            print("product id${categoryControllers.productList[index].productId}");
+                                            print("parent category id${categoryControllers.productList[index].parentCategoryId}");
                                           },
                                           child: Container(
                                               padding: const EdgeInsets.symmetric(vertical: 5),

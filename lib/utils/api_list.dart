@@ -10,6 +10,7 @@ class ApiList {
   static const categorySelectById = "/api/categorySelectById.aspx?";
   static const categoryList = "/api/category.aspx";
   static const productList = "/api/product.aspx?";
+  static const productViewDetails = "/api/productdetails.aspx?";
 
   //old code
   static const licenseCode = "";

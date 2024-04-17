@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shopperz/app/controller/category_controller.dart';
 import 'package:shopperz/app/modules/auth/controller/auth_controler.dart';
 import 'package:shopperz/app/modules/auth/views/sign_in.dart';
 import 'package:shopperz/app/modules/cart/controller/cart_controller.dart';
@@ -44,7 +45,8 @@ class ProductDetailsScreen extends StatefulWidget {
       this.favoriteItem,
       this.relatedProduct,
       this.product,
-      this.individualProduct});
+      this.individualProduct
+      });
   final category_product.Product? categoryWiseProduct;
   final section_product.Product? productModel;
   final section_product.Datum? sectionModel;
@@ -65,6 +67,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final wishlistController = Get.find<WishlistController>();
   final authController = Get.put(AuthController());
   final categoryWiseProductController = Get.put(CategoryWiseProductController());
+  // final CategoryControllers _categoryControllers = Get.put(CategoryControllers());
 
   int quantity = 1;
   bool isClicked = false;
@@ -109,13 +112,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   //   super.dispose();
   // }
 
-  @override
-  void didChangeDependencies() {
-    productDetailsController.fetchProductDetails(
-        slug: widget.productModel?.slug ?? widget.categoryWiseProduct?.slug ?? widget.allProductModel?.slug ?? widget.favoriteItem?.slug ??
-            widget.relatedProduct?.slug ?? widget.individualProduct?.slug ?? "");
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   productDetailsController.fetchProductDetails(
+  //       slug: widget.productModel?.slug ?? widget.categoryWiseProduct?.slug ?? widget.allProductModel?.slug ?? widget.favoriteItem?.slug ??
+  //           widget.relatedProduct?.slug ?? widget.individualProduct?.slug ?? "");
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
