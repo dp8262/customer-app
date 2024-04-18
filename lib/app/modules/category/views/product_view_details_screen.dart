@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' as htmlParser;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -98,6 +100,46 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    // final document = _categoryControllers.productDetails[0].fullDescription ;
+
+    // Extract specific data like color, material, style, weight, and dimensions
+    String? color;
+    String? material;
+    String? style;
+    String? weight;
+    String? dimensions;
+
+    // Find elements by class name and extract text content
+if(_categoryControllers.productDetails.isNotEmpty) {
+  final document = htmlParser.parse(_categoryControllers.productDetails[0].fullDescription!);
+
+  final colorElement = document.querySelector('.po-color');
+  color = colorElement
+      ?.querySelector('.po-break-word')
+      ?.text;
+
+  final materialElement = document.querySelector('.po-material');
+  material = materialElement
+      ?.querySelector('.po-break-word')
+      ?.text;
+
+  final styleElement = document.querySelector('.po-brand');
+  style = styleElement
+      ?.querySelector('.a-span9')
+      ?.text;
+
+  final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
+  weight = weightElement
+      ?.querySelector('.woocommerce-product-attributes-item__value')
+      ?.text;
+
+  final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
+  dimensions = dimensionsElement
+      ?.querySelector('.woocommerce-product-attributes-item__value')
+      ?.text;
+}
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.white,
@@ -117,7 +159,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                   child: Text('No data available'),
                 );
               }
-              // Future.delayed(Duration.zero, () {
+                          // Future.delayed(Duration.zero, () {
               //   WidgetsBinding.instance.addPostFrameCallback((_) {
               //     if (productDetailsController.initialVariationModel.value.data !=
               //             null &&
@@ -307,25 +349,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                   CustomText(
                                       textAlign: TextAlign.left, text: controller.productDetails[0].name, size: 16, weight: FontWeight.w600),
                                   SizedBox(height: 8.h),
-                                  Row(children: [
-                                    CustomText(text: "₹ ${controller.productDetails[0].price.toString()}", size: 20, weight: FontWeight.bold),
-                                    SizedBox(width: 16.w),
-                                    // Obx(() {
-                                    //   if (productDetailsController.initialVariationModel.value.data != null &&
-                                    //       productDetailsController.productModel.value.data!.isOffer == true) {
-                                    //     return CustomText(
-                                    //         text: productDetailsController.variationProductOldCurrencyPrice.toString() == ''
-                                    //             ? productDetailsController.productModel.value.data?.oldCurrencyPrice.toString()
-                                    //             : productDetailsController.variationProductOldCurrencyPrice.toString(),
-                                    //         textDecoration: TextDecoration.lineThrough,
-                                    //         color: AppColor.primaryColor,
-                                    //         size: 14.sp,
-                                    //         weight: FontWeight.w700);
-                                    //   }
-                                    //
-                                    //   return const SizedBox();
-                                    // })
-                                  ]),
+                                  CustomText(text: "₹ ${controller.productDetails[0].price.toString()}", size: 20, weight: FontWeight.bold),
                                   SizedBox(height: 8.h),
                                   // Row(children: [
                                   //   RatingBarIndicator(
@@ -349,10 +373,37 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                   // ])
                                 ]),
 
-                                // SizedBox(height: 15.h),
-                                // Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
-                                // SizedBox(height: 15.h),
-                                // productDetailsController.initialIndex.value == -1 && productDetailsController.initialVariationModel.value.data == null
+                                SizedBox(height: 15.h),
+                                Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
+                                SizedBox(height: 15.h),
+                                    const CustomText(text: "Item Description", size: 18, weight: FontWeight.bold),
+                                    SizedBox(height: 15.h),
+                                     // CustomText(text: controller.productDetails[0].fullDescription.toString(), size: 18, weight: FontWeight.bold),
+                                    Text(
+                                      'Color: $color',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      'Material: $material',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      'Style: $style',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Html(data:_categoryControllers.productDetails[0].fullDescription.toString()),
+
+                                    Text(
+                                      'Weight: $weight',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      'Dimensions: $dimensions',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    SizedBox(height: 16.0),
+
+                                    // productDetailsController.initialIndex.value == -1 && productDetailsController.initialVariationModel.value.data == null
                                 //     ? const SizedBox()
                                 //     : Column(children: [
                                 //   productDetailsController.initialVariationModel.value.data != null &&
@@ -1394,4 +1445,5 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                               ))));
             }));
   }
+
 }

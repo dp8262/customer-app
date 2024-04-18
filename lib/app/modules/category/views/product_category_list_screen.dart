@@ -123,9 +123,9 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                                 // product: categoryControllers.productList[index].i,
                                               ),
                                             );
-                                            print("category id${categoryControllers.productList[index].categoryId}");
+                                            // print("category id${categoryControllers.productList[index].categoryId}");
                                             print("product id${categoryControllers.productList[index].productId}");
-                                            print("parent category id${categoryControllers.productList[index].parentCategoryId}");
+                                            // print("parent category id${categoryControllers.productList[index].parentCategoryId}");
                                           },
                                           child: Container(
                                               padding: const EdgeInsets.symmetric(vertical: 5),

@@ -32,7 +32,7 @@ class ProductDetails {
     required this.discription,
     required this.youtubeVideoUrl,
     required this.youtubeVideoId,
-    required this.fullDescription,
+     this.fullDescription,
   });
   late final List<String> image;
   late final String my3dImage;
@@ -49,7 +49,7 @@ class ProductDetails {
   late final String discription;
   late final String youtubeVideoUrl;
   late final String youtubeVideoId;
-  late final String fullDescription;
+  late final String? fullDescription;
 
   ProductDetails.fromJson(Map<String, dynamic> json){
     image = List.castFrom<dynamic, String>(json['image']);

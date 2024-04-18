@@ -196,7 +196,7 @@ class CategoryControllers extends GetxController {
   }
 
   RxList<ProductDetails> productDetails = <ProductDetails>[].obs;
-
+// late  String fullDescription="";
   productViewDetails({required BuildContext context, required String itemId}) async {
     isLoading(true);
     isError(false);
@@ -215,6 +215,7 @@ class CategoryControllers extends GetxController {
               // if (valueMap["statusCode"] == 200) {
               ProductDetailsModel productDetailsModel = ProductDetailsModel.fromJson(valueMap);
               productDetails.addAll(productDetailsModel.productDetails);
+              // fullDescription=productDetailsModel.productDetails[0].fullDescription;
               isLoading(false);
               // }
             } catch (e) {
