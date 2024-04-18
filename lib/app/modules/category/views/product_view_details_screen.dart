@@ -102,12 +102,6 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final document = _categoryControllers.productDetails[0].fullDescription ;
-
-    // Extract specific data like color, material, style, weight, and dimensions
-
-    // Find elements by class name and extract text content
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
           systemNavigationBarColor: Colors.white,
@@ -265,7 +259,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                         // isClicked
                                         //     ? controller.productDetails[0].image[isSelected]
                                         //     :
-                                        controller.productDetails[0].image[isSelected] ,
+                                        controller.productDetails[0].image[isSelected],
                                     imageBuilder: (context, imageProvider) => Container(
                                         height: 250,
                                         // width: 328.w,
@@ -281,7 +275,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                             scrollDirection: Axis.horizontal,
                                             shrinkWrap: true,
                                             itemCount: controller.productDetails[0].image.length,
-                                                // ?? 0,
+                                            // ?? 0,
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                   onTap: () {
@@ -342,20 +336,17 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                   // ])
                                 ]),
 
-                                // _categoryControllers.productDetails[0].description == '-'
+                                // controller.productDetails[0].description == '-'
                                 //     ? const SizedBox()
                                 //     : Html(
-                                //         data: _categoryControllers.description,
-                                //         //productDetails[0].description,
-                                //   style: {
-                                //     'h2': Style(fontSize: FontSize.large),
-                                //     'table': Style(
-                                //       backgroundColor: const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
-                                //     ),
-                                //     'td': Style(padding: HtmlPaddings.all(8.0)),
-                                //   },
+                                //         data: controller.productDetails[0].description,
+                                //         // style: {
+                                //         //   'h2': Style(fontSize: FontSize.large),
+                                //         //   'table': Style(display: Display.listItem),
+                                //         //   'td': Style(padding: HtmlPaddings.all(8.0)),
+                                //         // },
                                 //       ),
-                                _categoryControllers.productDetails[0].fullDescription == '-'
+                                controller.productDetails[0].fullDescription == '-'
                                     ? const SizedBox()
                                     : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                         SizedBox(height: 15.h),
@@ -374,7 +365,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                         controller.powerSource != null
                                             ? Text('Power Source: ${controller.powerSource}', style: descriptionText)
                                             : const SizedBox(),
-                                        Html(data: _categoryControllers.productDetails[0].fullDescription, style: {
+                                        Html(data: controller.productDetails[0].fullDescription, style: {
                                           "h1 ": Style(
                                               fontSize: FontSize.xLarge,
                                               color: AppColor.blackColor,
@@ -1434,5 +1425,4 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                               ))));
             }));
   }
-
 }

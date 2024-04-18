@@ -1,13 +1,15 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:html/parser.dart' as htmlParser;
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/model/product_details_view_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:html/parser.dart' as htmlParser;
+
 import '../../model/product_sub_list_model.dart';
 import '../modules/category/views/sqlite_helper.dart';
 
@@ -201,7 +203,7 @@ class CategoryControllers extends GetxController {
   String? weight;
   String? dimensions;
   String? powerSource;
-// late  String? description;
+  // String? description;
 
   productViewDetails({required BuildContext context, required String itemId}) async {
     isLoading(true);
@@ -227,19 +229,13 @@ class CategoryControllers extends GetxController {
                 final document = htmlParser.parse(productDetails[0].fullDescription);
 
                 final colorElement = document.querySelector('.po-color');
-                color = colorElement
-                    ?.querySelector('.po-break-word')
-                    ?.text;
+                color = colorElement?.querySelector('.po-break-word')?.text;
 
                 final materialElement = document.querySelector('.po-material');
-                material = materialElement
-                    ?.querySelector('.po-break-word')
-                    ?.text;
+                material = materialElement?.querySelector('.po-break-word')?.text;
 
                 final styleElement = document.querySelector('.po-brand');
-                style = styleElement
-                    ?.querySelector('.a-span9')
-                    ?.text;
+                style = styleElement?.querySelector('.a-span9')?.text;
 
                 // final powerSourceElement = document.querySelector('.po-brand'); // Check if this selector is correct
                 // powerSource = powerSourceElement?.nextElementSibling
@@ -254,20 +250,25 @@ class CategoryControllers extends GetxController {
                 }
 
                 final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
-                weight = weightElement
-                    ?.querySelector('.woocommerce-product-attributes-item__value')
-                    ?.text;
+                weight = weightElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
 
                 final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
-                dimensions = dimensionsElement
-                    ?.querySelector('.woocommerce-product-attributes-item__value')
-                    ?.text;
+                dimensions = dimensionsElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
 
                 // final descriptionDocument = htmlParser.parse(productDetails[0].description);
-                // final descriptionElement = descriptionDocument.querySelector('data-table');
-                // description = descriptionElement
-                //     ?.querySelector('data-table')
-                //     ?.text;
+                //   final descriptionElement = descriptionDocument.querySelector('data-table');
+                //   description = descriptionElement
+                //       ?.querySelector('data-table')
+                //       ?.text;
+
+
+                // String originalHtml = productDetails[0].description;
+                // RegExp regExp = RegExp(r'<tbody>(.*?)<\/tbody>', multiLine: true, dotAll: true);
+                // Match? match = regExp.firstMatch(originalHtml);
+                // if (match != null) {
+                //   description = match.group(1); // Extract the content within tbody tags
+                // }
+                // print("123456${description}");
               }
               isLoading(false);
               // }

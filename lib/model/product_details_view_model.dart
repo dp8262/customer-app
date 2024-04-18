@@ -29,7 +29,7 @@ class ProductDetails {
     required this.brandName,
     required this.packing,
     required this.isLock,
-    required this.description,
+     this.description,
     required this.youtubeVideoUrl,
     required this.youtubeVideoId,
      this.fullDescription,
@@ -46,7 +46,7 @@ class ProductDetails {
   late final String brandName;
   late final String packing;
   late final String isLock;
-  late final String description;
+  late final String? description;
   late final String youtubeVideoUrl;
   late final String youtubeVideoId;
   late final String? fullDescription;
