@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/parser.dart' as htmlParser;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -31,6 +30,9 @@ class ProductViewDetailsScreen extends StatefulWidget {
 }
 
 class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
+  final TextStyle descriptionText =
+      const TextStyle(fontSize: 16, color: AppColor.deSelectedColor, fontWeight: FontWeight.w400, fontFamily: "urbanist");
+  final Style htmlTagStyle = Style(fontSize: FontSize.large, color: AppColor.deSelectedColor, fontWeight: FontWeight.w400, fontFamily: "urbanist");
   final navController = Get.put(NavbarController());
 
   // final productDetailsController = Get.put(ProductDetailsController());
@@ -100,45 +102,11 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     // final document = _categoryControllers.productDetails[0].fullDescription ;
 
     // Extract specific data like color, material, style, weight, and dimensions
-    String? color;
-    String? material;
-    String? style;
-    String? weight;
-    String? dimensions;
 
     // Find elements by class name and extract text content
-if(_categoryControllers.productDetails.isNotEmpty) {
-  final document = htmlParser.parse(_categoryControllers.productDetails[0].fullDescription!);
-
-  final colorElement = document.querySelector('.po-color');
-  color = colorElement
-      ?.querySelector('.po-break-word')
-      ?.text;
-
-  final materialElement = document.querySelector('.po-material');
-  material = materialElement
-      ?.querySelector('.po-break-word')
-      ?.text;
-
-  final styleElement = document.querySelector('.po-brand');
-  style = styleElement
-      ?.querySelector('.a-span9')
-      ?.text;
-
-  final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
-  weight = weightElement
-      ?.querySelector('.woocommerce-product-attributes-item__value')
-      ?.text;
-
-  final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
-  dimensions = dimensionsElement
-      ?.querySelector('.woocommerce-product-attributes-item__value')
-      ?.text;
-}
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
@@ -159,7 +127,7 @@ if(_categoryControllers.productDetails.isNotEmpty) {
                   child: Text('No data available'),
                 );
               }
-                          // Future.delayed(Duration.zero, () {
+              // Future.delayed(Duration.zero, () {
               //   WidgetsBinding.instance.addPostFrameCallback((_) {
               //     if (productDetailsController.initialVariationModel.value.data !=
               //             null &&
@@ -294,10 +262,10 @@ if(_categoryControllers.productDetails.isNotEmpty) {
                                   Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 CachedNetworkImage(
                                     imageUrl:
-                                        // controller.productDetails[0].image[0],
-                                        isClicked
-                                            ? controller.productDetails[0].image[isSelected] ?? ""
-                                            : controller.productDetails[0].image[isSelected] ?? "",
+                                        // isClicked
+                                        //     ? controller.productDetails[0].image[isSelected]
+                                        //     :
+                                        controller.productDetails[0].image[isSelected] ,
                                     imageBuilder: (context, imageProvider) => Container(
                                         height: 250,
                                         // width: 328.w,
@@ -312,7 +280,8 @@ if(_categoryControllers.productDetails.isNotEmpty) {
                                         child: ListView.builder(
                                             scrollDirection: Axis.horizontal,
                                             shrinkWrap: true,
-                                            itemCount: controller.productDetails[0].image.length ?? 0,
+                                            itemCount: controller.productDetails[0].image.length,
+                                                // ?? 0,
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                   onTap: () {
@@ -335,19 +304,19 @@ if(_categoryControllers.productDetails.isNotEmpty) {
                                             })),
 
                                 SizedBox(height: 20.h),
-                                    Row(children: [
-                                      const CustomText(text: "Product Code :", size: 16, weight: FontWeight.w500,color: AppColor.deSelectedColor),
-                                      const SizedBox(width: 5),
-                                      CustomText(text: controller.productDetails[0].sku.toString(), size: 16, weight: FontWeight.w800,color: AppColor.textColor)
-                                    ]),
-                                    const SizedBox(height: 10),
+                                Row(children: [
+                                  const CustomText(text: "Product Code :", size: 16, weight: FontWeight.w500, color: AppColor.deSelectedColor),
+                                  const SizedBox(width: 5),
+                                  CustomText(
+                                      text: controller.productDetails[0].sku.toString(), size: 16, weight: FontWeight.w800, color: AppColor.textColor)
+                                ]),
+                                const SizedBox(height: 10),
 
-                                    Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   CustomText(
                                       textAlign: TextAlign.left, text: controller.productDetails[0].brandName, size: 18, weight: FontWeight.w700),
                                   SizedBox(height: 5.h),
-                                  CustomText(
-                                      textAlign: TextAlign.left, text: controller.productDetails[0].name, size: 16, weight: FontWeight.w600),
+                                  CustomText(textAlign: TextAlign.left, text: controller.productDetails[0].name, size: 16, weight: FontWeight.w600),
                                   SizedBox(height: 8.h),
                                   CustomText(text: "₹ ${controller.productDetails[0].price.toString()}", size: 20, weight: FontWeight.bold),
                                   SizedBox(height: 8.h),
@@ -373,37 +342,57 @@ if(_categoryControllers.productDetails.isNotEmpty) {
                                   // ])
                                 ]),
 
-                                SizedBox(height: 15.h),
-                                Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
-                                SizedBox(height: 15.h),
-                                    const CustomText(text: "Item Description", size: 18, weight: FontWeight.bold),
-                                    SizedBox(height: 15.h),
-                                     // CustomText(text: controller.productDetails[0].fullDescription.toString(), size: 18, weight: FontWeight.bold),
-                                    Text(
-                                      'Color: $color',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Text(
-                                      'Material: $material',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Text(
-                                      'Style: $style',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Html(data:_categoryControllers.productDetails[0].fullDescription.toString()),
+                                // _categoryControllers.productDetails[0].description == '-'
+                                //     ? const SizedBox()
+                                //     : Html(
+                                //         data: _categoryControllers.description,
+                                //         //productDetails[0].description,
+                                //   style: {
+                                //     'h2': Style(fontSize: FontSize.large),
+                                //     'table': Style(
+                                //       backgroundColor: const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+                                //     ),
+                                //     'td': Style(padding: HtmlPaddings.all(8.0)),
+                                //   },
+                                //       ),
+                                _categoryControllers.productDetails[0].fullDescription == '-'
+                                    ? const SizedBox()
+                                    : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                        SizedBox(height: 15.h),
+                                        Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
+                                        SizedBox(height: 15.h),
+                                        const CustomText(text: "Item Description", size: 18, weight: FontWeight.w900, color: AppColor.blackColor),
+                                        SizedBox(height: controller.color != null ? 15 : 0),
+                                        controller.color != null ? Text('Color: ${controller.color}', style: descriptionText) : const SizedBox(),
+                                        SizedBox(height: controller.material != null ? 3 : 0),
+                                        controller.material != null
+                                            ? Text('Material: ${controller.material}', style: descriptionText)
+                                            : const SizedBox(),
+                                        SizedBox(height: controller.style != null ? 3 : 0),
+                                        controller.style != null ? Text('Style: ${controller.style}', style: descriptionText) : const SizedBox(),
+                                        SizedBox(height: controller.powerSource != null ? 3 : 0),
+                                        controller.powerSource != null
+                                            ? Text('Power Source: ${controller.powerSource}', style: descriptionText)
+                                            : const SizedBox(),
+                                        Html(data: _categoryControllers.productDetails[0].fullDescription, style: {
+                                          "h1 ": Style(
+                                              fontSize: FontSize.xLarge,
+                                              color: AppColor.blackColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "urbanist"),
+                                          "div": htmlTagStyle,
+                                          "span": htmlTagStyle,
+                                          "li": htmlTagStyle
+                                        }),
+                                        SizedBox(height: controller.weight != null ? 5 : 0),
+                                        controller.weight != null ? Text('Weight: ${controller.weight}', style: descriptionText) : const SizedBox(),
+                                        controller.dimensions != null
+                                            ? Text('Dimensions: ${controller.dimensions}', style: descriptionText)
+                                            : const SizedBox(),
+                                        SizedBox(height: controller.dimensions != null ? 15 : 0),
+                                      ]),
 
-                                    Text(
-                                      'Weight: $weight',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Text(
-                                      'Dimensions: $dimensions',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    SizedBox(height: 16.0),
-
-                                    // productDetailsController.initialIndex.value == -1 && productDetailsController.initialVariationModel.value.data == null
+                                // productDetailsController.initialIndex.value == -1 && productDetailsController.initialVariationModel.value.data == null
                                 //     ? const SizedBox()
                                 //     : Column(children: [
                                 //   productDetailsController.initialVariationModel.value.data != null &&

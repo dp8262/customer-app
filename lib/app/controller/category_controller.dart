@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
@@ -8,7 +7,7 @@ import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/model/product_details_view_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:html/parser.dart' as htmlParser;
 import '../../model/product_sub_list_model.dart';
 import '../modules/category/views/sqlite_helper.dart';
 
@@ -196,7 +195,14 @@ class CategoryControllers extends GetxController {
   }
 
   RxList<ProductDetails> productDetails = <ProductDetails>[].obs;
-// late  String fullDescription="";
+  String? color;
+  String? material;
+  String? style;
+  String? weight;
+  String? dimensions;
+  String? powerSource;
+// late  String? description;
+
   productViewDetails({required BuildContext context, required String itemId}) async {
     isLoading(true);
     isError(false);
@@ -216,6 +222,53 @@ class CategoryControllers extends GetxController {
               ProductDetailsModel productDetailsModel = ProductDetailsModel.fromJson(valueMap);
               productDetails.addAll(productDetailsModel.productDetails);
               // fullDescription=productDetailsModel.productDetails[0].fullDescription;
+
+              if (productDetails.isNotEmpty && productDetails.length > 0) {
+                final document = htmlParser.parse(productDetails[0].fullDescription);
+
+                final colorElement = document.querySelector('.po-color');
+                color = colorElement
+                    ?.querySelector('.po-break-word')
+                    ?.text;
+
+                final materialElement = document.querySelector('.po-material');
+                material = materialElement
+                    ?.querySelector('.po-break-word')
+                    ?.text;
+
+                final styleElement = document.querySelector('.po-brand');
+                style = styleElement
+                    ?.querySelector('.a-span9')
+                    ?.text;
+
+                // final powerSourceElement = document.querySelector('.po-brand'); // Check if this selector is correct
+                // powerSource = powerSourceElement?.nextElementSibling
+                //     ?.querySelector('.a-span9')
+                //     ?.text;
+                final powerSourceElement = document.querySelector('.po-brand'); // Corrected selector
+                if (powerSourceElement != null) {
+                  final powerSourceText = powerSourceElement.nextElementSibling?.querySelector('.a-span9')?.text;
+                  if (powerSourceText != null && powerSourceText.isNotEmpty) {
+                    powerSource = powerSourceText;
+                  }
+                }
+
+                final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
+                weight = weightElement
+                    ?.querySelector('.woocommerce-product-attributes-item__value')
+                    ?.text;
+
+                final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
+                dimensions = dimensionsElement
+                    ?.querySelector('.woocommerce-product-attributes-item__value')
+                    ?.text;
+
+                // final descriptionDocument = htmlParser.parse(productDetails[0].description);
+                // final descriptionElement = descriptionDocument.querySelector('data-table');
+                // description = descriptionElement
+                //     ?.querySelector('data-table')
+                //     ?.text;
+              }
               isLoading(false);
               // }
             } catch (e) {

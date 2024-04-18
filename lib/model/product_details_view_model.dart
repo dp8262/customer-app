@@ -29,7 +29,7 @@ class ProductDetails {
     required this.brandName,
     required this.packing,
     required this.isLock,
-    required this.discription,
+    required this.description,
     required this.youtubeVideoUrl,
     required this.youtubeVideoId,
      this.fullDescription,
@@ -46,7 +46,7 @@ class ProductDetails {
   late final String brandName;
   late final String packing;
   late final String isLock;
-  late final String discription;
+  late final String description;
   late final String youtubeVideoUrl;
   late final String youtubeVideoId;
   late final String? fullDescription;
@@ -64,7 +64,7 @@ class ProductDetails {
     brandName = json['brandName'];
     packing = json['Packing'];
     isLock = json['IsLock'];
-    discription = json['discription'];
+    description = json['discription'];
     youtubeVideoUrl = json['YoutubeVideoUrl'];
     youtubeVideoId = json['YoutubeVideoId'];
     fullDescription = json['fullDescription'];
@@ -84,7 +84,7 @@ class ProductDetails {
     _data['brandName'] = brandName;
     _data['Packing'] = packing;
     _data['IsLock'] = isLock;
-    _data['discription'] = discription;
+    _data['discription'] = description;
     _data['YoutubeVideoUrl'] = youtubeVideoUrl;
     _data['YoutubeVideoId'] = youtubeVideoId;
     _data['fullDescription'] = fullDescription;

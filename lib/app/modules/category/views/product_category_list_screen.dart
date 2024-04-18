@@ -96,7 +96,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                                 (dynamic newValue) {
                                               setState(() {
                                                 selectedFilter = newValue!;
-                                                print("abc234 ${selectedFilter}");
+                                                print("abc234 $selectedFilter");
                                                 categoryControllers.productList.clear();
                                                 categoryControllers.filterProductListDetails(context: context, categoryId: widget.categoryId, sortBy: selectedFilter);
                                               });
@@ -116,9 +116,9 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                     itemBuilder: (context, index) {
                                       // if (selectedFilter==controller.productList) {
                                         return InkWell(
-                                          onTap: ()  {
+                                          onTap: ()  async{
                                             Get.delete<CategoryControllers>();
-                                            Get.to(
+                                            await Get.to(
                                                   () => ProductViewDetailsScreen(itemId: categoryControllers.productList[index].productId,
                                                 // product: categoryControllers.productList[index].i,
                                               ),
