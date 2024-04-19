@@ -223,53 +223,41 @@ class CategoryControllers extends GetxController {
               // if (valueMap["statusCode"] == 200) {
               ProductDetailsModel productDetailsModel = ProductDetailsModel.fromJson(valueMap);
               productDetails.addAll(productDetailsModel.productDetails);
-              // fullDescription=productDetailsModel.productDetails[0].fullDescription;
 
-              if (productDetails.isNotEmpty && productDetails.length > 0) {
-                final document = htmlParser.parse(productDetails[0].fullDescription);
-
-                final colorElement = document.querySelector('.po-color');
-                color = colorElement?.querySelector('.po-break-word')?.text;
-
-                final materialElement = document.querySelector('.po-material');
-                material = materialElement?.querySelector('.po-break-word')?.text;
-
-                final styleElement = document.querySelector('.po-brand');
-                style = styleElement?.querySelector('.a-span9')?.text;
-
-                // final powerSourceElement = document.querySelector('.po-brand'); // Check if this selector is correct
-                // powerSource = powerSourceElement?.nextElementSibling
-                //     ?.querySelector('.a-span9')
-                //     ?.text;
-                final powerSourceElement = document.querySelector('.po-brand'); // Corrected selector
-                if (powerSourceElement != null) {
-                  final powerSourceText = powerSourceElement.nextElementSibling?.querySelector('.a-span9')?.text;
-                  if (powerSourceText != null && powerSourceText.isNotEmpty) {
-                    powerSource = powerSourceText;
-                  }
-                }
-
-                final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
-                weight = weightElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
-
-                final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
-                dimensions = dimensionsElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
-
-                // final descriptionDocument = htmlParser.parse(productDetails[0].description);
-                //   final descriptionElement = descriptionDocument.querySelector('data-table');
-                //   description = descriptionElement
-                //       ?.querySelector('data-table')
-                //       ?.text;
-
-
-                // String originalHtml = productDetails[0].description;
-                // RegExp regExp = RegExp(r'<tbody>(.*?)<\/tbody>', multiLine: true, dotAll: true);
-                // Match? match = regExp.firstMatch(originalHtml);
-                // if (match != null) {
-                //   description = match.group(1); // Extract the content within tbody tags
-                // }
-                // print("123456${description}");
-              }
+              // if (productDetails.isNotEmpty && productDetails.length > 0) {
+              //   final document = htmlParser.parse(productDetails[0].fullDescription);
+              //
+              //   final colorElement = document.querySelector('.po-color');
+              //   color = colorElement?.querySelector('.po-break-word')?.text;
+              //
+              //   final materialElement = document.querySelector('.po-material');
+              //   material = materialElement?.querySelector('.po-break-word')?.text;
+              //
+              //   final styleElement = document.querySelector('.po-brand');
+              //   style = styleElement?.querySelector('.a-span9')?.text;
+              //
+              //   // final powerSourceElement = document.querySelector('.po-brand'); // Check if this selector is correct
+              //   // powerSource = powerSourceElement?.nextElementSibling
+              //   //     ?.querySelector('.a-span9')
+              //   //     ?.text;
+              //   final powerSourceElement = document.querySelector('.po-brand'); // Corrected selector
+              //   if (powerSourceElement != null) {
+              //     final powerSourceText = powerSourceElement.nextElementSibling?.querySelector('.a-span9')?.text;
+              //     if (powerSourceText != null && powerSourceText.isNotEmpty) {
+              //       powerSource = powerSourceText;
+              //     }
+              //   }
+              //
+              //   final weightElement = document.querySelector('.woocommerce-product-attributes-item--weight');
+              //   weight = weightElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
+              //
+              //   final dimensionsElement = document.querySelector('.woocommerce-product-attributes-item--dimensions');
+              //   dimensions = dimensionsElement?.querySelector('.woocommerce-product-attributes-item__value')?.text;
+              //
+              //
+              //   print("description ${productDetails[0].description}");
+              //
+              // }
               isLoading(false);
               // }
             } catch (e) {
