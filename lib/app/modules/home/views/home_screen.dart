@@ -35,6 +35,7 @@ import 'package:shopperz/widgets/shimmer/slider_shimmer.dart';
 import 'package:shopperz/widgets/title.dart';
 
 import '../../../../config/theme/app_color.dart';
+import '../../category/views/product_view_details_screen.dart';
 import '../../product/views/product_list_screen.dart';
 import '../../search/views/search_screen.dart';
 import '../../wishlist/controller/wishlist_controller.dart';
@@ -187,10 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             for (var i = 0; i < controller.homePageProductList.length; i++)
                                               ProductWidget2(
                                                 onTap: () {
-                                                  // Get.to(
-                                                  //   () => ProductDetailsScreen(
-                                                  //       sectionModel: section[index], productModel: section[index].products![i]),
-                                                  // );
+                                                  Get.to(
+                                                    () => ProductViewDetailsScreen(itemId: controller.homePageProductList[i].productId),
+                                                  );
                                                 },
                                                 // favTap: () async {
                                                 // if (box.read('isLogedIn') != false) {

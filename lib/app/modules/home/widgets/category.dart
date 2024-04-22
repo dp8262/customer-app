@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:shopperz/app/modules/category/views/category_screen.dart';
 import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/widgets/textwidget.dart';
 
@@ -35,9 +37,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     padding: EdgeInsets.only(right: 12.w),
                     child: InkWell(
                         onTap: () {
-                          // Get.to(
-                          //    () => CategoryWiseProductScreen(categoryModel: widget.homePageCategory[index]),
-                          // );
+                          Get.to(() => CategoryScreen(
+                              categoryId: widget.homePageCategory[index].categoryId,
+                              categoryName: widget.homePageCategory[index].name));
                         },
                         child: Container(
                             height: 130,

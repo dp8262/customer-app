@@ -7,6 +7,7 @@ import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/model/product_details_view_model.dart';
+import 'package:shopperz/model/product_interested_list_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -14,7 +15,7 @@ import '../../model/product_sub_list_model.dart';
 import '../modules/category/views/sqlite_helper.dart';
 
 class CategoryControllers extends GetxController {
-  RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs,isOtherLoading=false.obs;
   RxBool isError = false.obs;
   RxString error = "".obs;
 
@@ -197,23 +198,21 @@ class CategoryControllers extends GetxController {
   }
 
   RxList<ProductDetails> productDetails = <ProductDetails>[].obs;
-  String? color;
-  String? material;
-  String? style;
-  String? weight;
-  String? dimensions;
-  String? powerSource;
+  // String? color;
+  // String? material;
+  // String? style;
+  // String? weight;
+  // String? dimensions;
+  // String? powerSource;
   // String? description;
 
   productViewDetails({required BuildContext context, required String itemId}) async {
-    isLoading(true);
+    isOtherLoading(true);
     isError(false);
     error("");
     productDetails.clear();
 
     try {
-      // if (productList.isEmpty) {
-
       getAPI(
           methodName: ApiList.productViewDetails,
           param: {"id": itemId},
@@ -258,11 +257,16 @@ class CategoryControllers extends GetxController {
               //   print("description ${productDetails[0].description}");
               //
               // }
-              isLoading(false);
+              // isOtherLoading(false);
+
+                // if (productDetails[0].id == customerItemsList.id) {
+                  productInterested(context: context, itemId: productDetails[0].id);
+              //   } else {
+              //     isOtherLoading(false);
               // }
             } catch (e) {
               handleError("Error response: $e", context);
-              isLoading(false);
+              isOtherLoading(false);
             }
           });
       // } else {
@@ -270,7 +274,44 @@ class CategoryControllers extends GetxController {
       // }
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
-      isLoading(false);
+      isOtherLoading(false);
+    }
+  }
+
+
+  RxList<CustomerItems> customerItemsList = <CustomerItems>[].obs;
+  productInterested({required BuildContext context, required String itemId}) async {
+    isOtherLoading(true);
+    isError(false);
+    error("");
+    customerItemsList.clear();
+
+    try {
+      // if (productList.isEmpty) {
+
+      getAPI(
+          methodName: ApiList.productInterested,
+          param: {"id": itemId},
+          callback: (value) {
+            try {
+              Map<String, dynamic> valueMap = json.decode(value.response);
+              // if (valueMap["statusCode"] == 200) {
+              ProductInterestedListModel productInterestedListModel = ProductInterestedListModel.fromJson(valueMap);
+              customerItemsList.addAll(productInterestedListModel.customerItems);
+
+              isOtherLoading(false);
+              // }
+            } catch (e) {
+              // handleError("Error response: $e", context);
+              isOtherLoading(false);
+            }
+          });
+      // } else {
+      //   isLoading(false);
+      // }
+    } catch (ex) {
+      handleError("Failed to fetch data: $ex", context);
+      isOtherLoading(false);
     }
   }
 }

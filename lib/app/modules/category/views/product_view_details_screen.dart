@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,9 @@ import 'package:shopperz/app/controller/category_controller.dart';
 import 'package:shopperz/app/modules/cart/controller/cart_controller.dart';
 import 'package:shopperz/app/modules/navbar/controller/navbar_controller.dart';
 import 'package:shopperz/app/modules/navbar/views/navbar_view.dart';
+import 'package:shopperz/widgets/devider.dart';
 import 'package:shopperz/widgets/secondary_button.dart';
+import 'package:shopperz/widgets/textwidget.dart';
 
 import '../../../../config/theme/app_color.dart';
 import '../../../../utils/svg_icon.dart';
@@ -114,7 +117,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
         child: GetX<CategoryControllers>(
             init: CategoryControllers(),
             builder: (controller) {
-              if (controller.isLoading.value) {
+              if (controller.isOtherLoading.value) {
                 return const LoadingWidget();
               } else if (controller.productDetails.isEmpty) {
                 // If no data is available, display a message
@@ -260,7 +263,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                         // isClicked
                                         //     ? controller.productDetails[0].image[isSelected]
                                         //     :
-                                        controller.productDetails[0].image[isSelected],
+                                        controller.productDetails[0].image[isSelected].toString(),
                                     imageBuilder: (context, imageProvider) => Container(
                                         height: 250,
                                         // width: 328.w,
@@ -286,7 +289,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                     });
                                                   },
                                                   child: CachedNetworkImage(
-                                                      imageUrl: controller.productDetails[0].image[index],
+                                                      imageUrl: controller.productDetails[0].image[index].toString(),
                                                       imageBuilder: (context, imageProvider) => Container(
                                                           margin: EdgeInsets.only(right: 8.w),
                                                           height: 76.h,
@@ -1259,112 +1262,113 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 // ]),
                                 SizedBox(height: 32.h),
                                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  SecondaryButton(
-                                      height: 48.h,
-                                      width: 165.w,
-                                      icon: SvgIcon.bag,
-                                      text: "ADD_TO_CART".tr,
-                                      buttonColor: AppColor.primaryColor,
-                                      onTap: () async {
-                                      //   if (productDetailsController.initialVariationModel.value.data != null &&
-                                      //       productDetailsController.initialVariationModel.value.data!.length > 0) {
-                                      //     if (productDetailsController.variationsStock.value > 0) {
-                                      //       await productDetailsController.finalVariation(id: productDetailsController.variationProductId.toString());
-                                      //       cartController.totalIndividualProductTax = 0.0;
-                                      //       productDetailsController.productModel.value.data!.taxes!.map((e) {
-                                      //         cartController.totalIndividualProductTax += double.parse(e.taxRate.toString());
-                                      //       }).toList();
-                                      //
-                                      //       var taxMap = productDetailsController.productModel.value.data!.taxes!.map((e) {
-                                      //         return {
-                                      //           "id": e.id!.toInt(),
-                                      //           "name": e.name.toString(),
-                                      //           "code": e.code.toString(),
-                                      //           "tax_rate": double.tryParse(e.taxRate.toString()),
-                                      //           'tax_amount': double.tryParse(cartController.totalTax.toString()),
-                                      //         };
-                                      //       }).toList();
-                                      //
-                                      //       cartController.addItem(
-                                      //           variationStock: productDetailsController.variationsStock.value.toInt(),
-                                      //           product: productDetailsController.productModel.value,
-                                      //           variationId: int.parse(productDetailsController.variationProductId.value),
-                                      //           shippingAmount: authController.settingModel!.data!.shippingSetupMethod.toString() == "5" &&
-                                      //               productDetailsController.productModel.value.data?.shipping?.shippingType.toString() == "5"
-                                      //               ? "0"
-                                      //               : productDetailsController.productModel.value.data!.shipping!.shippingCost,
-                                      //           finalVariation: productDetailsController.finalVariationString,
-                                      //           sku: productDetailsController.variationsku.value,
-                                      //           taxJson: taxMap,
-                                      //           stock: productDetailsController.variationsStock.value,
-                                      //           shipping: productDetailsController.productModel.value.data!.shipping,
-                                      //           productVariationPrice: productDetailsController.variationProductPrice.value,
-                                      //           productVariationOldPrice: productDetailsController.variationProductOldPrice.value,
-                                      //           productVariationCurrencyPrice: productDetailsController.variationProductCurrencyPrice.value,
-                                      //           productVariationOldCurrencyPrice: productDetailsController.variationProductOldCurrencyPrice.value,
-                                      //           totalTax: cartController.totalIndividualProductTax,
-                                      //           flatShippingCost: authController.settingModel?.data?.shippingSetupFlatRateWiseCost.toString() ?? "0");
-                                      //
-                                      //       cartController.calculateShippingCharge(
-                                      //           shippingMethodStatus: authController.shippingMethod,
-                                      //           shippingType: productDetailsController.productModel.value.data?.shipping?.shippingType.toString() ?? "0",
-                                      //           isProductQntyMultiply:
-                                      //           productDetailsController.productModel.value.data?.shipping?.isProductQuantityMultiply.toString() ??
-                                      //               "0",
-                                      //           flatShippingCharge: authController.settingModel?.data?.shippingSetupFlatRateWiseCost);
-                                      //
-                                      //       customSnackbar("SUCCESS".tr, "Product added to cart".tr, AppColor.success);
-                                      //     } else {}
-                                      //   } else {
-                                      //     if (productDetailsController.variationsStock.value > 0) {
-                                      //       cartController.totalIndividualProductTax = 0.0;
-                                      //
-                                      //       productDetailsController.productModel.value.data!.taxes!.map((e) {
-                                      //         cartController.totalIndividualProductTax += double.parse(e.taxRate.toString());
-                                      //       }).toList();
-                                      //       var taxMap = productDetailsController.productModel.value.data!.taxes!.map((e) {
-                                      //         return {
-                                      //           "id": e.id!.toInt(),
-                                      //           "name": e.name.toString(),
-                                      //           "code": e.code.toString(),
-                                      //           "tax_rate": double.tryParse(e.taxRate.toString()),
-                                      //           'tax_amount': double.tryParse(cartController.totalTax.toString()),
-                                      //         };
-                                      //       }).toList();
-                                      //
-                                      //       cartController.addItem(
-                                      //           variationStock: productDetailsController.variationsStock.value.toInt(),
-                                      //           product: productDetailsController.productModel.value,
-                                      //           variationId: int.parse(productDetailsController.variationProductId.value),
-                                      //           shippingAmount: authController.settingModel!.data!.shippingSetupMethod.toString() == "5" &&
-                                      //               productDetailsController.productModel.value.data?.shipping?.shippingType.toString() == "5"
-                                      //               ? "0"
-                                      //               : productDetailsController.productModel.value.data!.shipping!.shippingCost,
-                                      //           finalVariation: productDetailsController.finalVariationString,
-                                      //           sku: productDetailsController.productModel.value.data!.sku,
-                                      //           taxJson: taxMap,
-                                      //           stock: productDetailsController.productModel.value.data!.stock,
-                                      //           shipping: productDetailsController.productModel.value.data!.shipping,
-                                      //           productVariationPrice: productDetailsController.productModel.value.data!.price,
-                                      //           productVariationOldPrice: productDetailsController.productModel.value.data!.oldPrice,
-                                      //           productVariationCurrencyPrice: productDetailsController.productModel.value.data!.currencyPrice,
-                                      //           productVariationOldCurrencyPrice: productDetailsController.productModel.value.data!.oldCurrencyPrice,
-                                      //           totalTax: cartController.totalIndividualProductTax,
-                                      //           flatShippingCost: authController.settingModel?.data?.shippingSetupFlatRateWiseCost.toString() ?? "0");
-                                      //
-                                      //       cartController.calculateShippingCharge(
-                                      //         shippingMethodStatus: authController.shippingMethod,
-                                      //         shippingType: productDetailsController.productModel.value.data?.shipping?.shippingType.toString() ?? "0",
-                                      //         isProductQntyMultiply:
-                                      //         productDetailsController.productModel.value.data?.shipping?.isProductQuantityMultiply.toString() ?? "0",
-                                      //         flatShippingCharge: authController.settingModel?.data?.shippingSetupFlatRateWiseCost,
-                                      //       );
-                                      //
-                                      //       customSnackbar("SUCCESS".tr, "Product added to cart".tr, AppColor.success);
-                                      //     } else {}
-                                      //   }
-                                      }
-                                      ),
+                                  Expanded(
+                                    child: SecondaryButton(
+                                        height: 48.h,
+                                        width: getScreenWidth(context),
+                                        icon: SvgIcon.bag,
+                                        text: "Add To Cart".tr,
+                                        buttonColor: AppColor.primaryColor,
+                                        onTap: () async {
+                                          //   if (productDetailsController.initialVariationModel.value.data != null &&
+                                          //       productDetailsController.initialVariationModel.value.data!.length > 0) {
+                                          //     if (productDetailsController.variationsStock.value > 0) {
+                                          //       await productDetailsController.finalVariation(id: productDetailsController.variationProductId.toString());
+                                          //       cartController.totalIndividualProductTax = 0.0;
+                                          //       productDetailsController.productModel.value.data!.taxes!.map((e) {
+                                          //         cartController.totalIndividualProductTax += double.parse(e.taxRate.toString());
+                                          //       }).toList();
+                                          //
+                                          //       var taxMap = productDetailsController.productModel.value.data!.taxes!.map((e) {
+                                          //         return {
+                                          //           "id": e.id!.toInt(),
+                                          //           "name": e.name.toString(),
+                                          //           "code": e.code.toString(),
+                                          //           "tax_rate": double.tryParse(e.taxRate.toString()),
+                                          //           'tax_amount': double.tryParse(cartController.totalTax.toString()),
+                                          //         };
+                                          //       }).toList();
+                                          //
+                                          //       cartController.addItem(
+                                          //           variationStock: productDetailsController.variationsStock.value.toInt(),
+                                          //           product: productDetailsController.productModel.value,
+                                          //           variationId: int.parse(productDetailsController.variationProductId.value),
+                                          //           shippingAmount: authController.settingModel!.data!.shippingSetupMethod.toString() == "5" &&
+                                          //               productDetailsController.productModel.value.data?.shipping?.shippingType.toString() == "5"
+                                          //               ? "0"
+                                          //               : productDetailsController.productModel.value.data!.shipping!.shippingCost,
+                                          //           finalVariation: productDetailsController.finalVariationString,
+                                          //           sku: productDetailsController.variationsku.value,
+                                          //           taxJson: taxMap,
+                                          //           stock: productDetailsController.variationsStock.value,
+                                          //           shipping: productDetailsController.productModel.value.data!.shipping,
+                                          //           productVariationPrice: productDetailsController.variationProductPrice.value,
+                                          //           productVariationOldPrice: productDetailsController.variationProductOldPrice.value,
+                                          //           productVariationCurrencyPrice: productDetailsController.variationProductCurrencyPrice.value,
+                                          //           productVariationOldCurrencyPrice: productDetailsController.variationProductOldCurrencyPrice.value,
+                                          //           totalTax: cartController.totalIndividualProductTax,
+                                          //           flatShippingCost: authController.settingModel?.data?.shippingSetupFlatRateWiseCost.toString() ?? "0");
+                                          //
+                                          //       cartController.calculateShippingCharge(
+                                          //           shippingMethodStatus: authController.shippingMethod,
+                                          //           shippingType: productDetailsController.productModel.value.data?.shipping?.shippingType.toString() ?? "0",
+                                          //           isProductQntyMultiply:
+                                          //           productDetailsController.productModel.value.data?.shipping?.isProductQuantityMultiply.toString() ??
+                                          //               "0",
+                                          //           flatShippingCharge: authController.settingModel?.data?.shippingSetupFlatRateWiseCost);
+                                          //
+                                          //       customSnackbar("SUCCESS".tr, "Product added to cart".tr, AppColor.success);
+                                          //     } else {}
+                                          //   } else {
+                                          //     if (productDetailsController.variationsStock.value > 0) {
+                                          //       cartController.totalIndividualProductTax = 0.0;
+                                          //
+                                          //       productDetailsController.productModel.value.data!.taxes!.map((e) {
+                                          //         cartController.totalIndividualProductTax += double.parse(e.taxRate.toString());
+                                          //       }).toList();
+                                          //       var taxMap = productDetailsController.productModel.value.data!.taxes!.map((e) {
+                                          //         return {
+                                          //           "id": e.id!.toInt(),
+                                          //           "name": e.name.toString(),
+                                          //           "code": e.code.toString(),
+                                          //           "tax_rate": double.tryParse(e.taxRate.toString()),
+                                          //           'tax_amount': double.tryParse(cartController.totalTax.toString()),
+                                          //         };
+                                          //       }).toList();
+                                          //
+                                          //       cartController.addItem(
+                                          //           variationStock: productDetailsController.variationsStock.value.toInt(),
+                                          //           product: productDetailsController.productModel.value,
+                                          //           variationId: int.parse(productDetailsController.variationProductId.value),
+                                          //           shippingAmount: authController.settingModel!.data!.shippingSetupMethod.toString() == "5" &&
+                                          //               productDetailsController.productModel.value.data?.shipping?.shippingType.toString() == "5"
+                                          //               ? "0"
+                                          //               : productDetailsController.productModel.value.data!.shipping!.shippingCost,
+                                          //           finalVariation: productDetailsController.finalVariationString,
+                                          //           sku: productDetailsController.productModel.value.data!.sku,
+                                          //           taxJson: taxMap,
+                                          //           stock: productDetailsController.productModel.value.data!.stock,
+                                          //           shipping: productDetailsController.productModel.value.data!.shipping,
+                                          //           productVariationPrice: productDetailsController.productModel.value.data!.price,
+                                          //           productVariationOldPrice: productDetailsController.productModel.value.data!.oldPrice,
+                                          //           productVariationCurrencyPrice: productDetailsController.productModel.value.data!.currencyPrice,
+                                          //           productVariationOldCurrencyPrice: productDetailsController.productModel.value.data!.oldCurrencyPrice,
+                                          //           totalTax: cartController.totalIndividualProductTax,
+                                          //           flatShippingCost: authController.settingModel?.data?.shippingSetupFlatRateWiseCost.toString() ?? "0");
+                                          //
+                                          //       cartController.calculateShippingCharge(
+                                          //         shippingMethodStatus: authController.shippingMethod,
+                                          //         shippingType: productDetailsController.productModel.value.data?.shipping?.shippingType.toString() ?? "0",
+                                          //         isProductQntyMultiply:
+                                          //         productDetailsController.productModel.value.data?.shipping?.isProductQuantityMultiply.toString() ?? "0",
+                                          //         flatShippingCharge: authController.settingModel?.data?.shippingSetupFlatRateWiseCost,
+                                          //       );
+                                          //
+                                          //       customSnackbar("SUCCESS".tr, "Product added to cart".tr, AppColor.success);
+                                          //     } else {}
+                                          //   }
+                                        }),
+                                  ),
                                   // InkWell(
                                   //     onTap: () async {
                                   //       // if (box.read('isLogedIn') != false) {
@@ -1402,11 +1406,12 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                   //           CustomText(text: "FAVORITE".tr, size: 16.sp, weight: FontWeight.w700, color: AppColor.textColor)
                                   //         ])))
                                 ]),
-                                // SizedBox(height: 20.h),
-                                // const DeviderWidget(),
-                                // SizedBox(height: 20.h),
+                                SizedBox(height: 20.h),
+                                const DeviderWidget(),
+                                SizedBox(height: 20.h),
                                 // Obx(() => productDetailsController.productModel.value.data != null
-                                //     ? CustomTabBar(
+                                //     ?
+                                //         CustomTabBar(
                                 //     allProductModel: widget.allProductModel,
                                 //     categoryWiseProduct: widget.categoryWiseProduct,
                                 //     favoriteItem: widget.favoriteItem,
@@ -1414,56 +1419,124 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 //     relatedProduct: widget.relatedProduct,
                                 //     sectionModel: widget.sectionModel)
                                 //     : const SizedBox()),
+
                                 // SizedBox(height: 30.h),
-                                // CustomText(text: "RELATED_PRODUCTS".tr, size: 26.sp, weight: FontWeight.w700),
-                                // SizedBox(height: 20.h),
-                                // Obx(() => productDetailsController.relatedProductModel.value.data == null
-                                //     ? const SizedBox()
-                                //     : StaggeredGrid.count(crossAxisCount: 2, mainAxisSpacing: 16.h, crossAxisSpacing: 16.w, children: [
-                                //   for (int i = 0; i < productDetailsController.relatedProductModel.value.data!.length; i++)
-                                //     ProductWidget(
-                                //         onTap: () async {
-                                //           productDetailsController.resetProductState();
-                                //           Navigator.of(context).push(MaterialPageRoute(
-                                //               builder: (context) => ProductViewDetailsScreen(
-                                //                   relatedProduct: productDetailsController.relatedProductModel.value.data?[i])));
-                                //         },
-                                //         favTap: () async {
-                                //           if (box.read('isLogedIn') != false) {
-                                //             if (productDetailsController.relatedProductModel.value.data?[i].wishlist == true) {
-                                //               await wishlistController
-                                //                   .toggleFavoriteFalse(productDetailsController.relatedProductModel.value.data![i].id!);
-                                //
-                                //               wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
-                                //             }
-                                //             if (productDetailsController.relatedProductModel.value.data?[i].wishlist == false) {
-                                //               await wishlistController
-                                //                   .toggleFavoriteTrue(productDetailsController.relatedProductModel.value.data![i].id!);
-                                //
-                                //               wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
-                                //             }
-                                //           } else {
-                                //             Get.to(() => const SignInScreen());
-                                //           }
-                                //         },
-                                //         wishlist:
-                                //         wishlistController.favList.contains(productDetailsController.relatedProductModel.value.data![i].id!) ||
-                                //             productDetailsController.relatedProductModel.value.data?[i].wishlist == true
-                                //             ? true
-                                //             : false,
-                                //         productImage: productDetailsController.relatedProductModel.value.data?[i].cover,
-                                //         title: productDetailsController.relatedProductModel.value.data?[i].name,
-                                //         rating: productDetailsController.relatedProductModel.value.data?[i].ratingStar,
-                                //         currentPrice: productDetailsController.relatedProductModel.value.data?[i].currencyPrice,
-                                //         discountPrice: productDetailsController.relatedProductModel.value.data?[i].discountedPrice,
-                                //         textRating: productDetailsController.relatedProductModel.value.data?[i].ratingStarCount,
-                                //         flashSale: productDetailsController.relatedProductModel.value.data![i].flashSale!,
-                                //         isOffer: productDetailsController.relatedProductModel.value.data![i].isOffer!),
-                                //   SizedBox(height: 12.h)
-                                // ]))
+                                    controller.customerItemsList.isNotEmpty?
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  CustomText(text: "You may be interested", size: 24.sp, weight: FontWeight.w700),
+                                  SizedBox(height: 20.h),
+                                  StaggeredGrid.count(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.h,
+                                    crossAxisSpacing: 16.w,
+                                    children: [
+                                      for (int i = 0; i < controller.customerItemsList.length; i++)
+                                        GestureDetector(
+                                            onTap: () async {
+                                              Get.delete<CategoryControllers>();
+                                              await Get.to(
+                                                    () => ProductViewDetailsScreen(itemId: controller.customerItemsList[i].id),
+                                              );
+                                              controller.productViewDetails(context: context, itemId:controller.customerItemsList[i].id);
+                                            },
+                                            child: Container(
+                                                width: 145,
+                                                decoration: BoxDecoration(
+                                                    color: AppColor.whiteColor,
+                                                    borderRadius: BorderRadius.circular(12.r),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Colors.black.withOpacity(0.05),
+                                                          offset: const Offset(0, 0),
+                                                          blurRadius: 7,
+                                                          spreadRadius: 0)
+                                                    ]),
+                                                child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                    child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Stack(children: [
+                                                            CachedNetworkImage(
+                                                                imageUrl: controller.customerItemsList[i].image[0].toString(),
+                                                                imageBuilder: (context, imageProvider) => Container(
+                                                                    height: 130,
+                                                                    width: 130,
+                                                                    decoration: BoxDecoration(
+                                                                        color: AppColor.whiteColor,
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                        image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                                                          ]),
+                                                          const SizedBox(height: 10),
+                                                          TextWidget(
+                                                              text: controller.customerItemsList[i].brandName ?? '',
+                                                              color: AppColor.textColor,
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.w600,
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.fade),
+                                                          const SizedBox(height: 10),
+                                                          TextWidget(
+                                                              text: controller.customerItemsList[i].name ?? '',
+                                                              color: AppColor.textColor1,
+                                                              textAlign: TextAlign.center,
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w400,
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.fade),
+                                                        ])))),
+                                      SizedBox(height: 12.h)
+                                    ],
+                                  )
+
+                                  // ProductWidget(
+                                  //     onTap: () async {
+                                  //       productDetailsController.resetProductState();
+                                  //       Navigator.of(context).push(MaterialPageRoute(
+                                  //           builder: (context) => ProductViewDetailsScreen(
+                                  //               relatedProduct: productDetailsController.relatedProductModel.value.data?[i])));
+                                  //     },
+                                  //     favTap: () async {
+                                  //       if (box.read('isLogedIn') != false) {
+                                  //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == true) {
+                                  //           await wishlistController
+                                  //               .toggleFavoriteFalse(productDetailsController.relatedProductModel.value.data![i].id!);
+                                  //
+                                  //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                  //         }
+                                  //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == false) {
+                                  //           await wishlistController
+                                  //               .toggleFavoriteTrue(productDetailsController.relatedProductModel.value.data![i].id!);
+                                  //
+                                  //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                  //         }
+                                  //       } else {
+                                  //         Get.to(() => const SignInScreen());
+                                  //       }
+                                  //     },
+                                  //     wishlist:
+                                  //     wishlistController.favList.contains(productDetailsController.relatedProductModel.value.data![i].id!) ||
+                                  //         productDetailsController.relatedProductModel.value.data?[i].wishlist == true
+                                  //         ? true
+                                  //         : false,
+                                  //     productImage: productDetailsController.relatedProductModel.value.data?[i].cover,
+                                  //     title: productDetailsController.relatedProductModel.value.data?[i].name,
+                                  //     rating: productDetailsController.relatedProductModel.value.data?[i].ratingStar,
+                                  //     currentPrice: productDetailsController.relatedProductModel.value.data?[i].currencyPrice,
+                                  //     discountPrice: productDetailsController.relatedProductModel.value.data?[i].discountedPrice,
+                                  //     textRating: productDetailsController.relatedProductModel.value.data?[i].ratingStarCount,
+                                  //     flashSale: productDetailsController.relatedProductModel.value.data![i].flashSale!,
+                                  //     isOffer: productDetailsController.relatedProductModel.value.data![i].isOffer!),
+                                ]):const SizedBox()
+                                // )
                               ])
                               // ),
                               ))));
             }));
   }
+
 }
+
