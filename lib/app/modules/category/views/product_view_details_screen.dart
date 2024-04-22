@@ -1483,7 +1483,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      CustomText(text: "You may be interested", size: 24.sp, weight: FontWeight.w700),
+                                      CustomText(text: "Recently Viewed Product", size: 24.sp, weight: FontWeight.w700),
                                       SizedBox(height: 20.h),
                                       StaggeredGrid.count(
                                         crossAxisCount: 2,
@@ -1491,6 +1491,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                         crossAxisSpacing: 16.w,
                                         children: [
                                           for (int i = 0; i < controller.recentProductList.length; i++)
+                                            // widget.itemId==controller.recentProductList[i].productId?const SizedBox():
                                             GestureDetector(
                                                 onTap: () async {
                                                   // Get.delete<CategoryControllers>();
