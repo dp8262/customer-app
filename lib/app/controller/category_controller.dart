@@ -205,14 +205,19 @@ class CategoryControllers extends GetxController {
   // String? dimensions;
   // String? powerSource;
   // String? description;
-
+  // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+  RxList<Product> recentProductList = <Product>[].obs;
   productViewDetails({required BuildContext context, required String itemId}) async {
     isOtherLoading(true);
     isError(false);
     error("");
     productDetails.clear();
+    recentProductList.clear();
 
     try {
+     await contactDatabaseHelper.initializeDatabase();
+     recentProductList.value= await  contactDatabaseHelper.getAllRecentProduct();
+     recentProductList.value=    recentProductList.reversed.toList();
       getAPI(
           methodName: ApiList.productViewDetails,
           param: {"id": itemId},

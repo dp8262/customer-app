@@ -43,14 +43,11 @@ class ContactDatabaseHelper {
    String productName= "name";
    String productImage= "image";
 
+  //RecentView table
+  String recentViewTable = "recent_view_table";
   Future<Database> initializeDatabase() async {
-    log("111====");
-    //Directory directory = await getApplicationDocumentsDirectory();
-    //log("directory ===$directory");
-    //String path = "${directory.path}contact.db";
     var databasesPath = await getDatabasesPath();
     String path = p.join(databasesPath, 'category.db');
-
     log("Database path ===$path");
     Database contactDB = await openDatabase(path, version: 1, onCreate: _createDB);
     log("contactDB ===${contactDB.isOpen}");
@@ -72,6 +69,17 @@ class ContactDatabaseHelper {
         '$brandName TEXT,'
         '$productName TEXT,'
         '$productImage TEXT)');
+
+    await db.execute('CREATE TABLE $recentViewTable($productId PRIMARY KEY, '
+        '$categoryId TEXT,'
+        '$parentCategoryId TEXT,'
+        '$price TEXT,'
+        '$brandName TEXT,'
+        '$productName TEXT,'
+        '$productImage TEXT)').catchError((val){
+          print("$recentViewTable creating error :- $val");
+   });
+
   }
 
   Future<int> insertCategory(Category contactModel) async {
@@ -121,6 +129,36 @@ class ContactDatabaseHelper {
     var a1=await db.delete(
       productTable,
     );
-    toast("All record deleted.$a,$a1");
+    var a2=await db.delete(
+      recentViewTable,
+    );
+    toast("All record deleted.$a,$a1,$a2");
   }
+
+  Future<int> insertRecentProduct(Product model) async {
+    Database db = await database;
+    var checkData = await db.query(recentViewTable, where: '$productId = ?', whereArgs: [model.productId]);
+
+    if (checkData.isNotEmpty) {
+    var data =   await db.delete(recentViewTable, where: '$productId = ?', whereArgs: [model.productId]);
+
+    print(data);
+    }
+    int result = await db.insert(recentViewTable, model.toJson());
+    return result;
+  }
+
+  Future<List<Product>> getAllRecentProduct() async {
+    Database db = await database;
+    var result = await db.query(recentViewTable,);
+    List<Product> productList = [];
+
+    for (int i = 0; i < result.length; i++) {
+      productList.add(Product.fromJson(result[i]));
+    }
+    print(productList);
+    return productList;
+  }
+
+
 }

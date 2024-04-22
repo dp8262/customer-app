@@ -36,7 +36,7 @@ class ProductViewDetailsScreen extends StatefulWidget {
 
 class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
   final TextStyle descriptionText =
-      const TextStyle(fontSize: 16, color: AppColor.deSelectedColor, fontWeight: FontWeight.w400, fontFamily: "urbanist");
+  const TextStyle(fontSize: 16, color: AppColor.deSelectedColor, fontWeight: FontWeight.w400, fontFamily: "urbanist");
   final Style htmlTagStyle = Style(fontSize: FontSize.large, color: AppColor.deSelectedColor, fontWeight: FontWeight.w400, fontFamily: "urbanist");
   final navController = Get.put(NavbarController());
 
@@ -106,81 +106,13 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
   // }
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.white,
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarColor: Colors.transparent,
-          statusBarBrightness: Brightness.dark,
-        ),
-        child: GetX<CategoryControllers>(
-            init: CategoryControllers(),
-            builder: (controller) {
-              if (controller.isOtherLoading.value) {
-                return const LoadingWidget();
-              } else if (controller.productDetails.isEmpty) {
-                // If no data is available, display a message
-                return const Center(
-                  child: Text('No data available'),
-                );
-              }
-              // Future.delayed(Duration.zero, () {
-              //   WidgetsBinding.instance.addPostFrameCallback((_) {
-              //     if (productDetailsController.initialVariationModel.value.data !=
-              //             null &&
-              //         productDetailsController
-              //                 .initialVariationModel.value.data!.length >
-              //             0) {
-              //       productDetailsController.variationProductId.value = '';
-              //       productDetailsController.variationProductPrice.value = '';
-              //       productDetailsController.variationProductCurrencyPrice.value =
-              //           '';
-              //       productDetailsController.variationProductOldPrice.value = '';
-              //       productDetailsController
-              //           .variationProductOldCurrencyPrice.value = '';
-              //       productDetailsController.variationsku.value = '';
-              //       productDetailsController.variationsStock.value = -1;
-              //     } else {
-              //       productDetailsController.variationProductId.value =
-              //           productDetailsController.productModel.value.data?.id
-              //                   .toString() ??
-              //               '';
-              //       productDetailsController.variationProductPrice.value =
-              //           productDetailsController.productModel.value.data?.price
-              //                   .toString() ??
-              //               '';
-              //       productDetailsController.variationProductCurrencyPrice.value =
-              //           productDetailsController
-              //                   .productModel.value.data?.currencyPrice
-              //                   .toString() ??
-              //               '';
-              //       productDetailsController.variationProductOldPrice.value =
-              //           productDetailsController.productModel.value.data?.oldPrice
-              //                   .toString() ??
-              //               '';
-              //       productDetailsController.variationProductOldCurrencyPrice
-              //           .value = productDetailsController
-              //               .productModel.value.data?.oldCurrencyPrice
-              //               .toString() ??
-              //           '';
-              //       productDetailsController.variationsku.value =
-              //           productDetailsController.productModel.value.data?.sku
-              //                   .toString() ??
-              //               '';
-              //       productDetailsController.variationsStock.value =
-              //           productDetailsController.productModel.value.data?.stock!
-              //                   .toInt() ??
-              //               -1;
-              //     }
-              //   });
-              // });
-              return Scaffold(
-                  backgroundColor: AppColor.whiteColor,
-                  appBar: SecondaryAppBar(onTap: () {
-                    Get.to(() => const SearchScreen());
-                  }),
-                  floatingActionButton: Obx(() => InkWell(
+    return Scaffold(
+              backgroundColor: AppColor.whiteColor,
+              appBar: SecondaryAppBar(onTap: () {
+                Get.to(() => const SearchScreen());
+              }),
+              floatingActionButton: Obx(() =>
+                  InkWell(
                       borderRadius: BorderRadius.circular(56.r),
                       onTap: () {
                         Get.to(() => const NavBarView());
@@ -202,15 +134,27 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                     child: SvgPicture.asset(SvgIcon.catBag, height: 24.h, width: 24.w, color: AppColor.whiteColor))),
                             cartController.totalItems > 0
                                 ? Positioned(
-                                    top: 12.h,
-                                    right: 10.w,
-                                    child: Container(
-                                        height: 10.r,
-                                        width: 10.r,
-                                        decoration: BoxDecoration(color: AppColor.yellowColor, borderRadius: BorderRadius.circular(10.r))))
+                                top: 12.h,
+                                right: 10.w,
+                                child: Container(
+                                    height: 10.r,
+                                    width: 10.r,
+                                    decoration: BoxDecoration(color: AppColor.yellowColor, borderRadius: BorderRadius.circular(10.r))))
                                 : Container()
                           ])))),
-                  body: Padding(
+              body: GetX<CategoryControllers>(
+                init: CategoryControllers(),
+                initState: (_) {},
+                builder: (controller) {
+                  if (controller.isOtherLoading.value) {
+                    return const LoadingWidget();
+                  } else if (controller.productDetails.isEmpty) {
+                    // If no data is available, display a message
+                    return const Center(
+                      child: Text('No data available'),
+                    );
+                  }
+                  return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: RefreshIndicator(
                           color: AppColor.primaryColor,
@@ -253,44 +197,46 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                           child: SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
                               child:
-                                  // Obx(
-                                  //   () => productDetailsController.isLaoding.value == 1
-                                  //       ? const ProductDetailsShimmer()
-                                  //       :
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                              // Obx(
+                              //   () => productDetailsController.isLaoding.value == 1
+                              //       ? const ProductDetailsShimmer()
+                              //       :
+                              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 CachedNetworkImage(
                                     imageUrl:
-                                        // isClicked
-                                        //     ? controller.productDetails[0].image[isSelected]
-                                        //     :
-                                        controller.productDetails[0].image[isSelected].toString(),
-                                    imageBuilder: (context, imageProvider) => Container(
-                                        height: 250,
-                                        // width: 328.w,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(16.r),
-                                            image: DecorationImage(image: imageProvider, fit: BoxFit.fill)))),
+                                    // isClicked
+                                    //     ? controller.productDetails[0].image[isSelected]
+                                    //     :
+                                    controller.productDetails[0].image[isSelected].toString(),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                            height: 250,
+                                            // width: 328.w,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(16.r),
+                                                image: DecorationImage(image: imageProvider, fit: BoxFit.fill)))),
                                 SizedBox(height: 15.h),
                                 controller.productDetails[0].image.isEmpty
                                     ? const SizedBox()
                                     : SizedBox(
-                                        height: 80.h,
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            itemCount: controller.productDetails[0].image.length,
-                                            // ?? 0,
-                                            itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isSelected = index;
-                                                      isClicked = true;
-                                                    });
-                                                  },
-                                                  child: CachedNetworkImage(
-                                                      imageUrl: controller.productDetails[0].image[index].toString(),
-                                                      imageBuilder: (context, imageProvider) => Container(
+                                    height: 80.h,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount: controller.productDetails[0].image.length,
+                                        // ?? 0,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isSelected = index;
+                                                  isClicked = true;
+                                                });
+                                              },
+                                              child: CachedNetworkImage(
+                                                  imageUrl: controller.productDetails[0].image[index].toString(),
+                                                  imageBuilder: (context, imageProvider) =>
+                                                      Container(
                                                           margin: EdgeInsets.only(right: 8.w),
                                                           height: 76.h,
                                                           width: 76.w,
@@ -299,7 +245,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                               border: Border.all(
                                                                   color: isSelected == index ? Colors.black : Colors.transparent, width: 2),
                                                               image: DecorationImage(image: imageProvider, fit: BoxFit.cover)))));
-                                            })),
+                                        })),
 
                                 SizedBox(height: 20.h),
                                 Row(children: [
@@ -342,22 +288,22 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 controller.productDetails[0].description == '-'
                                     ? const SizedBox()
                                     : HtmlWidget(controller.productDetails[0].description.toString(),
-                                        // textStyle: const TextStyle(fontWeight: FontWeight.w500, color: AppColor.deSelectedColor),
-                                        customStylesBuilder: (element) {
-                                        if (element.localName == 'h2') {
-                                          return {'color': '#000000', 'font-size': '18px', 'font-weight': 'bold', 'fontFamily': 'urbanist'};
-                                        }
-                                        if (element.localName == 'td') {
-                                          return {
-                                            'color': '#6E7191',
-                                            'font-size': '15px',
-                                            'font-weight': 'normal',
-                                            'fontFamily': 'urbanist',
-                                            'padding': '2px'
-                                          };
-                                        }
-                                        return null;
-                                      }),
+                                    // textStyle: const TextStyle(fontWeight: FontWeight.w500, color: AppColor.deSelectedColor),
+                                    customStylesBuilder: (element) {
+                                      if (element.localName == 'h2') {
+                                        return {'color': '#000000', 'font-size': '18px', 'font-weight': 'bold', 'fontFamily': 'urbanist'};
+                                      }
+                                      if (element.localName == 'td') {
+                                        return {
+                                          'color': '#6E7191',
+                                          'font-size': '15px',
+                                          'font-weight': 'normal',
+                                          'fontFamily': 'urbanist',
+                                          'padding': '2px'
+                                        };
+                                      }
+                                      return null;
+                                    }),
                                 // controller.productDetails[0].description == '-'
                                 //     ? const SizedBox()
                                 //     :
@@ -372,59 +318,59 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 controller.productDetails[0].fullDescription == '-'
                                     ? const SizedBox()
                                     : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                        SizedBox(height: 15.h),
-                                        Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
-                                        SizedBox(height: 15.h),
-                                        const CustomText(text: "Item Description", size: 18, weight: FontWeight.w900, color: AppColor.blackColor),
-                                        const SizedBox(height: 15),
-                                        HtmlWidget(
-                                          controller.productDetails[0].fullDescription.toString(),
-                                          textStyle: const TextStyle(fontWeight: FontWeight.w500, color: AppColor.deSelectedColor),
-                                          customStylesBuilder: (element) {
-                                            if (element.localName == 'h2' || element.localName == "div" || element.localName == "h1") {
-                                              return {'color': '#000000', 'font-size': '18px', 'font-weight': 'bold', 'fontFamily': 'urbanist'};
-                                            }
-                                            if (element.localName == 'td' || element.localName == "tr" || element.localName == "table") {
-                                              return {
-                                                'color': '#6E7191',
-                                                'font-size': '15px',
-                                                'font-weight': 'normal',
-                                                'fontFamily': 'urbanist',
-                                                'padding': '2px'
-                                              };
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        // SizedBox(height: controller.color != null ? 15 : 0),
-                                        // controller.color != null ? Text('Color: ${controller.color}', style: descriptionText) : const SizedBox(),
-                                        // SizedBox(height: controller.material != null ? 3 : 0),
-                                        // controller.material != null
-                                        //     ? Text('Material: ${controller.material}', style: descriptionText)
-                                        //     : const SizedBox(),
-                                        // SizedBox(height: controller.style != null ? 3 : 0),
-                                        // controller.style != null ? Text('Style: ${controller.style}', style: descriptionText) : const SizedBox(),
-                                        // SizedBox(height: controller.powerSource != null ? 3 : 0),
-                                        // controller.powerSource != null
-                                        //     ? Text('Power Source: ${controller.powerSource}', style: descriptionText)
-                                        //     : const SizedBox(),
-                                        // Html(data: controller.productDetails[0].fullDescription, style: {
-                                        //   "h1 ": Style(
-                                        //       fontSize: FontSize.xLarge,
-                                        //       color: AppColor.blackColor,
-                                        //       fontWeight: FontWeight.bold,
-                                        //       fontFamily: "urbanist"),
-                                        //   "div": htmlTagStyle,
-                                        //   "span": htmlTagStyle,
-                                        //   "li": htmlTagStyle
-                                        // }),
-                                        // SizedBox(height: controller.weight != null ? 5 : 0),
-                                        // controller.weight != null ? Text('Weight: ${controller.weight}', style: descriptionText) : const SizedBox(),
-                                        // controller.dimensions != null
-                                        //     ? Text('Dimensions: ${controller.dimensions}', style: descriptionText)
-                                        //     : const SizedBox(),
-                                        // SizedBox(height: controller.dimensions != null ? 15 : 0),
-                                      ]),
+                                  SizedBox(height: 15.h),
+                                  Divider(height: 1.h, color: const Color(0xFFEFF0F6)),
+                                  SizedBox(height: 15.h),
+                                  const CustomText(text: "Item Description", size: 18, weight: FontWeight.w900, color: AppColor.blackColor),
+                                  const SizedBox(height: 15),
+                                  HtmlWidget(
+                                    controller.productDetails[0].fullDescription.toString(),
+                                    textStyle: const TextStyle(fontWeight: FontWeight.w500, color: AppColor.deSelectedColor),
+                                    customStylesBuilder: (element) {
+                                      if (element.localName == 'h2' || element.localName == "div" || element.localName == "h1") {
+                                        return {'color': '#000000', 'font-size': '18px', 'font-weight': 'bold', 'fontFamily': 'urbanist'};
+                                      }
+                                      if (element.localName == 'td' || element.localName == "tr" || element.localName == "table") {
+                                        return {
+                                          'color': '#6E7191',
+                                          'font-size': '15px',
+                                          'font-weight': 'normal',
+                                          'fontFamily': 'urbanist',
+                                          'padding': '2px'
+                                        };
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  // SizedBox(height: controller.color != null ? 15 : 0),
+                                  // controller.color != null ? Text('Color: ${controller.color}', style: descriptionText) : const SizedBox(),
+                                  // SizedBox(height: controller.material != null ? 3 : 0),
+                                  // controller.material != null
+                                  //     ? Text('Material: ${controller.material}', style: descriptionText)
+                                  //     : const SizedBox(),
+                                  // SizedBox(height: controller.style != null ? 3 : 0),
+                                  // controller.style != null ? Text('Style: ${controller.style}', style: descriptionText) : const SizedBox(),
+                                  // SizedBox(height: controller.powerSource != null ? 3 : 0),
+                                  // controller.powerSource != null
+                                  //     ? Text('Power Source: ${controller.powerSource}', style: descriptionText)
+                                  //     : const SizedBox(),
+                                  // Html(data: controller.productDetails[0].fullDescription, style: {
+                                  //   "h1 ": Style(
+                                  //       fontSize: FontSize.xLarge,
+                                  //       color: AppColor.blackColor,
+                                  //       fontWeight: FontWeight.bold,
+                                  //       fontFamily: "urbanist"),
+                                  //   "div": htmlTagStyle,
+                                  //   "span": htmlTagStyle,
+                                  //   "li": htmlTagStyle
+                                  // }),
+                                  // SizedBox(height: controller.weight != null ? 5 : 0),
+                                  // controller.weight != null ? Text('Weight: ${controller.weight}', style: descriptionText) : const SizedBox(),
+                                  // controller.dimensions != null
+                                  //     ? Text('Dimensions: ${controller.dimensions}', style: descriptionText)
+                                  //     : const SizedBox(),
+                                  // SizedBox(height: controller.dimensions != null ? 15 : 0),
+                                ]),
 
                                 // productDetailsController.initialIndex.value == -1 && productDetailsController.initialVariationModel.value.data == null
                                 //     ? const SizedBox()
@@ -1421,121 +1367,236 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 //     : const SizedBox()),
 
                                 // SizedBox(height: 30.h),
-                                    controller.customerItemsList.isNotEmpty?
+                                controller.customerItemsList.isNotEmpty ?
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                  CustomText(text: "You may be interested", size: 24.sp, weight: FontWeight.w700),
-                                  SizedBox(height: 20.h),
-                                  StaggeredGrid.count(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 16.h,
-                                    crossAxisSpacing: 16.w,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      for (int i = 0; i < controller.customerItemsList.length; i++)
-                                        GestureDetector(
-                                            onTap: () async {
-                                              Get.delete<CategoryControllers>();
-                                              await Get.to(
-                                                    () => ProductViewDetailsScreen(itemId: controller.customerItemsList[i].id),
-                                              );
-                                              controller.productViewDetails(context: context, itemId:controller.customerItemsList[i].id);
-                                            },
-                                            child: Container(
-                                                width: 145,
-                                                decoration: BoxDecoration(
-                                                    color: AppColor.whiteColor,
-                                                    borderRadius: BorderRadius.circular(12.r),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          color: Colors.black.withOpacity(0.05),
-                                                          offset: const Offset(0, 0),
-                                                          blurRadius: 7,
-                                                          spreadRadius: 0)
-                                                    ]),
-                                                child: Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                                    child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          Stack(children: [
-                                                            CachedNetworkImage(
-                                                                imageUrl: controller.customerItemsList[i].image[0].toString(),
-                                                                imageBuilder: (context, imageProvider) => Container(
-                                                                    height: 130,
-                                                                    width: 130,
-                                                                    decoration: BoxDecoration(
-                                                                        color: AppColor.whiteColor,
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                        image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
-                                                          ]),
-                                                          const SizedBox(height: 10),
-                                                          TextWidget(
-                                                              text: controller.customerItemsList[i].brandName ?? '',
-                                                              color: AppColor.textColor,
-                                                              fontSize: 16,
-                                                              fontWeight: FontWeight.w600,
-                                                              maxLines: 2,
-                                                              overflow: TextOverflow.fade),
-                                                          const SizedBox(height: 10),
-                                                          TextWidget(
-                                                              text: controller.customerItemsList[i].name ?? '',
-                                                              color: AppColor.textColor1,
-                                                              textAlign: TextAlign.center,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w400,
-                                                              maxLines: 2,
-                                                              overflow: TextOverflow.fade),
-                                                        ])))),
-                                      SizedBox(height: 12.h)
-                                    ],
-                                  )
+                                      CustomText(text: "You may be interested", size: 24.sp, weight: FontWeight.w700),
+                                      SizedBox(height: 20.h),
+                                      StaggeredGrid.count(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 16.h,
+                                        crossAxisSpacing: 16.w,
+                                        children: [
+                                          for (int i = 0; i < controller.customerItemsList.length; i++)
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  Get.delete<CategoryControllers>();
+                                                  await Get.to(
+                                                        () => ProductViewDetailsScreen(itemId: controller.customerItemsList[i].id),
+                                                  );
+                                                  controller.productViewDetails(context: context, itemId: controller.customerItemsList[i].id);
+                                                },
+                                                child: Container(
+                                                    width: 145,
+                                                    decoration: BoxDecoration(
+                                                        color: AppColor.whiteColor,
+                                                        borderRadius: BorderRadius.circular(12.r),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Colors.black.withOpacity(0.05),
+                                                              offset: const Offset(0, 0),
+                                                              blurRadius: 7,
+                                                              spreadRadius: 0)
+                                                        ]),
+                                                    child: Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                        child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Stack(children: [
+                                                                CachedNetworkImage(
+                                                                    imageUrl: controller.customerItemsList[i].image[0].toString(),
+                                                                    imageBuilder: (context, imageProvider) =>
+                                                                        Container(
+                                                                            height: 130,
+                                                                            width: 130,
+                                                                            decoration: BoxDecoration(
+                                                                                color: AppColor.whiteColor,
+                                                                                borderRadius: BorderRadius.circular(8),
+                                                                                image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                                                              ]),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.customerItemsList[i].brandName ?? '',
+                                                                  color: AppColor.textColor,
+                                                                  fontSize: 16,
+                                                                  fontWeight: FontWeight.w600,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.customerItemsList[i].name ?? '',
+                                                                  color: AppColor.textColor1,
+                                                                  textAlign: TextAlign.center,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                            ])))),
+                                          SizedBox(height: 12.h)
+                                        ],
+                                      )
 
-                                  // ProductWidget(
-                                  //     onTap: () async {
-                                  //       productDetailsController.resetProductState();
-                                  //       Navigator.of(context).push(MaterialPageRoute(
-                                  //           builder: (context) => ProductViewDetailsScreen(
-                                  //               relatedProduct: productDetailsController.relatedProductModel.value.data?[i])));
-                                  //     },
-                                  //     favTap: () async {
-                                  //       if (box.read('isLogedIn') != false) {
-                                  //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == true) {
-                                  //           await wishlistController
-                                  //               .toggleFavoriteFalse(productDetailsController.relatedProductModel.value.data![i].id!);
-                                  //
-                                  //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
-                                  //         }
-                                  //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == false) {
-                                  //           await wishlistController
-                                  //               .toggleFavoriteTrue(productDetailsController.relatedProductModel.value.data![i].id!);
-                                  //
-                                  //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
-                                  //         }
-                                  //       } else {
-                                  //         Get.to(() => const SignInScreen());
-                                  //       }
-                                  //     },
-                                  //     wishlist:
-                                  //     wishlistController.favList.contains(productDetailsController.relatedProductModel.value.data![i].id!) ||
-                                  //         productDetailsController.relatedProductModel.value.data?[i].wishlist == true
-                                  //         ? true
-                                  //         : false,
-                                  //     productImage: productDetailsController.relatedProductModel.value.data?[i].cover,
-                                  //     title: productDetailsController.relatedProductModel.value.data?[i].name,
-                                  //     rating: productDetailsController.relatedProductModel.value.data?[i].ratingStar,
-                                  //     currentPrice: productDetailsController.relatedProductModel.value.data?[i].currencyPrice,
-                                  //     discountPrice: productDetailsController.relatedProductModel.value.data?[i].discountedPrice,
-                                  //     textRating: productDetailsController.relatedProductModel.value.data?[i].ratingStarCount,
-                                  //     flashSale: productDetailsController.relatedProductModel.value.data![i].flashSale!,
-                                  //     isOffer: productDetailsController.relatedProductModel.value.data![i].isOffer!),
-                                ]):const SizedBox()
+                                      // ProductWidget(
+                                      //     onTap: () async {
+                                      //       productDetailsController.resetProductState();
+                                      //       Navigator.of(context).push(MaterialPageRoute(
+                                      //           builder: (context) => ProductViewDetailsScreen(
+                                      //               relatedProduct: productDetailsController.relatedProductModel.value.data?[i])));
+                                      //     },
+                                      //     favTap: () async {
+                                      //       if (box.read('isLogedIn') != false) {
+                                      //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == true) {
+                                      //           await wishlistController
+                                      //               .toggleFavoriteFalse(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //
+                                      //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //         }
+                                      //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == false) {
+                                      //           await wishlistController
+                                      //               .toggleFavoriteTrue(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //
+                                      //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //         }
+                                      //       } else {
+                                      //         Get.to(() => const SignInScreen());
+                                      //       }
+                                      //     },
+                                      //     wishlist:
+                                      //     wishlistController.favList.contains(productDetailsController.relatedProductModel.value.data![i].id!) ||
+                                      //         productDetailsController.relatedProductModel.value.data?[i].wishlist == true
+                                      //         ? true
+                                      //         : false,
+                                      //     productImage: productDetailsController.relatedProductModel.value.data?[i].cover,
+                                      //     title: productDetailsController.relatedProductModel.value.data?[i].name,
+                                      //     rating: productDetailsController.relatedProductModel.value.data?[i].ratingStar,
+                                      //     currentPrice: productDetailsController.relatedProductModel.value.data?[i].currencyPrice,
+                                      //     discountPrice: productDetailsController.relatedProductModel.value.data?[i].discountedPrice,
+                                      //     textRating: productDetailsController.relatedProductModel.value.data?[i].ratingStarCount,
+                                      //     flashSale: productDetailsController.relatedProductModel.value.data![i].flashSale!,
+                                      //     isOffer: productDetailsController.relatedProductModel.value.data![i].isOffer!),
+                                    ]) : const SizedBox(),
+
+                                controller.recentProductList.isNotEmpty ?
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(text: "You may be interested", size: 24.sp, weight: FontWeight.w700),
+                                      SizedBox(height: 20.h),
+                                      StaggeredGrid.count(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 16.h,
+                                        crossAxisSpacing: 16.w,
+                                        children: [
+                                          for (int i = 0; i < controller.recentProductList.length; i++)
+                                            GestureDetector(
+                                                onTap: () async {
+                                                  // Get.delete<CategoryControllers>();
+                                                  // await Get.to(
+                                                  //       () => ProductViewDetailsScreen(itemId: controller.recentProductList[i].productId),
+                                                  // );
+                                                  // controller.productViewDetails(context: context, itemId:controller.recentProductList[i].productId);
+                                                },
+                                                child: Container(
+                                                    width: 145,
+                                                    decoration: BoxDecoration(
+                                                        color: AppColor.whiteColor,
+                                                        borderRadius: BorderRadius.circular(12.r),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Colors.black.withOpacity(0.05),
+                                                              offset: const Offset(0, 0),
+                                                              blurRadius: 7,
+                                                              spreadRadius: 0)
+                                                        ]),
+                                                    child: Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                        child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Stack(children: [
+                                                                CachedNetworkImage(
+                                                                    imageUrl: controller.recentProductList[i].image.toString(),
+                                                                    imageBuilder: (context, imageProvider) =>
+                                                                        Container(
+                                                                            height: 130,
+                                                                            width: 130,
+                                                                            decoration: BoxDecoration(
+                                                                                color: AppColor.whiteColor,
+                                                                                borderRadius: BorderRadius.circular(8),
+                                                                                image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                                                              ]),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.recentProductList[i].brandName ?? '',
+                                                                  color: AppColor.textColor,
+                                                                  fontSize: 16,
+                                                                  fontWeight: FontWeight.w600,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.recentProductList[i].name ?? '',
+                                                                  color: AppColor.textColor1,
+                                                                  textAlign: TextAlign.center,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                            ])))),
+                                          SizedBox(height: 12.h)
+                                        ],
+                                      )
+
+                                      // ProductWidget(
+                                      //     onTap: () async {
+                                      //       productDetailsController.resetProductState();
+                                      //       Navigator.of(context).push(MaterialPageRoute(
+                                      //           builder: (context) => ProductViewDetailsScreen(
+                                      //               relatedProduct: productDetailsController.relatedProductModel.value.data?[i])));
+                                      //     },
+                                      //     favTap: () async {
+                                      //       if (box.read('isLogedIn') != false) {
+                                      //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == true) {
+                                      //           await wishlistController
+                                      //               .toggleFavoriteFalse(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //
+                                      //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //         }
+                                      //         if (productDetailsController.relatedProductModel.value.data?[i].wishlist == false) {
+                                      //           await wishlistController
+                                      //               .toggleFavoriteTrue(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //
+                                      //           wishlistController.showFavorite(productDetailsController.relatedProductModel.value.data![i].id!);
+                                      //         }
+                                      //       } else {
+                                      //         Get.to(() => const SignInScreen());
+                                      //       }
+                                      //     },
+                                      //     wishlist:
+                                      //     wishlistController.favList.contains(productDetailsController.relatedProductModel.value.data![i].id!) ||
+                                      //         productDetailsController.relatedProductModel.value.data?[i].wishlist == true
+                                      //         ? true
+                                      //         : false,
+                                      //     productImage: productDetailsController.relatedProductModel.value.data?[i].cover,
+                                      //     title: productDetailsController.relatedProductModel.value.data?[i].name,
+                                      //     rating: productDetailsController.relatedProductModel.value.data?[i].ratingStar,
+                                      //     currentPrice: productDetailsController.relatedProductModel.value.data?[i].currencyPrice,
+                                      //     discountPrice: productDetailsController.relatedProductModel.value.data?[i].discountedPrice,
+                                      //     textRating: productDetailsController.relatedProductModel.value.data?[i].ratingStarCount,
+                                      //     flashSale: productDetailsController.relatedProductModel.value.data![i].flashSale!,
+                                      //     isOffer: productDetailsController.relatedProductModel.value.data![i].isOffer!),
+                                    ]) : const SizedBox()
                                 // )
                               ])
-                              // ),
-                              ))));
-            }));
+                            // ),
+                          )));
+                },
+              ));
+
   }
 
 }

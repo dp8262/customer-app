@@ -7,14 +7,12 @@ import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/controller/category_controller.dart';
 import 'package:shopperz/app/modules/category/views/product_view_details_screen.dart';
+import 'package:shopperz/app/modules/category/views/sqlite_helper.dart';
 import 'package:shopperz/app/modules/home/widgets/appbar.dart';
-import 'package:shopperz/app/modules/product_details/views/product_details.dart';
 import 'package:shopperz/config/theme/app_color.dart';
 import 'package:shopperz/utils/svg_icon.dart';
 import 'package:shopperz/widgets/appbar3.dart';
 import 'package:shopperz/widgets/textwidget.dart';
-
-import '../../../../model/product_sub_list_model.dart';
 
 
 class ProductCategoryListScreen extends StatefulWidget {
@@ -32,15 +30,18 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
   String selectedFilter = "Name A to Z";
   final List<String> filterList = ["Name A to Z", "Name Z to A", "Created on"];
   // late RxList<Product> productList;
-
+  ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   @override
   void initState() {
+    myInit();
     super.initState();
-    // productList = categoryControllers.productList;
-    // loadProduct(selectedFilter);
+  }
 
+  myInit() async {
+    await contactDatabaseHelper.initializeDatabase();
     categoryControllers.productListDetails(context: context, categoryId: widget.categoryId);
   }
+
   // void loadProduct(String sortBy) async {
   //   await categoryControllers.productListDetails(context: context, categoryId: widget.categoryId, sortBy: sortBy);
   //
@@ -117,17 +118,18 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                       // if (selectedFilter==controller.productList) {
                                         return InkWell(
                                           onTap: ()  async{
-                                            Get.delete<CategoryControllers>();
-                                            await Get.to(
-                                                  () => ProductViewDetailsScreen(itemId: categoryControllers.productList[index].productId,
-                                                // product: categoryControllers.productList[index].i,
-                                              ),
-                                            );
-                                            // print("category id${categoryControllers.productList[index].categoryId}");
-                                            print("product id${categoryControllers.productList[index].productId}");
-                                            // print("parent category id${categoryControllers.productList[index].parentCategoryId}");
-                                          },
-                                          child: Container(
+                                          await contactDatabaseHelper.insertRecentProduct(categoryControllers.productList[index]);
+
+
+                                          Get.delete<CategoryControllers>();
+                                          await Get.to(
+                                                () => ProductViewDetailsScreen(itemId: categoryControllers.productList[index].productId,
+                                              // product: categoryControllers.productList[index].i,
+                                            ),
+                                          );
+                                          // print("product id${categoryControllers.productList[index].productId}");
+                                        },
+                                        child: Container(
                                               padding: const EdgeInsets.symmetric(vertical: 5),
                                               decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColor.borderColor, width: 1.sp))),
                                               child: Center(
