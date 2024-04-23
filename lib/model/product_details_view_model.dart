@@ -30,8 +30,15 @@ class ProductDetails {
     required this.packing,
     required this.isLock,
      this.description,
-    required this.youtubeVideoUrl,
-    required this.youtubeVideoId,
+
+     this.youtubeVideoUrl,
+     this.youtubeVideoId,
+     // this.youtubeVideoId1,
+     // this.youtubeVideoId2,
+     // this.youtubeVideoId3,
+     // this.youtubeVideoId4,
+     // this.youtubeVideoId5,
+
      this.fullDescription,
   });
   late final List<String> image;
@@ -47,8 +54,16 @@ class ProductDetails {
   late final String packing;
   late final String isLock;
   late final String? description;
-  late final String youtubeVideoUrl;
-  late final String youtubeVideoId;
+
+  //issue
+  late final String? youtubeVideoUrl;
+  late final String? youtubeVideoId;
+  // late final String? youtubeVideoId1;
+  // late final String? youtubeVideoId2;
+  // late final String? youtubeVideoId3;
+  // late final String? youtubeVideoId4;
+  // late final String? youtubeVideoId5;
+
   late final String? fullDescription;
 
   ProductDetails.fromJson(Map<String, dynamic> json){
@@ -67,6 +82,11 @@ class ProductDetails {
     description = json['discription'];
     youtubeVideoUrl = json['YoutubeVideoUrl'];
     youtubeVideoId = json['YoutubeVideoId'];
+    // youtubeVideoId1 = json['YoutubeVideoId1'];
+    // youtubeVideoId2 = json['YoutubeVideoId2'];
+    // youtubeVideoId3 = json['YoutubeVideoId3'];
+    // youtubeVideoId4 = json['YoutubeVideoId4'];
+    // youtubeVideoId5 = json['YoutubeVideoId5'];
     fullDescription = json['fullDescription'];
   }
 
@@ -87,6 +107,11 @@ class ProductDetails {
     _data['discription'] = description;
     _data['YoutubeVideoUrl'] = youtubeVideoUrl;
     _data['YoutubeVideoId'] = youtubeVideoId;
+    // _data['YoutubeVideoId1'] = youtubeVideoId1;
+    // _data['YoutubeVideoId2'] = youtubeVideoId2;
+    // _data['YoutubeVideoId3'] = youtubeVideoId3;
+    // _data['YoutubeVideoId4'] = youtubeVideoId4;
+    // _data['YoutubeVideoId5'] = youtubeVideoId5;
     _data['fullDescription'] = fullDescription;
     return _data;
   }

@@ -15,6 +15,7 @@ import 'package:shopperz/app/modules/navbar/views/navbar_view.dart';
 import 'package:shopperz/widgets/devider.dart';
 import 'package:shopperz/widgets/secondary_button.dart';
 import 'package:shopperz/widgets/textwidget.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../config/theme/app_color.dart';
 import '../../../../utils/svg_icon.dart';
@@ -315,6 +316,20 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 //         //   'td': Style(padding: HtmlPaddings.all(8.0)),
                                 //         // },
                                 //       ),
+                                // controller.productDetails[0].youtubeVideoId1!.isNotEmpty?
+                                // YoutubePlayer(
+                                //   controller:
+                                //   YoutubePlayerController(
+                                //     initialVideoId: controller.productDetails[0].youtubeVideoId1.toString(),
+                                //     flags: const YoutubePlayerFlags(
+                                //       autoPlay: false,
+                                //       mute: false,
+                                //     ),
+                                //   ),
+                                //   showVideoProgressIndicator: true,
+                                //   progressIndicatorColor: Colors.blueAccent,
+                                // ):SizedBox(),
+
                                 controller.productDetails[0].fullDescription == '-'
                                     ? const SizedBox()
                                     : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -1491,14 +1506,14 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                         crossAxisSpacing: 16.w,
                                         children: [
                                           for (int i = 0; i < controller.recentProductList.length; i++)
-                                            // widget.itemId==controller.recentProductList[i].productId?const SizedBox():
+                                            if (widget.itemId != controller.recentProductList[i].productId)
                                             GestureDetector(
                                                 onTap: () async {
-                                                  // Get.delete<CategoryControllers>();
-                                                  // await Get.to(
-                                                  //       () => ProductViewDetailsScreen(itemId: controller.recentProductList[i].productId),
-                                                  // );
-                                                  // controller.productViewDetails(context: context, itemId:controller.recentProductList[i].productId);
+                                                  Get.delete<CategoryControllers>();
+                                                  await Get.to(
+                                                        () => ProductViewDetailsScreen(itemId: controller.recentProductList[i].productId),
+                                                  );
+                                                  controller.productViewDetails(context: context, itemId:controller.recentProductList[i].productId);
                                                 },
                                                 child: Container(
                                                     width: 145,
