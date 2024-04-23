@@ -33,6 +33,7 @@ class ProductDetails {
 
      this.youtubeVideoUrl,
      this.youtubeVideoId,
+
      // this.youtubeVideoId1,
      // this.youtubeVideoId2,
      // this.youtubeVideoId3,

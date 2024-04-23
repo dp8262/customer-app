@@ -329,7 +329,6 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                 //   showVideoProgressIndicator: true,
                                 //   progressIndicatorColor: Colors.blueAccent,
                                 // ):SizedBox(),
-
                                 controller.productDetails[0].fullDescription == '-'
                                     ? const SizedBox()
                                     : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
