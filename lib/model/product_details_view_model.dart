@@ -38,6 +38,7 @@ class ProductDetails {
      // this.youtubeVideoId3,
      // this.youtubeVideoId4,
      // this.youtubeVideoId5,
+
      this.fullDescription,
   });
   late final List<String> image;
