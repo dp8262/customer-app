@@ -17,4 +17,5 @@ class AppImages {
   static const deleteIcon = 'assets/icons/deleteIcon.gif';
   static const emptyIcon = 'assets/images/empty.gif';
   static const brand = 'assets/images/fila-cover.png';
+  static const errorImages = 'assets/images/error_images.jpg';
 }

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -12,10 +11,10 @@ import 'package:shopperz/app/controller/category_controller.dart';
 import 'package:shopperz/app/modules/cart/controller/cart_controller.dart';
 import 'package:shopperz/app/modules/navbar/controller/navbar_controller.dart';
 import 'package:shopperz/app/modules/navbar/views/navbar_view.dart';
+import 'package:shopperz/utils/images.dart';
 import 'package:shopperz/widgets/devider.dart';
 import 'package:shopperz/widgets/secondary_button.dart';
 import 'package:shopperz/widgets/textwidget.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../config/theme/app_color.dart';
 import '../../../../utils/svg_icon.dart';
@@ -1423,14 +1422,17 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                               Stack(children: [
                                                                 CachedNetworkImage(
                                                                     imageUrl: controller.customerItemsList[i].image[0].toString(),
-                                                                    imageBuilder: (context, imageProvider) =>
-                                                                        Container(
-                                                                            height: 130,
-                                                                            width: 130,
-                                                                            decoration: BoxDecoration(
-                                                                                color: AppColor.whiteColor,
-                                                                                borderRadius: BorderRadius.circular(8),
-                                                                                image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                                                                errorWidget: (context, url, error) => Image.asset(
+                                                                      AppImages.errorImages,
+                                                                      fit: BoxFit.cover
+                                                                    ),
+                                                                imageBuilder: (context, imageProvider) => Container(
+                                                                    height: 130,
+                                                                    width: 130,
+                                                                    decoration: BoxDecoration(
+                                                                        color: AppColor.whiteColor,
+                                                                        borderRadius: BorderRadius.circular(8),
+                                                                        image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
                                                               ]),
                                                               const SizedBox(height: 10),
                                                               TextWidget(
