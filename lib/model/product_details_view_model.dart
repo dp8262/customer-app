@@ -32,13 +32,18 @@ class ProductDetails {
      this.description,
 
      this.youtubeVideoUrl,
+     this.youtubeVideoUrl1,
+     this.youtubeVideoUrl2,
+     this.youtubeVideoUrl3,
+     this.youtubeVideoUrl4,
+     this.youtubeVideoUrl5,
      this.youtubeVideoId,
 
-     // this.youtubeVideoId1,
-     // this.youtubeVideoId2,
-     // this.youtubeVideoId3,
-     // this.youtubeVideoId4,
-     // this.youtubeVideoId5,
+     this.youtubeVideoId1,
+     this.youtubeVideoId2,
+     this.youtubeVideoId3,
+     this.youtubeVideoId4,
+     this.youtubeVideoId5,
      this.fullDescription,
   });
   late final List<String> image;
@@ -57,12 +62,18 @@ class ProductDetails {
 
   //issue
   late final String? youtubeVideoUrl;
+  late final String? youtubeVideoUrl1;
+  late final String? youtubeVideoUrl2;
+  late final String? youtubeVideoUrl3;
+  late final String? youtubeVideoUrl4;
+  late final String? youtubeVideoUrl5;
+
   late final String? youtubeVideoId;
-  // late final String? youtubeVideoId1;
-  // late final String? youtubeVideoId2;
-  // late final String? youtubeVideoId3;
-  // late final String? youtubeVideoId4;
-  // late final String? youtubeVideoId5;
+  late final String? youtubeVideoId1;
+  late final String? youtubeVideoId2;
+  late final String? youtubeVideoId3;
+  late final String? youtubeVideoId4;
+  late final String? youtubeVideoId5;
 
   late final String? fullDescription;
 
@@ -80,13 +91,20 @@ class ProductDetails {
     packing = json['Packing'];
     isLock = json['IsLock'];
     description = json['discription'];
+
     youtubeVideoUrl = json['YoutubeVideoUrl'];
+    youtubeVideoUrl1 = json['YoutubeVideoUrl1'];
+    youtubeVideoUrl2 = json['YoutubeVideoUrl2'];
+    youtubeVideoUrl3 = json['YoutubeVideoUrl3'];
+    youtubeVideoUrl4 = json['YoutubeVideoUrl4'];
+    youtubeVideoUrl5 = json['YoutubeVideoUrl5'];
     youtubeVideoId = json['YoutubeVideoId'];
-    // youtubeVideoId1 = json['YoutubeVideoId1'];
-    // youtubeVideoId2 = json['YoutubeVideoId2'];
-    // youtubeVideoId3 = json['YoutubeVideoId3'];
-    // youtubeVideoId4 = json['YoutubeVideoId4'];
-    // youtubeVideoId5 = json['YoutubeVideoId5'];
+    youtubeVideoId1 = json['YoutubeVideoId1'];
+    youtubeVideoId2 = json['YoutubeVideoId2'];
+    youtubeVideoId3 = json['YoutubeVideoId3'];
+    youtubeVideoId4 = json['YoutubeVideoId4'];
+    youtubeVideoId5 = json['YoutubeVideoId5'];
+
     fullDescription = json['fullDescription'];
   }
 
@@ -105,13 +123,20 @@ class ProductDetails {
     _data['Packing'] = packing;
     _data['IsLock'] = isLock;
     _data['discription'] = description;
+
     _data['YoutubeVideoUrl'] = youtubeVideoUrl;
+    _data['YoutubeVideoUrl1'] = youtubeVideoUrl1;
+    _data['YoutubeVideoUrl2'] = youtubeVideoUrl2;
+    _data['YoutubeVideoUrl3'] = youtubeVideoUrl3;
+    _data['YoutubeVideoUrl4'] = youtubeVideoUrl4;
+    _data['YoutubeVideoUrl5'] = youtubeVideoUrl5;
     _data['YoutubeVideoId'] = youtubeVideoId;
-    // _data['YoutubeVideoId1'] = youtubeVideoId1;
-    // _data['YoutubeVideoId2'] = youtubeVideoId2;
-    // _data['YoutubeVideoId3'] = youtubeVideoId3;
-    // _data['YoutubeVideoId4'] = youtubeVideoId4;
-    // _data['YoutubeVideoId5'] = youtubeVideoId5;
+    _data['YoutubeVideoId1'] = youtubeVideoId1;
+    _data['YoutubeVideoId2'] = youtubeVideoId2;
+    _data['YoutubeVideoId3'] = youtubeVideoId3;
+    _data['YoutubeVideoId4'] = youtubeVideoId4;
+    _data['YoutubeVideoId5'] = youtubeVideoId5;
+
     _data['fullDescription'] = fullDescription;
     return _data;
   }

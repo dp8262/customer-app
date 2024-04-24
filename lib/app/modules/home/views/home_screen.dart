@@ -187,10 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             for (var i = 0; i < controller.homePageProductList.length; i++)
                                               ProductWidget2(
-                                                onTap: () {
-                                                  Get.to(
-                                                    () => ProductViewDetailsScreen(itemId: controller.homePageProductList[i].productId),
-                                                  );
+                                                onTap: () async {
+                                                 await Get.to(
+                                                    () => ProductViewDetailsScreen(itemId: controller.homePageProductList[i].productId));
+                                                  homeControllers.homeBannerList(context: context);
+
                                                 },
                                                 // favTap: () async {
                                                 // if (box.read('isLogedIn') != false) {
