@@ -10,6 +10,7 @@ import 'package:shopperz/app/modules/category/views/product_view_details_screen.
 import 'package:shopperz/app/modules/category/views/sqlite_helper.dart';
 import 'package:shopperz/app/modules/home/widgets/appbar.dart';
 import 'package:shopperz/config/theme/app_color.dart';
+import 'package:shopperz/utils/images.dart';
 import 'package:shopperz/utils/svg_icon.dart';
 import 'package:shopperz/widgets/appbar3.dart';
 import 'package:shopperz/widgets/textwidget.dart';
@@ -138,13 +139,16 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                                                     flex: 8,
                                                     child: Row(children: [
                                                       CachedNetworkImage(
+                                                        width: 100,
                                                           imageUrl: categoryControllers.productList[index].image,
+                                                          errorWidget: (context, url, error) =>
+                                                              Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                           imageBuilder: (context, imageProvider) => Container(
                                                               height: 100,
                                                               width: 100,
                                                               decoration: BoxDecoration(
                                                                   borderRadius: BorderRadius.circular(5),
-                                                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover)))),
+                                                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover,)))),
                                                       const SizedBox(width: 15),
                                                       Expanded(
                                                           child: Align(

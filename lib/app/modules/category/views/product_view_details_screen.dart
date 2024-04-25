@@ -1514,8 +1514,11 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                               : const SizedBox(),
 
                           controller.recentProductList.isNotEmpty
+                          &&
+                              controller.recentProductList.any((product) => widget.itemId !=product.productId)
                               ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                  CustomText(text: "Recently Viewed Product", size: 24.sp, weight: FontWeight.w700),
+                            SizedBox(height: 20.h),
+                            CustomText(text: "Recently Viewed Product", size: 24.sp, weight: FontWeight.w700),
                                   SizedBox(height: 20.h),
                                   StaggeredGrid.count(
                                     crossAxisCount: 2,
@@ -1553,6 +1556,8 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                             Stack(children: [
                                                               CachedNetworkImage(
                                                                   imageUrl: controller.recentProductList[i].image.toString(),
+                                                                  errorWidget: (context, url, error) =>
+                                                                      Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                                   imageBuilder: (context, imageProvider) => Container(
                                                                       height: 130,
                                                                       width: 130,

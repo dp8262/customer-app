@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
+import 'package:shopperz/app/modules/category/views/sqlite_helper.dart';
 import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/utils/api_list.dart';
+import '../../model/product_sub_list_model.dart';
 
 class HomeControllers extends GetxController {
   RxBool isLoading = false.obs;
@@ -17,6 +19,10 @@ class HomeControllers extends GetxController {
   RxList<BannerList> bannerList = <BannerList>[].obs;
   RxList<HomePageCategory> homePageCategoryList = <HomePageCategory>[].obs;
   RxList<HomePageProduct> homePageProductList = <HomePageProduct>[].obs;
+  //
+  // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+  // RxList<Product> recentProductList = <Product>[].obs;
+
   // void handleSliderDots(int index) {
   //   dotIndex.value = index;
   // }
@@ -34,7 +40,11 @@ class HomeControllers extends GetxController {
     bannerList.clear();
     homePageCategoryList.clear();
     homePageProductList.clear();
+    // recentProductList.clear();
     try {
+      // await contactDatabaseHelper.initializeDatabase();
+      // recentProductList.value= await  contactDatabaseHelper.getAllRecentProduct();
+      // recentProductList.value=    recentProductList.reversed.toList();
       print("a=======");
       getAPI(
           methodName: ApiList.slider,

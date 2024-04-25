@@ -305,6 +305,7 @@ class CategoryControllers extends GetxController {
               customerItemsList.addAll(productInterestedListModel.customerItems);
 
               isOtherLoading(false);
+              // getRelatedProducts(context: context, itemId: itemId);
               // }
             } catch (e) {
               // handleError("Error response: $e", context);
@@ -319,6 +320,40 @@ class CategoryControllers extends GetxController {
       isOtherLoading(false);
     }
   }
+  // getRelatedProducts({required BuildContext context, required String itemId}) async {
+  //   isOtherLoading(true);
+  //   isError(false);
+  //   error("");
+  //   customerItemsList.clear();
+  //
+  //   try {
+  //     // if (productList.isEmpty) {
+  //
+  //     getAPI(
+  //         methodName: ApiList.getRelatedProducts,
+  //         param: {"id": itemId},
+  //         callback: (value) {
+  //           try {
+  //             Map<String, dynamic> valueMap = json.decode(value.response);
+  //             // if (valueMap["statusCode"] == 200) {
+  //             ProductInterestedListModel productInterestedListModel = ProductInterestedListModel.fromJson(valueMap);
+  //             customerItemsList.addAll(productInterestedListModel.customerItems);
+  //
+  //             isOtherLoading(false);
+  //             // }
+  //           } catch (e) {
+  //             // handleError("Error response: $e", context);
+  //             isOtherLoading(false);
+  //           }
+  //         });
+  //     // } else {
+  //     //   isLoading(false);
+  //     // }
+  //   } catch (ex) {
+  //     handleError("Failed to fetch data: $ex", context);
+  //     isOtherLoading(false);
+  //   }
+  // }
 }
 // class DatabaseHelper {
 //   static Database? _database;
