@@ -285,7 +285,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                               : HtmlWidget(controller.productDetails[0].description.toString(),
                                   // textStyle: const TextStyle(fontWeight: FontWeight.w500, color: AppColor.deSelectedColor),
                                   customStylesBuilder: (element) {
-                                  if (element.localName == 'h2') {
+                                  if (element.localName == 'h2'||element.localName=="h1"||element.localName=="h3"||element.localName=="h4") {
                                     return {'color': '#000000', 'font-size': '18px', 'font-weight': 'bold', 'fontFamily': 'urbanist'};
                                   }
                                   if (element.localName == 'td') {
