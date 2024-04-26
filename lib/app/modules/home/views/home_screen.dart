@@ -1,32 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/controller/home_controller.dart';
-import 'package:shopperz/app/modules/auth/controller/auth_controler.dart';
-import 'package:shopperz/app/modules/auth/views/sign_in.dart';
-import 'package:shopperz/app/modules/category/views/category_wise_product_screen.dart';
-import 'package:shopperz/app/modules/filter/controller/filter_controller.dart';
-import 'package:shopperz/app/modules/home/controller/brand_controller.dart';
-import 'package:shopperz/app/modules/home/controller/category_controller.dart';
-import 'package:shopperz/app/modules/home/controller/flash_sale_controller.dart';
-import 'package:shopperz/app/modules/home/controller/popular_product_controller.dart';
-import 'package:shopperz/app/modules/home/controller/product_section_controller.dart';
+import 'package:shopperz/app/modules/home/views/brands_product_category_list_screen.dart';
 import 'package:shopperz/app/modules/home/widgets/appbar.dart';
 import 'package:shopperz/app/modules/home/widgets/category.dart';
 import 'package:shopperz/app/modules/home/widgets/promotion_banner.dart';
 import 'package:shopperz/app/modules/home/widgets/slider.dart';
-import 'package:shopperz/app/modules/language/controller/language_controller.dart';
 import 'package:shopperz/app/modules/product/widgets/product.dart';
-import 'package:shopperz/app/modules/product_details/views/product_details.dart';
-import 'package:shopperz/app/modules/profile/controller/profile_controller.dart';
-import 'package:shopperz/app/modules/shipping/controller/show_address_controller.dart';
-import 'package:shopperz/main.dart';
 import 'package:shopperz/utils/svg_icon.dart';
 import 'package:shopperz/widgets/custom_text.dart';
 import 'package:shopperz/widgets/shimmer/categories_shimmer.dart';
@@ -36,10 +22,7 @@ import 'package:shopperz/widgets/title.dart';
 
 import '../../../../config/theme/app_color.dart';
 import '../../category/views/product_view_details_screen.dart';
-import '../../product/views/product_list_screen.dart';
 import '../../search/views/search_screen.dart';
-import '../../wishlist/controller/wishlist_controller.dart';
-import '../widgets/see_all_btn.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -418,12 +401,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       itemBuilder: (context, index) {
                                         return InkWell(
                                           borderRadius: BorderRadius.circular(16.r),
-                                          onTap: () {
-                                            // filterController.addHomeBrandId(brandController.brandModel.value.data![index].id.toString());
+                                          onTap: ()  {
+                                          // filterController.addHomeBrandId(brandController.brandModel.value.data![index].id.toString());
+                                            Get.delete<HomeControllers>();
 
-                                            // Get.to(() => CategoryWiseProductScreen(
-                                            //       brandName: brandController.brandModel.value.data?[index].name,
-                                            //     ));
+                                          Get.to(() => BrandsProductCategoryListScreen(
+                                                productBrandId: controller.manufacturerList[index].id,
+                                                productBrandName: controller.manufacturerList[index].name,
+                                              ));
+                                            // homeControllers.homeBannerList(context: context);
+
                                           },
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 4.w),

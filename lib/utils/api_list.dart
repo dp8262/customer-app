@@ -14,6 +14,8 @@ class ApiList {
   static const productInterested = "/api/customerAlsoBought.aspx?";
   static const getRelatedProducts = "/api/getRelatedProducts.aspx?";
 
+  static const brandsManufacturerList = "/api/manufacturer.aspx?";
+
   //old code
   static const licenseCode = "";
   static const forgotPassword = "$baseUrl/api/auth/forgot-password";

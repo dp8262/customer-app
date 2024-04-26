@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/app/modules/category/views/sqlite_helper.dart';
+import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/utils/api_list.dart';
@@ -130,6 +131,83 @@ class HomeControllers extends GetxController {
             }
           }
       );
+    } catch (ex) {
+      handleError("Failed to fetch data: $ex", context);
+      isLoading(false);
+    }
+  }
+
+  RxList<BrandProduct> brandProductList = <BrandProduct>[].obs;
+  String sortByID = "5";
+
+  brandsManufacturerList({required BuildContext context,    required String productBrandId,
+  }) async {
+    isLoading(true);
+    isError(false);
+    error("");
+    brandProductList.clear();
+    try {
+      getAPI(
+          methodName: ApiList.brandsManufacturerList,
+          param: {"id": productBrandId, "sort": "5"},
+          callback: (value) {
+            try {
+              Map<String, dynamic> valueMap = json.decode(value.response);
+              BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
+              brandProductList.addAll(brandManufacturerModel.product);
+                isLoading(false);
+              // }
+            } catch (e) {
+              handleError("Error response: $e", context);
+              isLoading(false);
+            }
+          }
+      );
+    } catch (ex) {
+      handleError("Failed to fetch data: $ex", context);
+      isLoading(false);
+    }
+  }
+  filterBrandsProductListDetails({
+    required BuildContext context,
+    required String productBrandId,
+    required String sortBy,
+  }) async {
+    isLoading(true);
+    isError(false);
+    error("");
+    brandProductList.clear();
+
+    try {
+      if (brandProductList.isEmpty) {
+        if (sortBy == "Name A to Z") {
+          sortByID = "5";
+        }
+        if (sortBy == "Name Z to A") {
+          sortByID = "6";
+        }
+        if (sortBy == "Created on") {
+          sortByID = "15";
+        }
+        getAPI(
+            methodName: ApiList.brandsManufacturerList,
+            param: {"id": productBrandId, "sort": sortByID},
+            callback: (value) {
+              try {
+                Map<String, dynamic> valueMap = json.decode(value.response);
+                // if (valueMap["statusCode"] == 200) {
+                BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
+                brandProductList.addAll(brandManufacturerModel.product);
+                isLoading(false);
+                // }
+              } catch (e) {
+                handleError("Error response: $e", context);
+                isLoading(false);
+              }
+            });
+      } else {
+        isLoading(false);
+      }
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
