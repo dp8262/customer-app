@@ -10,7 +10,6 @@ import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqlite_api.dart';
-import '../../model/product_sub_list_model.dart';
 
 class HomeControllers extends GetxController {
   RxBool isLoading = false.obs;
@@ -21,6 +20,7 @@ class HomeControllers extends GetxController {
   RxList<BannerList> bannerList = <BannerList>[].obs;
   RxList<HomePageCategory> homePageCategoryList = <HomePageCategory>[].obs;
   RxList<HomePageProduct> homePageProductList = <HomePageProduct>[].obs;
+
   //
   // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   // RxList<Product> recentProductList = <Product>[].obs;
@@ -59,9 +59,9 @@ class HomeControllers extends GetxController {
               print("b=======");
 
               HomeBannerModel homeBannerModel = HomeBannerModel.fromJson(valueMap);
-                bannerList.addAll(homeBannerModel.banner);
-                homePageCategoryList.addAll(homeBannerModel.homePageCategory);
-                print(homePageCategoryList.length);
+              bannerList.addAll(homeBannerModel.banner);
+              homePageCategoryList.addAll(homeBannerModel.homePageCategory);
+              print(homePageCategoryList.length);
               homePageProductList.addAll(homeBannerModel.homePageProduct);
               promotionCategoryBanner(context: context);
               // isLoading(false);
@@ -70,8 +70,7 @@ class HomeControllers extends GetxController {
               handleError("Error decoding response: $e", context);
               isLoading(false);
             }
-          }
-      );
+          });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       // isLoading(false);
@@ -79,6 +78,7 @@ class HomeControllers extends GetxController {
   }
 
   RxList<CategoryBanner> promotionCategoryBannerList = <CategoryBanner>[].obs;
+
   promotionCategoryBanner({required BuildContext context}) async {
     isLoading(true);
     isError(false);
@@ -95,14 +95,13 @@ class HomeControllers extends GetxController {
               PromotionCategoryBanner promotionCategoryBanner = PromotionCategoryBanner.fromJson(valueMap);
               promotionCategoryBannerList.addAll(promotionCategoryBanner.categoryBanner);
               associateBrandsList(context: context);
-                // isLoading(false);
+              // isLoading(false);
               // }
             } catch (e) {
               handleError("Error response: $e", context);
               isLoading(false);
             }
-          }
-      );
+          });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
@@ -110,8 +109,55 @@ class HomeControllers extends GetxController {
   }
 
   RxList<Manufacturer> manufacturerList = <Manufacturer>[].obs;
-  // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+  ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
 
+  // associateBrandsList({required BuildContext context}) async {
+  //   isLoading(true);
+  //   isError(false);
+  //   error("");
+  //   manufacturerList.clear();
+  //   try {
+  //     final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+  //     dbFuture.then((database) async {
+  //       try {
+  //         manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
+  //         if (manufacturerList.isEmpty) {
+  //           print("No brand category data found in the database. Fetching from API...");
+  //           getAPI(
+  //             methodName: ApiList.associateBrands,
+  //             param: {},
+  //             callback: (value) {
+  //               try {
+  //                 Map<String, dynamic> valueMap = json.decode(value.response);
+  //                 ManufacturerBrandsList manufacturerBrandsList = ManufacturerBrandsList.fromJson(valueMap);
+  //                 manufacturerList.addAll(manufacturerBrandsList.manufacturer);
+  //                 print("Brand category data fetched from API: ${manufacturerList.length} items.");
+  //                 if (manufacturerList.isNotEmpty) {
+  //                   for (int i = 0; i < manufacturerList.length; i++) {
+  //                     contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
+  //                   }
+  //                   print("Brand category data inserted into the database.");
+  //                 }
+  //                 isLoading(false);
+  //               } catch (e) {
+  //                 handleError("Error response: $e", context);
+  //                 isLoading(false);
+  //               }
+  //             },
+  //           );
+  //         } else {
+  //           isLoading(false);
+  //         }
+  //       } catch (e) {
+  //         handleError("Error loading brand category data from database: $e", context);
+  //         isLoading(false);
+  //       }
+  //     });
+  //   } catch (ex) {
+  //     handleError("Failed to fetch data: $ex", context);
+  //     isLoading(false);
+  //   }
+  // }
   associateBrandsList({required BuildContext context}) async {
     isLoading(true);
     isError(false);
@@ -121,9 +167,9 @@ class HomeControllers extends GetxController {
       // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
       // dbFuture.then((database) async {
       //   manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
-      //   print("database 1111111");
-      //   if (manufacturerList.isEmpty) {
-      //     print("database 2222222");
+        // print("database 1111111");
+        // if (manufacturerList.isEmpty) {
+        //   print("database 2222222");
           getAPI(
               methodName: ApiList.associateBrands,
               param: {},
@@ -138,9 +184,9 @@ class HomeControllers extends GetxController {
                   //     contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
                   //   }
                   //   print("database 3333333");
-                  //
-                  // }
-                  isLoading(false);
+                  // //
+                  // // }
+                  // isLoading(false);
                   // }
                 } catch (e) {
                   handleError("Error response: $e", context);
@@ -148,9 +194,9 @@ class HomeControllers extends GetxController {
                 }
               }
           );
-      //   } else {
-      //     isLoading(false);
-      //   }
+        // } else {
+        //   isLoading(false);
+        // }
       // });
 
     } catch (ex) {
@@ -162,7 +208,9 @@ class HomeControllers extends GetxController {
   RxList<BrandProduct> brandProductList = <BrandProduct>[].obs;
   String sortByID = "5";
 
-  brandsManufacturerList({required BuildContext context,    required String productBrandId,
+  brandsManufacturerList({
+    required BuildContext context,
+    required String productBrandId,
   }) async {
     isLoading(true);
     isError(false);
@@ -177,19 +225,19 @@ class HomeControllers extends GetxController {
               Map<String, dynamic> valueMap = json.decode(value.response);
               BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
               brandProductList.addAll(brandManufacturerModel.product);
-                isLoading(false);
+              isLoading(false);
               // }
             } catch (e) {
               handleError("Error response: $e", context);
               isLoading(false);
             }
-          }
-      );
+          });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
     }
   }
+
   filterBrandsProductListDetails({
     required BuildContext context,
     required String productBrandId,
@@ -235,5 +283,4 @@ class HomeControllers extends GetxController {
       isLoading(false);
     }
   }
-
 }

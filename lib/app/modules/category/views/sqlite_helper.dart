@@ -123,7 +123,6 @@ class ContactDatabaseHelper {
 
     return categoryList;
   }
-
   // Future<List<Manufacturer>> getAllBrandCategory() async {
   //   Database db = await database;
   //   var result = await db.query(
@@ -191,6 +190,4 @@ class ContactDatabaseHelper {
     print(productList);
     return productList;
   }
-
-
 }
