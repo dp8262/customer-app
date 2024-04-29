@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:path/path.dart' as p;
 import 'package:shopperz/app/apiServices/common_widget.dart';
+import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../model/category_list_model.dart';
@@ -32,16 +33,22 @@ class ContactDatabaseHelper {
   String image = "image";
   String products = "products";
 
+  // //Brand category
+  // String brandTable = "brand_table";
+  // String id = "id";
+  // String brandCategoryName = "name";
+  // String brandImage = "image";
+  // String noOfProduct = "noOfProduct";
 
   //Product table
   String productTable = "product_table";
-   String parentCategoryId= "ParentCategoryId";
-   String categoryId= "categoryId";
-  String productId= "productId";
-  String price= "price";
-  String brandName= "brandName";
-   String productName= "name";
-   String productImage= "image";
+  String parentCategoryId = "ParentCategoryId";
+  String categoryId = "categoryId";
+  String productId = "productId";
+  String price = "price";
+  String brandName = "brandName";
+  String productName = "name";
+  String productImage = "image";
 
   //RecentView table
   String recentViewTable = "recent_view_table";
@@ -61,6 +68,10 @@ class ContactDatabaseHelper {
         '$displayOrder TEXT,'
         '$image TEXT,'
         '$products TEXT)');
+    // await db.execute('CREATE TABLE $brandTable($id PRIMARY KEY, '
+    //     '$brandCategoryName TEXT,'
+    //     '$brandImage TEXT,'
+    //     '$noOfProduct TEXT)');
 
     await db.execute('CREATE TABLE $productTable($productId PRIMARY KEY, '
         '$categoryId TEXT,'
@@ -70,16 +81,16 @@ class ContactDatabaseHelper {
         '$productName TEXT,'
         '$productImage TEXT)');
 
-    await db.execute('CREATE TABLE $recentViewTable($productId PRIMARY KEY, '
-        '$categoryId TEXT,'
+    await db
+        .execute('CREATE TABLE $recentViewTable($productId PRIMARY KEY, '
+            '$categoryId TEXT,'
         '$parentCategoryId TEXT,'
         '$price TEXT,'
         '$brandName TEXT,'
         '$productName TEXT,'
         '$productImage TEXT)').catchError((val){
-          print("$recentViewTable creating error :- $val");
-   });
-
+      print("$recentViewTable creating error :- $val");
+    });
   }
 
   Future<int> insertCategory(Category contactModel) async {
@@ -87,6 +98,12 @@ class ContactDatabaseHelper {
     int result = await db.insert(categoryTable, contactModel.toJson());
     return result;
   }
+
+  // Future<int> insertBrandCategory(Manufacturer contactModel) async {
+  //   Database db = await database;
+  //   int result = await db.insert(brandTable, contactModel.toJson());
+  //   return result;
+  // }
 
   Future<int> insertProduct(Product contactModel) async {
     Database db = await database;
@@ -107,11 +124,22 @@ class ContactDatabaseHelper {
     return categoryList;
   }
 
+  // Future<List<Manufacturer>> getAllBrandCategory() async {
+  //   Database db = await database;
+  //   var result = await db.query(
+  //     brandTable,
+  //   );
+  //   List<Manufacturer> brandsCategoryList = [];
+  //   for (int i = 0; i < result.length; i++) {
+  //     brandsCategoryList.add(Manufacturer.fromJson(result[i]));
+  //   }
+  //
+  //   return brandsCategoryList;
+  // }
+
   Future<List<Product>> getAllProduct(String categoryId2) async {
     Database db = await database;
-    var result = await db.query(
-      productTable,where: '$categoryId = ?', whereArgs: [categoryId2]
-    );
+    var result = await db.query(productTable, where: '$categoryId = ?', whereArgs: [categoryId2]);
     List<Product> productList = [];
 
     for (int i = 0; i < result.length; i++) {
@@ -123,16 +151,20 @@ class ContactDatabaseHelper {
 
   deleteAllTable() async {
     Database db = await database;
-    var a= await db.delete(
+    var a = await db.delete(
       categoryTable,
     );
-    var a1=await db.delete(
+
+    var a1 = await db.delete(
       productTable,
     );
-    var a2=await db.delete(
+    var a2 = await db.delete(
       recentViewTable,
     );
-    toast("All record deleted.$a,$a1,$a2");
+    // var a3 = await db.delete(
+    //   brandTable,
+    // );
+    toast("All record deleted.$a,$a1,$a2,");
   }
 
   Future<int> insertRecentProduct(Product model) async {

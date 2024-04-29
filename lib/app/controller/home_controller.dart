@@ -9,6 +9,7 @@ import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:shopperz/model/home_banner_model.dart';
 import 'package:shopperz/utils/api_list.dart';
+import 'package:sqflite/sqlite_api.dart';
 import '../../model/product_sub_list_model.dart';
 
 class HomeControllers extends GetxController {
@@ -104,33 +105,54 @@ class HomeControllers extends GetxController {
       );
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
-      // isLoading(false);
+      isLoading(false);
     }
   }
 
   RxList<Manufacturer> manufacturerList = <Manufacturer>[].obs;
+  // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+
   associateBrandsList({required BuildContext context}) async {
     isLoading(true);
     isError(false);
     error("");
     manufacturerList.clear();
     try {
-      getAPI(
-          methodName: ApiList.associateBrands,
-          param: {},
-          callback: (value) {
-            try {
-              Map<String, dynamic> valueMap = json.decode(value.response);
-              ManufacturerBrandsList manufacturerBrandsList = ManufacturerBrandsList.fromJson(valueMap);
-              manufacturerList.addAll(manufacturerBrandsList.manufacturer);
-                isLoading(false);
-              // }
-            } catch (e) {
-              handleError("Error response: $e", context);
-              isLoading(false);
-            }
-          }
-      );
+      // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      // dbFuture.then((database) async {
+      //   manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
+      //   print("database 1111111");
+      //   if (manufacturerList.isEmpty) {
+      //     print("database 2222222");
+          getAPI(
+              methodName: ApiList.associateBrands,
+              param: {},
+              callback: (value) {
+                try {
+                  Map<String, dynamic> valueMap = json.decode(value.response);
+                  ManufacturerBrandsList manufacturerBrandsList = ManufacturerBrandsList.fromJson(valueMap);
+                  print("database 3333333");
+                  manufacturerList.addAll(manufacturerBrandsList.manufacturer);
+                  // if (manufacturerList.isNotEmpty) {
+                  //   for (int i = 0; i < manufacturerList.length; i++) {
+                  //     contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
+                  //   }
+                  //   print("database 3333333");
+                  //
+                  // }
+                  isLoading(false);
+                  // }
+                } catch (e) {
+                  handleError("Error response: $e", context);
+                  isLoading(false);
+                }
+              }
+          );
+      //   } else {
+      //     isLoading(false);
+      //   }
+      // });
+
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
