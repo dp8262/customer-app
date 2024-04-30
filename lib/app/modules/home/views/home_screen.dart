@@ -402,15 +402,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                         return InkWell(
                                           borderRadius: BorderRadius.circular(16.r),
                                           onTap: ()  {
-                                          // filterController.addHomeBrandId(brandController.brandModel.value.data![index].id.toString());
+
+                                            // filterController.addHomeBrandId(brandController.brandModel.value.data![index].id.toString());
                                             Get.delete<HomeControllers>();
 
-                                          Get.to(() => BrandsProductCategoryListScreen(
+                                          // Get.to(() => BrandsProductCategoryListScreen(
+                                          //       productBrandId: controller.manufacturerList[index].id!,
+                                          //       productBrandName: controller.manufacturerList[index].name.toString(),
+                                          //     ));
+                                          //   // homeControllers.homeBannerList(context: context);
+                                          //   print("id ======= ${controller.manufacturerList[index].id}");
+
+                                            Get.to(() => BrandsProductCategoryListScreen(
                                                 productBrandId: controller.manufacturerList[index].id,
                                                 productBrandName: controller.manufacturerList[index].name,
                                               ));
-                                            // homeControllers.homeBannerList(context: context);
-
+                                              print("id database store ${controller.manufacturerList[index].id}");
                                           },
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 4.w),

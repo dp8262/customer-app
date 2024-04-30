@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:path/path.dart' as p;
 import 'package:shopperz/app/apiServices/common_widget.dart';
+import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/home_associate_brand_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -33,12 +34,21 @@ class ContactDatabaseHelper {
   String image = "image";
   String products = "products";
 
-  // //Brand category
-  // String brandTable = "brand_table";
-  // String id = "id";
-  // String brandCategoryName = "name";
-  // String brandImage = "image";
-  // String noOfProduct = "noOfProduct";
+  //Brand category
+  String brandTable = "brand_table";
+  String id = "Id";
+  String brandName1 = "brandName";
+  String brandCategoryName = "name";
+  String brandImage = "image";
+  String noOfProduct = "noOfProduct";
+
+// // BrandProduct table
+//   String brandProductTable = "brand_product_table";
+//   String brandProductId = 'productId';
+//   String brandManufacturerID = 'manufacturerID';
+//   String manufacturerName = 'manufacturerName';
+//   String brandProductName = 'name';
+//   String brandProductImage = 'image';
 
   //Product table
   String productTable = "product_table";
@@ -68,10 +78,17 @@ class ContactDatabaseHelper {
         '$displayOrder TEXT,'
         '$image TEXT,'
         '$products TEXT)');
-    // await db.execute('CREATE TABLE $brandTable($id PRIMARY KEY, '
-    //     '$brandCategoryName TEXT,'
-    //     '$brandImage TEXT,'
-    //     '$noOfProduct TEXT)');
+    await db.execute('CREATE TABLE $brandTable($id PRIMARY KEY, '
+        '$brandName1 TEXT,'
+        '$brandCategoryName TEXT,'
+        '$brandImage TEXT,'
+        '$noOfProduct TEXT)');
+
+    // await db.execute('CREATE TABLE $brandProductTable($brandProductId PRIMARY KEY, '
+    //     '$brandManufacturerID TEXT,'
+    //     '$manufacturerName TEXT,'
+    //     '$brandProductName TEXT,'
+    //     '$brandProductImage TEXT)');
 
     await db.execute('CREATE TABLE $productTable($productId PRIMARY KEY, '
         '$categoryId TEXT,'
@@ -99,12 +116,35 @@ class ContactDatabaseHelper {
     return result;
   }
 
-  // Future<int> insertBrandCategory(Manufacturer contactModel) async {
+  Future<int> insertBrandCategory(Manufacturer contactModel) async {
+    Database db = await database;
+    int result = await db.insert(brandTable, contactModel.toJson());
+    print(result);
+    return result;
+  }
+  // Future<int> insertBrandProduct(BrandProduct contactModel) async {
   //   Database db = await database;
-  //   int result = await db.insert(brandTable, contactModel.toJson());
+  //   int result = await db.insert(brandProductTable, contactModel.toJson());
+  //   print(result);
   //   return result;
   // }
 
+
+
+  // Future<int> insertBrandProduct(BrandProduct contactModel) async {
+  //   Database db = await database;
+  //   var existingRecords = await db.query(
+  //     brandProductTable,
+  //     where: '$brandProductId = ?',
+  //     whereArgs: [contactModel.productId],
+  //   );
+  //   if (existingRecords.isNotEmpty) {
+  //     return 0;
+  //   }
+  //
+  //   int result = await db.insert(brandProductTable, contactModel.toJson());
+  //   return result;
+  // }
   Future<int> insertProduct(Product contactModel) async {
     Database db = await database;
     int result = await db.insert(productTable, contactModel.toJson());
@@ -123,17 +163,32 @@ class ContactDatabaseHelper {
 
     return categoryList;
   }
-  // Future<List<Manufacturer>> getAllBrandCategory() async {
+  Future<List<Manufacturer>> getAllBrandCategory() async {
+    Database db = await database;
+    var result = await db.query(
+      brandTable,
+    );
+    // print("result =======$result");
+    List<Manufacturer> brandsCategoryList = [];
+    for (int i = 0; i < result.length; i++) {
+      brandsCategoryList.add(Manufacturer.fromJson(result[i]));
+      // print("brand category${result[i]}");
+    }
+
+    return brandsCategoryList;
+  }
+  // Future<List<BrandProduct>> getAllBrandProduct(String brandProductId2) async {
   //   Database db = await database;
-  //   var result = await db.query(
-  //     brandTable,
-  //   );
-  //   List<Manufacturer> brandsCategoryList = [];
+  //   var result = await db.query(brandProductTable, where: '$brandProductId = ?', whereArgs: [brandProductId2]);
+  //   List<BrandProduct> brandProductList = [];
+  //
   //   for (int i = 0; i < result.length; i++) {
-  //     brandsCategoryList.add(Manufacturer.fromJson(result[i]));
+  //     brandProductList.add(BrandProduct.fromJson(result[i]));
+  //     print("brand product${result[i]}");
+  //
   //   }
   //
-  //   return brandsCategoryList;
+  //   return brandProductList;
   // }
 
   Future<List<Product>> getAllProduct(String categoryId2) async {
@@ -163,6 +218,9 @@ class ContactDatabaseHelper {
     // var a3 = await db.delete(
     //   brandTable,
     // );
+    // var a4 = await db.delete(
+    //   brandProductTable,
+    // );
     toast("All record deleted.$a,$a1,$a2,");
   }
 
@@ -190,4 +248,6 @@ class ContactDatabaseHelper {
     print(productList);
     return productList;
   }
+
+
 }

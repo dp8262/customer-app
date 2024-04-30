@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/controller/home_controller.dart';
 import 'package:shopperz/app/modules/category/views/product_view_details_screen.dart';
+import 'package:shopperz/app/modules/category/views/sqlite_helper.dart';
 import 'package:shopperz/config/theme/app_color.dart';
 import 'package:shopperz/utils/images.dart';
 import 'package:shopperz/utils/svg_icon.dart';
@@ -28,18 +29,19 @@ class _BrandsProductCategoryListScreenState extends State<BrandsProductCategoryL
   final List<String> filterList = ["Name A to Z", "Name Z to A", "Created on"];
 
   // late RxList<Product> productList;
-  // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
+  ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   @override
   void initState() {
-    homeControllers.brandsManufacturerList(context: context, productBrandId: widget.productBrandId);
-    // myInit();
+    // homeControllers.brandsManufacturerList(context: context, productBrandId: widget.productBrandId);
+    myInit();
     super.initState();
   }
 
-  // myInit() async {
-  //   await contactDatabaseHelper.initializeDatabase();
-  //   categoryControllers.productListDetails(context: context, categoryId: widget.categoryId);
-  // }
+  myInit() async {
+    await contactDatabaseHelper.initializeDatabase();
+    print(widget.productBrandId);
+    homeControllers.brandsManufacturerList(context: context, productBrandId: widget.productBrandId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,7 @@ class _BrandsProductCategoryListScreenState extends State<BrandsProductCategoryL
                                   // if (selectedFilter==controller.productList) {
                                   return InkWell(
                                     onTap: () async {
-                                      // await contactDatabaseHelper.insertRecentProduct(categoryControllers.productList[index]);
+                                      // await contactDatabaseHelper.insertRecentProduct(controller.brandProductList[index]);
                                       //
                                       //
                                       Get.delete<HomeControllers>();

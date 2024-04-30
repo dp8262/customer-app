@@ -95,7 +95,7 @@ class HomeControllers extends GetxController {
               PromotionCategoryBanner promotionCategoryBanner = PromotionCategoryBanner.fromJson(valueMap);
               promotionCategoryBannerList.addAll(promotionCategoryBanner.categoryBanner);
               associateBrandsList(context: context);
-              // isLoading(false);
+              isLoading(false);
               // }
             } catch (e) {
               handleError("Error response: $e", context);
@@ -110,66 +110,18 @@ class HomeControllers extends GetxController {
 
   RxList<Manufacturer> manufacturerList = <Manufacturer>[].obs;
   ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
-
-  // associateBrandsList({required BuildContext context}) async {
-  //   isLoading(true);
-  //   isError(false);
-  //   error("");
-  //   manufacturerList.clear();
-  //   try {
-  //     final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
-  //     dbFuture.then((database) async {
-  //       try {
-  //         manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
-  //         if (manufacturerList.isEmpty) {
-  //           print("No brand category data found in the database. Fetching from API...");
-  //           getAPI(
-  //             methodName: ApiList.associateBrands,
-  //             param: {},
-  //             callback: (value) {
-  //               try {
-  //                 Map<String, dynamic> valueMap = json.decode(value.response);
-  //                 ManufacturerBrandsList manufacturerBrandsList = ManufacturerBrandsList.fromJson(valueMap);
-  //                 manufacturerList.addAll(manufacturerBrandsList.manufacturer);
-  //                 print("Brand category data fetched from API: ${manufacturerList.length} items.");
-  //                 if (manufacturerList.isNotEmpty) {
-  //                   for (int i = 0; i < manufacturerList.length; i++) {
-  //                     contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
-  //                   }
-  //                   print("Brand category data inserted into the database.");
-  //                 }
-  //                 isLoading(false);
-  //               } catch (e) {
-  //                 handleError("Error response: $e", context);
-  //                 isLoading(false);
-  //               }
-  //             },
-  //           );
-  //         } else {
-  //           isLoading(false);
-  //         }
-  //       } catch (e) {
-  //         handleError("Error loading brand category data from database: $e", context);
-  //         isLoading(false);
-  //       }
-  //     });
-  //   } catch (ex) {
-  //     handleError("Failed to fetch data: $ex", context);
-  //     isLoading(false);
-  //   }
-  // }
   associateBrandsList({required BuildContext context}) async {
     isLoading(true);
     isError(false);
     error("");
     manufacturerList.clear();
     try {
-      // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
-      // dbFuture.then((database) async {
-      //   manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
-        // print("database 1111111");
-        // if (manufacturerList.isEmpty) {
-        //   print("database 2222222");
+      final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      dbFuture.then((database) async {
+        manufacturerList.value = await contactDatabaseHelper.getAllBrandCategory();
+        print("database 1111111");
+        if (manufacturerList.isEmpty) {
+          print("database 2222222");
           getAPI(
               methodName: ApiList.associateBrands,
               param: {},
@@ -179,26 +131,24 @@ class HomeControllers extends GetxController {
                   ManufacturerBrandsList manufacturerBrandsList = ManufacturerBrandsList.fromJson(valueMap);
                   print("database 3333333");
                   manufacturerList.addAll(manufacturerBrandsList.manufacturer);
-                  // if (manufacturerList.isNotEmpty) {
-                  //   for (int i = 0; i < manufacturerList.length; i++) {
-                  //     contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
-                  //   }
-                  //   print("database 3333333");
-                  // //
-                  // // }
-                  // isLoading(false);
-                  // }
+                  if (manufacturerList.isNotEmpty) {
+                    for (int i = 0; i < manufacturerList.length; i++) {
+                      contactDatabaseHelper.insertBrandCategory(manufacturerList[i]);
+                    }
+                    print("database 3333333");
+                    //
+                    // }
+                    isLoading(false);
+                  }
                 } catch (e) {
                   handleError("Error response: $e", context);
                   isLoading(false);
                 }
-              }
-          );
-        // } else {
-        //   isLoading(false);
-        // }
-      // });
-
+              });
+        } else {
+          isLoading(false);
+        }
+      });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
@@ -216,22 +166,39 @@ class HomeControllers extends GetxController {
     isError(false);
     error("");
     brandProductList.clear();
+
     try {
-      getAPI(
-          methodName: ApiList.brandsManufacturerList,
-          param: {"id": productBrandId, "sort": "5"},
-          callback: (value) {
-            try {
-              Map<String, dynamic> valueMap = json.decode(value.response);
-              BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
-              brandProductList.addAll(brandManufacturerModel.product);
-              isLoading(false);
-              // }
-            } catch (e) {
-              handleError("Error response: $e", context);
-              isLoading(false);
-            }
-          });
+      // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      // print("product brand id $productBrandId");
+      // dbFuture.then((database) async {
+      //   brandProductList.value = await contactDatabaseHelper.getAllBrandProduct(productBrandId);
+      //   print("database $productBrandId");
+      //   if (brandProductList.isEmpty) {
+      //     print("database 555555555");
+          getAPI(
+              methodName: ApiList.brandsManufacturerList,
+              param: {"id": productBrandId, "sort": "5"},
+              callback: (value) {
+                try {
+                  Map<String, dynamic> valueMap = json.decode(value.response);
+                  BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
+                  brandProductList.addAll(brandManufacturerModel.product);
+                  // if (brandProductList.isNotEmpty) {
+                  //   for (int i = 0; i < brandProductList.length; i++) {
+                  //     contactDatabaseHelper.insertBrandProduct(brandProductList[i]);
+                  //   }
+                  // }
+                  isLoading(false);
+                  // }
+                } catch (e) {
+                  handleError("Error response: $e", context);
+                  isLoading(false);
+                }
+              });
+      //   } else {
+      //     isLoading(false);
+      //   }
+      // });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
