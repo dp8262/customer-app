@@ -42,13 +42,13 @@ class ContactDatabaseHelper {
   String brandImage = "image";
   String noOfProduct = "noOfProduct";
 
-// // BrandProduct table
-//   String brandProductTable = "brand_product_table";
-//   String brandProductId = 'productId';
-//   String brandManufacturerID = 'manufacturerID';
-//   String manufacturerName = 'manufacturerName';
-//   String brandProductName = 'name';
-//   String brandProductImage = 'image';
+// BrandProduct table
+  String brandProductTable = "brand_product_table";
+  String brandProductId = 'productId';
+  String brandManufacturerID = 'manufacturerID';
+  String manufacturerName = 'manufacturerName';
+  String brandProductName = 'name';
+  String brandProductImage = 'image';
 
   //Product table
   String productTable = "product_table";
@@ -84,11 +84,11 @@ class ContactDatabaseHelper {
         '$brandImage TEXT,'
         '$noOfProduct TEXT)');
 
-    // await db.execute('CREATE TABLE $brandProductTable($brandProductId PRIMARY KEY, '
-    //     '$brandManufacturerID TEXT,'
-    //     '$manufacturerName TEXT,'
-    //     '$brandProductName TEXT,'
-    //     '$brandProductImage TEXT)');
+    await db.execute('CREATE TABLE $brandProductTable($brandProductId PRIMARY KEY,'
+        '$brandManufacturerID TEXT,'
+        '$manufacturerName TEXT,'
+        '$brandProductName TEXT,'
+        '$brandProductImage TEXT)');
 
     await db.execute('CREATE TABLE $productTable($productId PRIMARY KEY, '
         '$categoryId TEXT,'
@@ -122,14 +122,14 @@ class ContactDatabaseHelper {
     print(result);
     return result;
   }
-  // Future<int> insertBrandProduct(BrandProduct contactModel) async {
-  //   Database db = await database;
-  //   int result = await db.insert(brandProductTable, contactModel.toJson());
-  //   print(result);
-  //   return result;
-  // }
+  Future<int> insertBrandProduct(BrandProduct contactModel) async {
+    Database db = await database;
+    // print("insert brand product");
 
-
+    int result = await db.insert(brandProductTable, contactModel.toJson());
+    print("insert brand $result");
+    return result;
+  }
 
   // Future<int> insertBrandProduct(BrandProduct contactModel) async {
   //   Database db = await database;
@@ -177,19 +177,30 @@ class ContactDatabaseHelper {
 
     return brandsCategoryList;
   }
-  // Future<List<BrandProduct>> getAllBrandProduct(String brandProductId2) async {
+  // Future<List<BrandProduct>> getAllBrandProduct(String brandManufacturerID) async {
   //   Database db = await database;
-  //   var result = await db.query(brandProductTable, where: '$brandProductId = ?', whereArgs: [brandProductId2]);
+  //   var result = await db.query(
+  //     brandProductTable,
+  //     where: '$brandManufacturerID = ?',
+  //     whereArgs: [brandManufacturerID],
+  //   );
   //   List<BrandProduct> brandProductList = [];
-  //
   //   for (int i = 0; i < result.length; i++) {
   //     brandProductList.add(BrandProduct.fromJson(result[i]));
-  //     print("brand product${result[i]}");
-  //
   //   }
-  //
   //   return brandProductList;
   // }
+  Future<List<BrandProduct>> getAllBrandProduct(String brandProductId2) async {
+    Database db = await database;
+    var result = await db.query(brandProductTable, where: '$brandManufacturerID = ?', whereArgs: [brandProductId2]);
+    List<BrandProduct> brandProductList = [];
+
+    for (int i = 0; i < result.length; i++) {
+      brandProductList.add(BrandProduct.fromJson(result[i]));
+      print("brand product${result[i]}");
+    }
+    return brandProductList;
+  }
 
   Future<List<Product>> getAllProduct(String categoryId2) async {
     Database db = await database;

@@ -168,13 +168,13 @@ class HomeControllers extends GetxController {
     brandProductList.clear();
 
     try {
-      // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
-      // print("product brand id $productBrandId");
-      // dbFuture.then((database) async {
-      //   brandProductList.value = await contactDatabaseHelper.getAllBrandProduct(productBrandId);
-      //   print("database $productBrandId");
-      //   if (brandProductList.isEmpty) {
-      //     print("database 555555555");
+      final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      print("product brand id $productBrandId");
+      dbFuture.then((database) async {
+        brandProductList.value = await contactDatabaseHelper.getAllBrandProduct(productBrandId);
+        print("database $productBrandId");
+        if (brandProductList.isEmpty) {
+          print("database 555555555");
           getAPI(
               methodName: ApiList.brandsManufacturerList,
               param: {"id": productBrandId, "sort": "5"},
@@ -183,11 +183,11 @@ class HomeControllers extends GetxController {
                   Map<String, dynamic> valueMap = json.decode(value.response);
                   BrandManufacturerModel brandManufacturerModel = BrandManufacturerModel.fromJson(valueMap);
                   brandProductList.addAll(brandManufacturerModel.product);
-                  // if (brandProductList.isNotEmpty) {
-                  //   for (int i = 0; i < brandProductList.length; i++) {
-                  //     contactDatabaseHelper.insertBrandProduct(brandProductList[i]);
-                  //   }
-                  // }
+                  if (brandProductList.isNotEmpty) {
+                    for (int i = 0; i < brandProductList.length; i++) {
+                      contactDatabaseHelper.insertBrandProduct(brandProductList[i]);
+                    }
+                  }
                   isLoading(false);
                   // }
                 } catch (e) {
@@ -195,10 +195,10 @@ class HomeControllers extends GetxController {
                   isLoading(false);
                 }
               });
-      //   } else {
-      //     isLoading(false);
-      //   }
-      // });
+        } else {
+          isLoading(false);
+        }
+      });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isLoading(false);
