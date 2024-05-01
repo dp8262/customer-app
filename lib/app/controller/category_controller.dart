@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:html/parser.dart' as htmlParser;
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
 import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/model/product_details_view_model.dart';
 import 'package:shopperz/model/product_interested_list_model.dart';
+import 'package:shopperz/model/sqlite_model.dart';
 import 'package:shopperz/utils/api_list.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -209,6 +209,7 @@ class CategoryControllers extends GetxController {
   // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   RxList<Product> recentProductList = <Product>[].obs;
   RxList<BrandProduct> recentBrandProductList = <BrandProduct>[].obs;
+  RxList<RecentProduct> list = <RecentProduct>[].obs;
   productViewDetails({required BuildContext context, required String itemId}) async {
     isOtherLoading(true);
     isError(false);
@@ -223,6 +224,23 @@ class CategoryControllers extends GetxController {
      recentBrandProductList.value= await  contactDatabaseHelper.getAllRecentBrandProduct();
      recentProductList.value=    recentProductList.reversed.toList();
      recentBrandProductList.value=    recentBrandProductList.reversed.toList();
+
+      if (recentProductList.isNotEmpty) {
+        for (var data in recentProductList) {
+          if (data.productId != itemId) {
+            list.add(RecentProduct(product: data));
+          }
+        }
+      }
+
+      if (recentBrandProductList.isNotEmpty) {
+        for (var data in recentBrandProductList) {
+          if (data.productId != itemId) {
+            list.add(RecentProduct(brandProduct: data));
+          }
+        }
+      }
+
       getAPI(
           methodName: ApiList.productViewDetails,
           param: {"id": itemId},

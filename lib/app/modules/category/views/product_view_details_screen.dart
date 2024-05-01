@@ -1526,16 +1526,16 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                     mainAxisSpacing: 16.h,
                                     crossAxisSpacing: 16.w,
                                     children: [
-                                      for (int i = 0; i < controller.recentProductList.length; i++)
-                                        if (widget.itemId != controller.recentProductList[i].productId)
-                                          GestureDetector(
-                                              onTap: () async {
+                                      for (int i = 0; i < controller.list.length; i++)
+                                        controller.list[i].product != null
+                                            ? GestureDetector(
+                                                onTap: () async {
                                                 Get.delete<CategoryControllers>();
                                                 await Get.to(
-                                                  () => ProductViewDetailsScreen(itemId: controller.recentProductList[i].productId),
-                                                );
-                                                controller.productViewDetails(context: context, itemId: controller.recentProductList[i].productId);
-                                              },
+                                                    () => ProductViewDetailsScreen(itemId: controller.list[i].product!.productId),
+                                                  );
+                                                  controller.productViewDetails(context: context, itemId: controller.list[i].product!.productId);
+                                                },
                                               child: Container(
                                                   width: 145,
                                                   decoration: BoxDecoration(
@@ -1556,8 +1556,8 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                           children: [
                                                             Stack(children: [
                                                               CachedNetworkImage(
-                                                                  imageUrl: controller.recentProductList[i].image.toString(),
-                                                                  errorWidget: (context, url, error) =>
+                                                                    imageUrl: controller.list[i].product!.image.toString(),
+                                                                    errorWidget: (context, url, error) =>
                                                                       Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                                   imageBuilder: (context, imageProvider) => Container(
                                                                       height: 130,
@@ -1569,94 +1569,85 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                             ]),
                                                             const SizedBox(height: 10),
                                                             TextWidget(
-                                                                text: controller.recentProductList[i].brandName ?? '',
-                                                                color: AppColor.textColor,
+                                                                  text: controller.list[i].product!.brandName ?? '',
+                                                                  color: AppColor.textColor,
                                                                 fontSize: 16,
                                                                 fontWeight: FontWeight.w600,
                                                                 maxLines: 2,
                                                                 overflow: TextOverflow.fade),
                                                             const SizedBox(height: 10),
                                                             TextWidget(
-                                                                text: controller.recentProductList[i].name ?? '',
-                                                                color: AppColor.textColor1,
+                                                                  text: controller.list[i].product!.name ?? '',
+                                                                  color: AppColor.textColor1,
                                                                 textAlign: TextAlign.center,
                                                                 fontSize: 14,
                                                                 fontWeight: FontWeight.w400,
                                                                 maxLines: 2,
                                                                 overflow: TextOverflow.fade),
-                                                          ])))),
+                                                            ]))))
+                                            : GestureDetector(
+                                                onTap: () async {
+                                                  Get.delete<CategoryControllers>();
+                                                  await Get.to(
+                                                    () => ProductViewDetailsScreen(itemId: controller.list[i].brandProduct!.productId),
+                                                  );
+                                                  controller.productViewDetails(
+                                                      context: context, itemId: controller.list[i].brandProduct!.productId);
+                                                },
+                                                child: Container(
+                                                    width: 145,
+                                                    decoration: BoxDecoration(
+                                                        color: AppColor.whiteColor,
+                                                        borderRadius: BorderRadius.circular(12.r),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: Colors.black.withOpacity(0.05),
+                                                              offset: const Offset(0, 0),
+                                                              blurRadius: 7,
+                                                              spreadRadius: 0)
+                                                        ]),
+                                                    child: Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                        child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Stack(children: [
+                                                                CachedNetworkImage(
+                                                                    imageUrl: controller.list[i].brandProduct!.image.toString(),
+                                                                    errorWidget: (context, url, error) =>
+                                                                        Image.asset(AppImages.errorImages, fit: BoxFit.cover),
+                                                                    imageBuilder: (context, imageProvider) => Container(
+                                                                        height: 130,
+                                                                        width: 130,
+                                                                        decoration: BoxDecoration(
+                                                                            color: AppColor.whiteColor,
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                            image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
+                                                              ]),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.list[i].brandProduct!.manufacturerName ?? '',
+                                                                  color: AppColor.textColor,
+                                                                  fontSize: 16,
+                                                                  fontWeight: FontWeight.w600,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                              const SizedBox(height: 10),
+                                                              TextWidget(
+                                                                  text: controller.list[i].brandProduct!.name ?? '',
+                                                                  color: AppColor.textColor1,
+                                                                  textAlign: TextAlign.center,
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.w400,
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.fade),
+                                                            ])))),
                                       SizedBox(height: 12.h)
                                     ],
                                   ),
-                                  SizedBox(height: 16.h),
-                                  StaggeredGrid.count(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 16.h,
-                                    crossAxisSpacing: 16.w,
-                                    children: [
-                                      for (int i = 0; i < controller.recentBrandProductList.length; i++)
-                                        if (widget.itemId != controller.recentBrandProductList[i].productId)
-                                          GestureDetector(
-                                              onTap: () async {
-                                                Get.delete<CategoryControllers>();
-                                                await Get.to(
-                                                  () => ProductViewDetailsScreen(itemId: controller.recentBrandProductList[i].productId),
-                                                );
-                                                controller.productViewDetails(
-                                                    context: context, itemId: controller.recentBrandProductList[i].productId);
-                                              },
-                                              child: Container(
-                                                  width: 145,
-                                                  decoration: BoxDecoration(
-                                                      color: AppColor.whiteColor,
-                                                      borderRadius: BorderRadius.circular(12.r),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                            color: Colors.black.withOpacity(0.05),
-                                                            offset: const Offset(0, 0),
-                                                            blurRadius: 7,
-                                                            spreadRadius: 0)
-                                                      ]),
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                                      child: Column(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: [
-                                                            Stack(children: [
-                                                              CachedNetworkImage(
-                                                                  imageUrl: controller.recentBrandProductList[i].image.toString(),
-                                                                  errorWidget: (context, url, error) =>
-                                                                      Image.asset(AppImages.errorImages, fit: BoxFit.cover),
-                                                                  imageBuilder: (context, imageProvider) => Container(
-                                                                      height: 130,
-                                                                      width: 130,
-                                                                      decoration: BoxDecoration(
-                                                                          color: AppColor.whiteColor,
-                                                                          borderRadius: BorderRadius.circular(8),
-                                                                          image: DecorationImage(image: imageProvider, fit: BoxFit.fill))))
-                                                            ]),
-                                                            const SizedBox(height: 10),
-                                                            TextWidget(
-                                                                text: controller.recentBrandProductList[i].manufacturerName ?? '',
-                                                                color: AppColor.textColor,
-                                                                fontSize: 16,
-                                                                fontWeight: FontWeight.w600,
-                                                                maxLines: 2,
-                                                                overflow: TextOverflow.fade),
-                                                            const SizedBox(height: 10),
-                                                            TextWidget(
-                                                                text: controller.recentBrandProductList[i].name ?? '',
-                                                                color: AppColor.textColor1,
-                                                                textAlign: TextAlign.center,
-                                                                fontSize: 14,
-                                                                fontWeight: FontWeight.w400,
-                                                                maxLines: 2,
-                                                                overflow: TextOverflow.fade),
-                                                          ])))),
-                                      SizedBox(height: 12.h)
-                                    ],
-                                  ),
+
+
 
                                   // ProductWidget(
                                   //     onTap: () async {
