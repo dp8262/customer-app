@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/app/apiServices/network_call.dart';
+import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/category_list_model.dart';
 import 'package:shopperz/model/product_details_view_model.dart';
 import 'package:shopperz/model/product_interested_list_model.dart';
@@ -207,17 +208,21 @@ class CategoryControllers extends GetxController {
   // String? description;
   // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   RxList<Product> recentProductList = <Product>[].obs;
+  RxList<BrandProduct> recentBrandProductList = <BrandProduct>[].obs;
   productViewDetails({required BuildContext context, required String itemId}) async {
     isOtherLoading(true);
     isError(false);
     error("");
     productDetails.clear();
     recentProductList.clear();
+    recentBrandProductList.clear();
 
     try {
      await contactDatabaseHelper.initializeDatabase();
      recentProductList.value= await  contactDatabaseHelper.getAllRecentProduct();
+     recentBrandProductList.value= await  contactDatabaseHelper.getAllRecentBrandProduct();
      recentProductList.value=    recentProductList.reversed.toList();
+     recentBrandProductList.value=    recentBrandProductList.reversed.toList();
       getAPI(
           methodName: ApiList.productViewDetails,
           param: {"id": itemId},

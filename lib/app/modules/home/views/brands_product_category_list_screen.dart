@@ -104,6 +104,8 @@ class _BrandsProductCategoryListScreenState extends State<BrandsProductCategoryL
                                   // if (selectedFilter==controller.productList) {
                                   return InkWell(
                                     onTap: () async {
+                                      await contactDatabaseHelper.insertRecentBrandProduct(controller.brandProductList[index]);
+
                                       // await contactDatabaseHelper.insertRecentProduct(controller.brandProductList[index]);
                                       //
                                       //

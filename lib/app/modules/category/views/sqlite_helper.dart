@@ -62,6 +62,8 @@ class ContactDatabaseHelper {
 
   //RecentView table
   String recentViewTable = "recent_view_table";
+  String recentBrandViewTable = "recent_brand_view_table";
+
   Future<Database> initializeDatabase() async {
     var databasesPath = await getDatabasesPath();
     String path = p.join(databasesPath, 'category.db');
@@ -101,12 +103,23 @@ class ContactDatabaseHelper {
     await db
         .execute('CREATE TABLE $recentViewTable($productId PRIMARY KEY, '
             '$categoryId TEXT,'
-        '$parentCategoryId TEXT,'
-        '$price TEXT,'
-        '$brandName TEXT,'
-        '$productName TEXT,'
-        '$productImage TEXT)').catchError((val){
+            '$parentCategoryId TEXT,'
+            '$price TEXT,'
+            '$brandName TEXT,'
+            '$productName TEXT,'
+            '$productImage TEXT)')
+        .catchError((val) {
       print("$recentViewTable creating error :- $val");
+    });
+    await db
+        .execute('CREATE TABLE $recentBrandViewTable('
+            '$brandProductId PRIMARY KEY, '
+            '$brandManufacturerID TEXT,'
+            '$manufacturerName TEXT,'
+            '$brandProductName TEXT,'
+            '$brandProductImage TEXT)')
+        .catchError((val) {
+      print("$recentBrandViewTable creating error :- $val");
     });
   }
 
@@ -232,7 +245,10 @@ class ContactDatabaseHelper {
     // var a4 = await db.delete(
     //   brandProductTable,
     // );
-    toast("All record deleted.$a,$a1,$a2,");
+    var a5 = await db.delete(
+      recentBrandViewTable,
+    );
+    toast("All record deleted.$a,$a1,$a2,$a5");
   }
 
   Future<int> insertRecentProduct(Product model) async {
@@ -250,7 +266,9 @@ class ContactDatabaseHelper {
 
   Future<List<Product>> getAllRecentProduct() async {
     Database db = await database;
-    var result = await db.query(recentViewTable,);
+    var result = await db.query(
+      recentViewTable,
+    );
     List<Product> productList = [];
 
     for (int i = 0; i < result.length; i++) {
@@ -260,5 +278,28 @@ class ContactDatabaseHelper {
     return productList;
   }
 
+  Future<int> insertRecentBrandProduct(BrandProduct model) async {
+    Database db = await database;
+    var checkData = await db.query(recentBrandViewTable, where: '$productId = ?', whereArgs: [model.productId]);
 
+    if (checkData.isNotEmpty) {
+      var data = await db.delete(recentBrandViewTable, where: '$productId = ?', whereArgs: [model.productId]);
+
+      print(data);
+    }
+    int result = await db.insert(recentBrandViewTable, model.toJson());
+    return result;
+  }
+
+  Future<List<BrandProduct>> getAllRecentBrandProduct() async {
+    Database db = await database;
+    var result = await db.query(recentBrandViewTable);
+    List<BrandProduct> brandProductList = [];
+
+    for (int i = 0; i < result.length; i++) {
+      brandProductList.add(BrandProduct.fromJson(result[i]));
+    }
+    print(brandProductList);
+    return brandProductList;
+  }
 }
