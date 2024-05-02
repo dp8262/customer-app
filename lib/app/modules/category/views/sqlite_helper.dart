@@ -4,6 +4,7 @@ import 'package:path/path.dart' as p;
 import 'package:shopperz/app/apiServices/common_widget.dart';
 import 'package:shopperz/model/brands_manufacturer_list_model.dart';
 import 'package:shopperz/model/home_associate_brand_model.dart';
+import 'package:shopperz/model/product_interested_list_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../model/category_list_model.dart';
@@ -60,6 +61,16 @@ class ContactDatabaseHelper {
   String productName = "name";
   String productImage = "image";
 
+  // //you may be interested table
+  // String interestedProductTable = "interested_product_table";
+  // String interestedImage="image";
+  //  String thumb="thumb";
+  // String interestedProductId="id";
+  // String interestedProductName="name";
+  //  String sku="sku";
+  // String interestedBrandName="brandName";
+  //  String unit="unit";
+
   //RecentView table
   String recentViewTable = "recent_view_table";
   String recentBrandViewTable = "recent_brand_view_table";
@@ -99,6 +110,13 @@ class ContactDatabaseHelper {
         '$brandName TEXT,'
         '$productName TEXT,'
         '$productImage TEXT)');
+    // await db.execute('CREATE TABLE $interestedProductTable($interestedProductId PRIMARY KEY, '
+    //     '$interestedImage TEXT,'
+    //     '$thumb TEXT,'
+    //     '$interestedProductName TEXT,'
+    //     '$sku TEXT,'
+    //     '$interestedBrandName TEXT,'
+    //     '$unit TEXT)');
 
     await db
         .execute('CREATE TABLE $recentViewTable($productId PRIMARY KEY, '
@@ -143,26 +161,17 @@ class ContactDatabaseHelper {
     print("insert brand $result");
     return result;
   }
-
-  // Future<int> insertBrandProduct(BrandProduct contactModel) async {
-  //   Database db = await database;
-  //   var existingRecords = await db.query(
-  //     brandProductTable,
-  //     where: '$brandProductId = ?',
-  //     whereArgs: [contactModel.productId],
-  //   );
-  //   if (existingRecords.isNotEmpty) {
-  //     return 0;
-  //   }
-  //
-  //   int result = await db.insert(brandProductTable, contactModel.toJson());
-  //   return result;
-  // }
   Future<int> insertProduct(Product contactModel) async {
     Database db = await database;
     int result = await db.insert(productTable, contactModel.toJson());
     return result;
   }
+  // Future<int> insertInterestedProduct(CustomerItems contactModel) async {
+  //   Database db = await database;
+  //   int result = await db.insert(interestedProductTable, contactModel.toJson());
+  //   print("interestedProduct ========${result}");
+  //   return result;
+  // }
 
   Future<List<Category>> getAllCategory() async {
     Database db = await database;
@@ -190,19 +199,6 @@ class ContactDatabaseHelper {
 
     return brandsCategoryList;
   }
-  // Future<List<BrandProduct>> getAllBrandProduct(String brandManufacturerID) async {
-  //   Database db = await database;
-  //   var result = await db.query(
-  //     brandProductTable,
-  //     where: '$brandManufacturerID = ?',
-  //     whereArgs: [brandManufacturerID],
-  //   );
-  //   List<BrandProduct> brandProductList = [];
-  //   for (int i = 0; i < result.length; i++) {
-  //     brandProductList.add(BrandProduct.fromJson(result[i]));
-  //   }
-  //   return brandProductList;
-  // }
   Future<List<BrandProduct>> getAllBrandProduct(String brandProductId2) async {
     Database db = await database;
     var result = await db.query(brandProductTable, where: '$brandManufacturerID = ?', whereArgs: [brandProductId2]);
@@ -226,6 +222,36 @@ class ContactDatabaseHelper {
 
     return productList;
   }
+  // Future<List<CustomerItems>> getAllInterestedProduct() async {
+  //   Database db = await database;
+  //   var result = await db.query(
+  //     interestedProductTable,
+  //   );
+  //   List<CustomerItems> interestedProductList = [];
+  //   for (int i = 0; i < result.length; i++) {
+  //     interestedProductList.add(CustomerItems.fromJson(result[i]));
+  //     // print("brand category${result[i]}");
+  //   }
+  //
+  //   return interestedProductList;
+  // }
+
+
+
+////old code
+  // Future<List<CustomerItems>> getAllInterestedProduct(String productId2) async {
+  //   Database db = await database;
+  //   var result = await db.query(interestedProductTable, where: '$interestedProductId = ?', whereArgs: [productId2]);
+  //   List<CustomerItems> interestedProductList = [];
+  //
+  //   for (int i = 0; i < result.length; i++) {
+  //     interestedProductList.add(CustomerItems.fromJson(result[i]));
+  //     print("interestedProduct=======${result[i]}");
+  //
+  //   }
+  //
+  //   return interestedProductList;
+  // }
 
   deleteAllTable() async {
     Database db = await database;
@@ -248,6 +274,9 @@ class ContactDatabaseHelper {
     var a5 = await db.delete(
       recentBrandViewTable,
     );
+    // var a6 = await db.delete(
+    //   interestedProductTable,
+    // );
     toast("All record deleted.$a,$a1,$a2,$a5");
   }
 

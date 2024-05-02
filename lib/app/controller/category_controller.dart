@@ -316,29 +316,32 @@ class CategoryControllers extends GetxController {
     customerItemsList.clear();
 
     try {
-      // if (productList.isEmpty) {
-
+      // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      // dbFuture.then((database) async {
+      //   customerItemsList.value = await contactDatabaseHelper.getAllInterestedProduct();
+      //   if (customerItemsList.isEmpty) {
       getAPI(
           methodName: ApiList.productInterested,
           param: {"id": itemId},
           callback: (value) {
             try {
               Map<String, dynamic> valueMap = json.decode(value.response);
-              // if (valueMap["statusCode"] == 200) {
               ProductInterestedListModel productInterestedListModel = ProductInterestedListModel.fromJson(valueMap);
               customerItemsList.addAll(productInterestedListModel.customerItems);
-
-              isOtherLoading(false);
-              // getRelatedProducts(context: context, itemId: itemId);
+              // if (customerItemsList.isNotEmpty) {
+              //   for (int i = 0; i < customerItemsList.length; i++) {
+              //     contactDatabaseHelper.insertInterestedProduct(customerItemsList[i]);
+              //   }
               // }
+              isOtherLoading(false);
             } catch (e) {
-              // handleError("Error response: $e", context);
               isOtherLoading(false);
             }
           });
-      // } else {
-      //   isLoading(false);
-      // }
+      //   } else {
+      //     isLoading(false);
+      //   }
+      // });
     } catch (ex) {
       handleError("Failed to fetch data: $ex", context);
       isOtherLoading(false);
