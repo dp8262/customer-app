@@ -1413,6 +1413,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                       for (int i = 0; i < controller.customerItemsList.length; i++)
                                         GestureDetector(
                                             onTap: () async {
+
                                               Get.delete<CategoryControllers>();
                                               await Get.to(
                                                 () => ProductViewDetailsScreen(itemId: controller.customerItemsList[i].id),
@@ -1526,15 +1527,15 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                     mainAxisSpacing: 16.h,
                                     crossAxisSpacing: 16.w,
                                     children: [
-                                      for (int i = 0; i < controller.list.length; i++)
-                                        controller.list[i].product != null
+                                      for (int i = 0; i < controller.recentAllList.length; i++)
+                                        controller.recentAllList[i].product != null
                                             ? GestureDetector(
                                                 onTap: () async {
                                                 Get.delete<CategoryControllers>();
                                                 await Get.to(
-                                                    () => ProductViewDetailsScreen(itemId: controller.list[i].product!.productId),
+                                                    () => ProductViewDetailsScreen(itemId: controller.recentAllList[i].product!.productId),
                                                   );
-                                                  controller.productViewDetails(context: context, itemId: controller.list[i].product!.productId);
+                                                  controller.productViewDetails(context: context, itemId: controller.recentAllList[i].product!.productId);
                                                 },
                                               child: Container(
                                                   width: 145,
@@ -1556,7 +1557,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                           children: [
                                                             Stack(children: [
                                                               CachedNetworkImage(
-                                                                    imageUrl: controller.list[i].product!.image.toString(),
+                                                                    imageUrl: controller.recentAllList[i].product!.image.toString(),
                                                                     errorWidget: (context, url, error) =>
                                                                       Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                                   imageBuilder: (context, imageProvider) => Container(
@@ -1569,7 +1570,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                             ]),
                                                             const SizedBox(height: 10),
                                                             TextWidget(
-                                                                  text: controller.list[i].product!.brandName ?? '',
+                                                                  text: controller.recentAllList[i].product!.brandName ?? '',
                                                                   color: AppColor.textColor,
                                                                 fontSize: 16,
                                                                 fontWeight: FontWeight.w600,
@@ -1577,7 +1578,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                                 overflow: TextOverflow.fade),
                                                             const SizedBox(height: 10),
                                                             TextWidget(
-                                                                  text: controller.list[i].product!.name ?? '',
+                                                                  text: controller.recentAllList[i].product!.name ?? '',
                                                                   color: AppColor.textColor1,
                                                                 textAlign: TextAlign.center,
                                                                 fontSize: 14,
@@ -1589,10 +1590,10 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                 onTap: () async {
                                                   Get.delete<CategoryControllers>();
                                                   await Get.to(
-                                                    () => ProductViewDetailsScreen(itemId: controller.list[i].brandProduct!.productId),
+                                                    () => ProductViewDetailsScreen(itemId: controller.recentAllList[i].brandProduct!.productId),
                                                   );
                                                   controller.productViewDetails(
-                                                      context: context, itemId: controller.list[i].brandProduct!.productId);
+                                                      context: context, itemId: controller.recentAllList[i].brandProduct!.productId);
                                                 },
                                                 child: Container(
                                                     width: 145,
@@ -1614,7 +1615,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                             children: [
                                                               Stack(children: [
                                                                 CachedNetworkImage(
-                                                                    imageUrl: controller.list[i].brandProduct!.image.toString(),
+                                                                    imageUrl: controller.recentAllList[i].brandProduct!.image.toString(),
                                                                     errorWidget: (context, url, error) =>
                                                                         Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                                     imageBuilder: (context, imageProvider) => Container(
@@ -1627,7 +1628,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                               ]),
                                                               const SizedBox(height: 10),
                                                               TextWidget(
-                                                                  text: controller.list[i].brandProduct!.manufacturerName ?? '',
+                                                                  text: controller.recentAllList[i].brandProduct!.manufacturerName ?? '',
                                                                   color: AppColor.textColor,
                                                                   fontSize: 16,
                                                                   fontWeight: FontWeight.w600,
@@ -1635,7 +1636,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                                                   overflow: TextOverflow.fade),
                                                               const SizedBox(height: 10),
                                                               TextWidget(
-                                                                  text: controller.list[i].brandProduct!.name ?? '',
+                                                                  text: controller.recentAllList[i].brandProduct!.name ?? '',
                                                                   color: AppColor.textColor1,
                                                                   textAlign: TextAlign.center,
                                                                   fontSize: 14,

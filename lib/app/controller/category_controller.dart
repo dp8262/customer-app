@@ -209,7 +209,7 @@ class CategoryControllers extends GetxController {
   // ContactDatabaseHelper contactDatabaseHelper = ContactDatabaseHelper();
   RxList<Product> recentProductList = <Product>[].obs;
   RxList<BrandProduct> recentBrandProductList = <BrandProduct>[].obs;
-  RxList<RecentProduct> list = <RecentProduct>[].obs;
+  RxList<RecentProduct> recentAllList = <RecentProduct>[].obs;
   productViewDetails({required BuildContext context, required String itemId}) async {
     isOtherLoading(true);
     isError(false);
@@ -217,6 +217,7 @@ class CategoryControllers extends GetxController {
     productDetails.clear();
     recentProductList.clear();
     recentBrandProductList.clear();
+    recentAllList.clear();
 
     try {
      await contactDatabaseHelper.initializeDatabase();
@@ -228,7 +229,7 @@ class CategoryControllers extends GetxController {
       if (recentProductList.isNotEmpty) {
         for (var data in recentProductList) {
           if (data.productId != itemId) {
-            list.add(RecentProduct(product: data));
+            recentAllList.add(RecentProduct(product: data));
           }
         }
       }
@@ -236,7 +237,7 @@ class CategoryControllers extends GetxController {
       if (recentBrandProductList.isNotEmpty) {
         for (var data in recentBrandProductList) {
           if (data.productId != itemId) {
-            list.add(RecentProduct(brandProduct: data));
+            recentAllList.add(RecentProduct(brandProduct: data));
           }
         }
       }
@@ -378,48 +379,3 @@ class CategoryControllers extends GetxController {
   //   }
   // }
 }
-// class DatabaseHelper {
-//   static Database? _database;
-//   static const String _tableName = 'category';
-//
-//   static Future<Database> get database async {
-//     if (_database != null) {
-//       return _database!;
-//     }
-//
-//     _database = await initDatabase();
-//     return _database!;
-//   }
-//
-//   static Future<Database> initDatabase() async {
-//     final databasesPath = await getDatabasesPath();
-//     final path = join(databasesPath, 'your_database.db');
-//
-//     return await openDatabase(path, version: 1, onCreate: (db, version) async {
-//       await db.execute('''
-//         CREATE TABLE $_tableName (
-//           id INTEGER PRIMARY KEY,
-//           name TEXT
-//         )
-//       ''');
-//     }, onOpen: (db) async {
-//       // Ensure that the table is created when the database is opened
-//       await db.execute('''
-//         CREATE TABLE IF NOT EXISTS $_tableName (
-//           id INTEGER PRIMARY KEY,
-//           name TEXT
-//         )
-//       ''');
-//     });
-//   }
-//
-//   static Future<List<Map<String, dynamic>>> getCategories() async {
-//     final db = await database;
-//     return await db.query(_tableName);
-//   }
-//
-//   static Future<void> insertCategory(Map<String, dynamic> category) async {
-//     final db = await database;
-//     await db.insert(_tableName, category, conflictAlgorithm: ConflictAlgorithm.replace);
-//   }
-// }
