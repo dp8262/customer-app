@@ -168,6 +168,7 @@ class ContactDatabaseHelper {
   }
   // Future<int> insertInterestedProduct(CustomerItems contactModel) async {
   //   Database db = await database;
+  //   print("result line error=======");
   //   int result = await db.insert(interestedProductTable, contactModel.toJson());
   //   print("interestedProduct ========${result}");
   //   return result;

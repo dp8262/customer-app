@@ -317,8 +317,10 @@ class CategoryControllers extends GetxController {
 
     try {
       // final Future<Database> dbFuture = contactDatabaseHelper.initializeDatabase();
+      // print("customerItemsList============$customerItemsList");
       // dbFuture.then((database) async {
       //   customerItemsList.value = await contactDatabaseHelper.getAllInterestedProduct();
+      //
       //   if (customerItemsList.isEmpty) {
       getAPI(
           methodName: ApiList.productInterested,
