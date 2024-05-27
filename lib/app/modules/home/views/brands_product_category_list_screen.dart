@@ -91,82 +91,145 @@ class _BrandsProductCategoryListScreenState extends State<BrandsProductCategoryL
                                         },
                                         items: filterList.map((String dateList) {
                                           return DropdownMenuItem(value: dateList, child: Text(dateList, textAlign: TextAlign.start, maxLines: 2));
-                                        }).toList()),
-                                  ),
-                                ),
-                              ],
+                                        }).toList())
+                                  )
+                                )
+                              ]
                             ),
-                            ListView.builder(
-                                itemCount: controller.brandProductList.length,
+                            const SizedBox(height: 15),
+                            GridView.builder(
+                                itemCount:controller.brandProductList.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, mainAxisSpacing: 15, crossAxisSpacing: 15, childAspectRatio: 2 / 2.6),
                                 itemBuilder: (context, index) {
-                                  // if (selectedFilter==controller.productList) {
-                                  return InkWell(
-                                    onTap: () async {
-                                      await contactDatabaseHelper.insertRecentBrandProduct(controller.brandProductList[index]);
+                                  return GestureDetector(
+                                      onTap: () async {
+                                        await contactDatabaseHelper.insertRecentBrandProduct(controller.brandProductList[index]);
 
-                                      // await contactDatabaseHelper.insertRecentProduct(controller.brandProductList[index]);
-                                      //
-                                      //
-                                      Get.delete<HomeControllers>();
-                                      await Get.to(
-                                            () => ProductViewDetailsScreen(itemId: controller.brandProductList[index].productId,
-                                          // product: categoryControllers.productList[index].i,
-                                        ),
-                                      );
-                                      // // print("product id${categoryControllers.productList[index].productId}");
-                                    },
-                                    child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 5),
-                                        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColor.borderColor, width: 1.sp))),
-                                        child: Center(
-                                            child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                          Expanded(
-                                              flex: 8,
-                                              child: Row(children: [
+                                        Get.delete<HomeControllers>();
+                                        await Get.to(
+                                              () => ProductViewDetailsScreen(itemId: controller.brandProductList[index].productId,
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        // height: 190,
+                                          decoration: BoxDecoration(
+                                              color: AppColor.whiteColor,
+                                              borderRadius: BorderRadius.circular(5),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.black.withOpacity(0.05),
+                                                    offset: const Offset(0, 0),
+                                                    blurRadius: 7,
+                                                    spreadRadius: 0)
+                                              ]),
+                                          child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                              child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
                                                 CachedNetworkImage(
-                                                    width: 100,
                                                     imageUrl: controller.brandProductList[index].image,
+                                                    placeholder: (context, url) => const LoadingWidget(),
                                                     errorWidget: (context, url, error) => Image.asset(AppImages.errorImages, fit: BoxFit.cover),
                                                     imageBuilder: (context, imageProvider) => Container(
-                                                        height: 100,
-                                                        width: 100,
+                                                        height: 140,
                                                         decoration: BoxDecoration(
+                                                            color: AppColor.whiteColor,
                                                             borderRadius: BorderRadius.circular(5),
-                                                            image: DecorationImage(
-                                                              image: imageProvider,
-                                                              fit: BoxFit.cover,
-                                                            )))),
-                                                const SizedBox(width: 15),
-                                                Expanded(
-                                                    child: Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                                          TextWidget(
-                                                              text: controller.brandProductList[index].manufacturerName.toString(),
-                                                              color: AppColor.textColor,
-                                                              fontSize: 16,
-                                                              fontWeight: FontWeight.w600),
-                                                          const SizedBox(height: 10),
-                                                          TextWidget(
-                                                              text: controller.brandProductList[index].name.toString(),
-                                                              color: AppColor.textColor,
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w500)
-                                                        ])))
-                                              ])),
-                                          Expanded(
-                                              flex: 1,
-                                              child: InkWell(
-                                                  onTap: () {},
-                                                  child: SvgPicture.asset(SvgIcon.forward.isNotEmpty ? SvgIcon.forward : 'assets/placeholder.svg')))
-                                        ]))),
-                                  );
-                                  // } else {
-                                  //   return const SizedBox();
-                                  // }
-                                }),
+                                                            image: DecorationImage(image: imageProvider, fit: BoxFit.fill)))),
+                                                const SizedBox(height: 10),
+                                                TextWidget(
+                                                    text: controller.brandProductList[index].manufacturerName.toString(),
+                                                    color: AppColor.textColor,
+                                                    textAlign: TextAlign.center,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    maxLines: 2,
+                                                    overflow: TextOverflow.ellipsis),
+                                                const SizedBox(height: 7),
+                                                TextWidget(
+                                                    text: controller.brandProductList[index].name.toString(),
+                                                    color: AppColor.textColor,
+                                                    textAlign: TextAlign.center,
+                                                    maxLines: 3,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500)
+                                              ]))));
+                                })
+,
+                            // ListView.builder(
+                            //     itemCount: controller.brandProductList.length,
+                            //     shrinkWrap: true,
+                            //     physics: const NeverScrollableScrollPhysics(),
+                            //     itemBuilder: (context, index) {
+                            //       // if (selectedFilter==controller.productList) {
+                            //       return InkWell(
+                            //         onTap: () async {
+                            //           await contactDatabaseHelper.insertRecentBrandProduct(controller.brandProductList[index]);
+                            //
+                            //           // await contactDatabaseHelper.insertRecentProduct(controller.brandProductList[index]);
+                            //           //
+                            //           //
+                            //           Get.delete<HomeControllers>();
+                            //           await Get.to(
+                            //                 () => ProductViewDetailsScreen(itemId: controller.brandProductList[index].productId,
+                            //               // product: categoryControllers.productList[index].i,
+                            //             ),
+                            //           );
+                            //           // // print("product id${categoryControllers.productList[index].productId}");
+                            //         },
+                            //         child: Container(
+                            //             padding: const EdgeInsets.symmetric(vertical: 5),
+                            //             decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColor.borderColor, width: 1.sp))),
+                            //             child: Center(
+                            //                 child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                            //               Expanded(
+                            //                   flex: 8,
+                            //                   child: Row(children: [
+                            //                     CachedNetworkImage(
+                            //                         width: 100,
+                            //                         imageUrl: controller.brandProductList[index].image,
+                            //                         errorWidget: (context, url, error) => Image.asset(AppImages.errorImages, fit: BoxFit.cover),
+                            //                         imageBuilder: (context, imageProvider) => Container(
+                            //                             height: 100,
+                            //                             width: 100,
+                            //                             decoration: BoxDecoration(
+                            //                                 borderRadius: BorderRadius.circular(5),
+                            //                                 image: DecorationImage(
+                            //                                   image: imageProvider,
+                            //                                   fit: BoxFit.cover,
+                            //                                 )))),
+                            //                     const SizedBox(width: 15),
+                            //                     Expanded(
+                            //                         child: Align(
+                            //                             alignment: Alignment.centerLeft,
+                            //                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            //                               TextWidget(
+                            //                                   text: controller.brandProductList[index].manufacturerName.toString(),
+                            //                                   color: AppColor.textColor,
+                            //                                   fontSize: 16,
+                            //                                   fontWeight: FontWeight.w600),
+                            //                               const SizedBox(height: 10),
+                            //                               TextWidget(
+                            //                                   text: controller.brandProductList[index].name.toString(),
+                            //                                   color: AppColor.textColor,
+                            //                                   fontSize: 14,
+                            //                                   fontWeight: FontWeight.w500)
+                            //                             ])))
+                            //                   ])),
+                            //               Expanded(
+                            //                   flex: 1,
+                            //                   child: InkWell(
+                            //                       onTap: () {},
+                            //                       child: SvgPicture.asset(SvgIcon.forward.isNotEmpty ? SvgIcon.forward : 'assets/placeholder.svg')))
+                            //             ]))),
+                            //       );
+                            //       // } else {
+                            //       //   return const SizedBox();
+                            //       // }
+                            //     }),
                           ],
                         ));
                   }
