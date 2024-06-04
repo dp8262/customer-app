@@ -155,7 +155,7 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
               );
             }
             return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: RefreshIndicator(
                     color: AppColor.primaryColor,
                     onRefresh: () async {
@@ -209,10 +209,12 @@ class _ProductViewDetailsScreenState extends State<ProductViewDetailsScreen> {
                                   //     :
                                   controller.productDetails[0].image[isSelected].toString(),
                               imageBuilder: (context, imageProvider) => Container(
-                                  height: 250,
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                                  height: 300,
                                   // width: 328.w,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16.r), image: DecorationImage(image: imageProvider, fit: BoxFit.fill)))),
+                                    // color: AppColor.applyCouponColor,
+                                      borderRadius: BorderRadius.circular(5), image: DecorationImage(image: imageProvider, fit: BoxFit.fill)))),
                           SizedBox(height: 15.h),
                           controller.productDetails[0].image.isEmpty
                               ? const SizedBox()
